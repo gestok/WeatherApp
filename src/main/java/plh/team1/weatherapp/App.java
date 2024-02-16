@@ -20,17 +20,17 @@ public class App extends Application {
     private static Scene scene;
 
     @Override
-    public void start(Stage primaryStage) throws IOException {
+    public void start(Stage stage) throws IOException {
         // Add application icon
-        primaryStage.getIcons().add(new Image("/icons/icon.png"));
+        stage.getIcons().add(new Image("/icons/icon.png"));
 
         // Load fonts
         Font.loadFont(getClass().getResourceAsStream("/fonts/Roboto-Regular.ttf"), 12);
         Font.loadFont(getClass().getResourceAsStream("/fonts/Roboto-Medium.ttf"), 12);
 
         // Set a scene from primary FXML
-        scene = new Scene(loadFXML("primary"), 1024, 720);
-        primaryStage.setScene(scene);
+        scene = new Scene(loadFXML("Overview"), 1024, 720);
+        stage.setScene(scene);
 
         // Link stylesheet to application
         try {
@@ -40,11 +40,11 @@ public class App extends Application {
         }
 
         // Set application properties
-        primaryStage.setTitle("WeatherApp");
-        primaryStage.setResizable(false);
+        stage.setTitle("WeatherApp");
+        stage.setResizable(false);
 
         // Show scene
-        primaryStage.show();
+        stage.show();
     }
 
     public static void main(String[] args) {

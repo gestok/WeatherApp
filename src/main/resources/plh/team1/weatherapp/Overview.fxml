@@ -13,7 +13,7 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.geometry.Insets?>
 
-<VBox spacing="20.0" styleClass="container" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="plh.team1.weatherapp.PrimaryController">
+<VBox spacing="20.0" styleClass="container" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="plh.team1.weatherapp.OverviewController">
     <children>
         <HBox alignment="CENTER_RIGHT" minHeight="-Infinity" prefHeight="54.0" prefWidth="0.0" spacing="20.0" stylesheets="@styles.css">
             <children>
@@ -23,7 +23,7 @@
                         <String fx:value="active" />
                     </styleClass>
                 </Label>
-                <Button fx:id="primaryButton" onAction="#switchToSecondary" stylesheets="@styles.css" text="Search">
+                <Button fx:id="overviewButton" onAction="#switchToSearch" stylesheets="@styles.css" text="Search">
                     <styleClass>
                         <String fx:value="menu-item" />
                         <String fx:value="cursor-pointer" />

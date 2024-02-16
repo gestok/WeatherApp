@@ -9,11 +9,11 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.geometry.Insets?>
 
-<VBox spacing="20.0" styleClass="container" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="plh.team1.weatherapp.SecondaryController">
+<VBox spacing="20.0" styleClass="container" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="plh.team1.weatherapp.SearchController">
     <children>
         <HBox alignment="CENTER_RIGHT" minHeight="-Infinity" prefHeight="54.0" prefWidth="0.0" spacing="20.0" stylesheets="@styles.css">
             <children>
-                <Button fx:id="secondaryButton" onAction="#switchToPrimary" stylesheets="@styles.css" text="Overview">
+                <Button fx:id="searchButton" onAction="#switchToOverview" stylesheets="@styles.css" text="Overview">
                     <styleClass>
                         <String fx:value="cursor-pointer" />
                         <String fx:value="menu-item" />
