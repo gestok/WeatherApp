@@ -4,12 +4,14 @@ import com.google.gson.annotations.SerializedName;
 import java.util.List;
 
 public class WeatherData {
-
+    
+    // Τα annotations συνδέουν το όνομα πεδίου στο json με όνομα πεδίου στην
+    // κλάση. Μπορούν να παραλειφθούν αν τα δύο αυτά ταυτίζονται
     @SerializedName("current_condition")
     private List<CurrentCondition> currentCondition;
 
-    public List<CurrentCondition> getCurrentCondition() {
-        return currentCondition;
+    public WeatherData.CurrentCondition getCurrentCondition() {
+        return currentCondition.get(0);
     }
 
     public static class CurrentCondition {

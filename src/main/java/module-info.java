@@ -7,6 +7,6 @@ module plh.team1.weatherapp {
     requires jfreechart;
     requires jcommon;
 
-    opens plh.team1.weatherapp to javafx.fxml;
+    opens plh.team1.weatherapp to javafx.fxml, gson;
     exports plh.team1.weatherapp;
 }
