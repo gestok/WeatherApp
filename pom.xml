@@ -56,6 +56,11 @@
             <version>4.13.2</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.eclipse.persistence</groupId>
+            <artifactId>org.eclipse.persistence.jpa</artifactId>
+            <version>4.0.2</version>
+        </dependency>
     </dependencies>
     <build>
         <plugins>
