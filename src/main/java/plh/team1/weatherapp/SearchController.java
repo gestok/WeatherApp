@@ -70,6 +70,14 @@ public class SearchController {
             cityListView.setVisible(true);
         }
     }
+    
+    /**
+     * Clears the current search query.
+     */
+    @FXML
+    private void clearSearch() {
+        this.searchBar.clear();
+    }
 
     public void initialize() {
         this.populateCityListView();
