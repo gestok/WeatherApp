@@ -28,7 +28,7 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 
 public class SearchController {
-
+    
     @FXML
     private VBox root;
     // Original list of cities
@@ -38,10 +38,11 @@ public class SearchController {
     private TextField searchBar;
     @FXML
     private ListView<String> cityListView;
+    private Double cityListHeight = 200.0;
     // Observable list to hold filtered cities
     @FXML
     private ObservableList<String> filteredCities = FXCollections.observableArrayList();
-
+    
     @FXML
     private void switchToOverview() throws IOException {
         App.setRoot("Overview");
@@ -55,30 +56,30 @@ public class SearchController {
      */
     private void search(String term) {
         if (term.isEmpty()) {
-            // Hide list of cities
-            cityListView.setVisible(false);
+            this.cityListView.setVisible(false);
+            this.cityListView.setPrefHeight((double) 0);
         } else {
-            // Clear all cities from list
-            cityListView.getItems().clear();
+            this.cityListView.getItems().clear();
 
             // Filter the list
-            filteredCities.setAll(this.allCities.stream()
+            this.filteredCities.setAll(this.allCities.stream()
                     .filter(city -> city.toLowerCase().contains(term.toLowerCase()))
                     .collect(Collectors.toList()));
-
-            // Show list of cities
-            cityListView.setVisible(true);
+            
+            this.cityListView.setVisible(true);
+            this.cityListView.setPrefHeight(this.cityListHeight);
         }
     }
-    
+
     /**
      * Clears the current search query.
      */
     @FXML
     private void clearSearch() {
         this.searchBar.clear();
+        this.cityListView.setPrefHeight((double) 0);
     }
-
+    
     public void initialize() {
         this.populateCityListView();
         this.detectRootClick();
@@ -95,6 +96,7 @@ public class SearchController {
         this.root.setOnMouseClicked(event -> {
             if (!this.cityListView.isFocused()) {
                 this.cityListView.setVisible(false);
+                this.cityListView.setPrefHeight((double) 0);
             }
             if (this.searchBar.isFocused()) {
                 this.root.requestFocus();
@@ -110,6 +112,7 @@ public class SearchController {
         this.searchBar.setOnMouseClicked(event -> {
             if (!this.searchBar.getText().isEmpty()) {
                 this.cityListView.setVisible(true);
+                this.cityListView.setPrefHeight(this.cityListHeight);
             }
         });
     }
@@ -131,7 +134,8 @@ public class SearchController {
         this.cityListView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
                 this.searchBar.setText(newValue);
-                cityListView.setVisible(false);
+                this.cityListView.setVisible(false);
+                this.cityListView.setPrefHeight((double) 0);
             }
         });
     }
@@ -142,12 +146,12 @@ public class SearchController {
      */
     private void populateCityListView() {
         JsonParser parser = new JsonParser();
-
+        
         InputStream inputStream = getClass().getClassLoader().getResourceAsStream("data/cities.json");
         if (inputStream == null) {
             return;
         }
-
+        
         InputStreamReader reader = new InputStreamReader(inputStream, StandardCharsets.UTF_8);
         try (reader) {
             // Parse JSON
@@ -172,5 +176,5 @@ public class SearchController {
             System.err.println("Error reading cities.json: " + e.getMessage());
         }
     }
-
+    
 }
