@@ -6,6 +6,7 @@ module plh.team1.weatherapp {
     requires java.desktop;
     requires jfreechart;
     requires jcommon;
+    requires jakarta.persistence;
 
     opens plh.team1.weatherapp to javafx.fxml, gson;
     exports plh.team1.weatherapp;
