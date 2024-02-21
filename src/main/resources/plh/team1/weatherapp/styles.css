@@ -35,19 +35,18 @@
     -fx-background-radius: 30;
 }
 
-/* Chart */
-/*.chart {
-    -fx-padding: 0;
-    -fx-background-color: transparent;
+/**
+ * Search Tab
+ */
+.overlay {
+    -fx-background-color: rgba(255,255,255,0.6);
+    -fx-background-insets: 0;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 8, 0.5, 0, 0);
 }
-
-.default-color0.chart-bar {
-    -fx-bar-fill: #5670f8;
+.clear-btn {
     -fx-background-color: transparent;
+    -fx-background-insets: 0;
 }
-.data0.chart-bar {
-    -fx-background-image: url("../images/bar-bg.png");
-}*/
 
 /* Utility Classes */
 .cursor-pointer {
