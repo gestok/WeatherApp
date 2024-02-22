@@ -27,6 +27,7 @@ public class App extends Application {
         // Load fonts
         Font.loadFont(getClass().getResourceAsStream("/fonts/Roboto-Regular.ttf"), 12);
         Font.loadFont(getClass().getResourceAsStream("/fonts/Roboto-Medium.ttf"), 12);
+        Font.loadFont(getClass().getResourceAsStream("/fonts/Roboto-Bold.ttf"), 12);
 
         // Set a scene from primary FXML
         scene = new Scene(loadFXML("Overview"), 1024, 720);

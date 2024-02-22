@@ -38,14 +38,44 @@
 /**
  * Search Tab
  */
+.searchbar {
+    -fx-font-size: 14;
+    -fx-text-fill: #276487;
+    -fx-background-color: #fafafa;
+    -fx-border-color: #88bedd;
+    -fx-border-width: 0.8;
+    -fx-border-style: solid;
+    -fx-border-radius: 4;
+    -fx-background-radius: 4;
+}
 .overlay {
-    -fx-background-color: rgba(255,255,255,0.6);
+    -fx-background-color: #fafafa;
+    -fx-border-color: #88bedd;
+    -fx-border-width: 0.8;
+    -fx-border-style: solid;
+    -fx-border-radius: 4;
+    -fx-background-radius: 4;
     -fx-background-insets: 0;
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 8, 0.5, 0, 0);
 }
 .clear-btn {
+    -fx-text-fill: #276487;
+    -fx-font-size: 16;
+    -fx-padding: 2 0 0 0;
     -fx-background-color: transparent;
     -fx-background-insets: 0;
+}
+.city-info-wrapper {
+    -fx-background-color: #fafafa;
+    -fx-border-color: #88bedd;
+    -fx-border-width: 0.8;
+    -fx-border-style: solid;
+    -fx-border-radius: 4;
+    -fx-background-radius: 4;
+}
+.city-info-label {
+    -fx-text-fill: #276488;
+    -fx-font-family: "Roboto Regular";
+    -fx-font-size: 14;
 }
 
 /* Utility Classes */
@@ -57,4 +87,11 @@
     -fx-border-style: hidden hidden solid hidden;
     -fx-border-width: 0.8;
     -fx-border-color: #88bedd;
+}
+
+.medium {
+    -fx-font-family: "Roboto Medium";
+}
+.bold {
+    -fx-font-family: "Roboto Bold";
 }
