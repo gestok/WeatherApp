@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.text.*?>
+<?import javafx.scene.web.*?>
 <?import javafx.scene.effect.*?>
 <?import java.lang.*?>
 <?import javafx.geometry.*?>
@@ -32,21 +34,149 @@
                 <String fx:value="divider-bottom" />
             </styleClass>
         </HBox>
-      <AnchorPane prefHeight="200.0" prefWidth="200.0">
+      <AnchorPane fx:id="searchWrapper" prefHeight="25.0" prefWidth="200.0">
          <children>
-            <TextField fx:id="searchBar" promptText="Type city name and hit enter..." AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+            <TextField fx:id="searchBar" prefHeight="30.0" promptText="Type city or country name to search..." styleClass="searchbar" stylesheets="@styles.css" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
             <Button mnemonicParsing="false" onMouseClicked="#clearSearch" opacity="0.7" prefHeight="25.0" prefWidth="35.0" stylesheets="@styles.css" text="x" textAlignment="CENTER" AnchorPane.rightAnchor="0.0">
                <styleClass>
                   <String fx:value="clear-btn" />
                   <String fx:value="cursor-pointer" />
-               </styleClass></Button>
-                <ListView fx:id="cityListView" prefHeight="200.0" prefWidth="200.0" styleClass="overlay" stylesheets="@styles.css" visible="false" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="28.0" />
+               </styleClass>
+            </Button>
+                <ListView fx:id="cityListView" prefHeight="0.0" prefWidth="200.0" styleClass="overlay" stylesheets="@styles.css" visible="false" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="30.0" />
          </children>
+         <VBox.margin>
+            <Insets />
+         </VBox.margin>
       </AnchorPane>
         <HBox prefHeight="100.0" prefWidth="200.0" spacing="20.0" VBox.vgrow="ALWAYS">
             <children>
-            <VBox prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS" />
+            <VBox fx:id="cityInfo" prefWidth="320.0" styleClass="city-info-wrapper" stylesheets="@styles.css" visible="false">
+               <children>
+                  <HBox alignment="CENTER_LEFT" prefHeight="30.0" prefWidth="200.0" stylesheets="@styles.css" VBox.vgrow="NEVER">
+                     <children>
+                        <Label styleClass="city-info-label" stylesheets="@styles.css" text="City" />
+                        <Pane HBox.hgrow="ALWAYS" />
+                        <Label fx:id="cityName" alignment="CENTER_RIGHT" stylesheets="@styles.css">
+                           <styleClass>
+                              <String fx:value="city-info-label" />
+                              <String fx:value="medium" />
+                           </styleClass>
+                        </Label>
+                     </children>
+                     <VBox.margin>
+                        <Insets left="10.0" right="10.0" />
+                     </VBox.margin>
+                     <styleClass>
+                        <String fx:value="city-info-label-wrapper" />
+                        <String fx:value="divider-bottom" />
+                     </styleClass>
+                     <padding>
+                        <Insets bottom="6.0" top="6.0" />
+                     </padding>
+                  </HBox>
+                  <HBox alignment="CENTER_LEFT" layoutX="21.0" layoutY="17.0" prefHeight="30.0" prefWidth="200.0" stylesheets="@styles.css">
+                     <children>
+                        <Label styleClass="city-info-label" stylesheets="@styles.css" text="Country" />
+                        <Pane HBox.hgrow="ALWAYS" />
+                        <Label fx:id="cityCountry" alignment="CENTER_RIGHT" stylesheets="@styles.css">
+                           <styleClass>
+                              <String fx:value="city-info-label" />
+                              <String fx:value="medium" />
+                           </styleClass>
+                        </Label>
+                     </children>
+                     <padding>
+                        <Insets bottom="6.0" top="6.0" />
+                     </padding>
+                     <styleClass>
+                        <String fx:value="city-info-label-wrapper" />
+                        <String fx:value="divider-bottom" />
+                     </styleClass>
+                     <VBox.margin>
+                        <Insets left="10.0" right="10.0" />
+                     </VBox.margin>
+                  </HBox>
+                  <HBox alignment="CENTER_LEFT" prefHeight="30.0" prefWidth="200.0" stylesheets="@styles.css">
+                     <children>
+                        <Label prefWidth="65.0" styleClass="city-info-label" stylesheets="@styles.css" text="Longitude" />
+                        <Pane HBox.hgrow="ALWAYS" />
+                        <Label fx:id="cityLng" alignment="CENTER_RIGHT" minWidth="150.0" stylesheets="@styles.css">
+                           <styleClass>
+                              <String fx:value="city-info-label" />
+                              <String fx:value="medium" />
+                           </styleClass>
+                        </Label>
+                     </children>
+                     <padding>
+                        <Insets bottom="6.0" top="6.0" />
+                     </padding>
+                     <styleClass>
+                        <String fx:value="city-info-label-wrapper" />
+                        <String fx:value="divider-bottom" />
+                     </styleClass>
+                     <VBox.margin>
+                        <Insets left="10.0" right="10.0" />
+                     </VBox.margin>
+                  </HBox>
+                  <HBox alignment="CENTER_LEFT" prefHeight="30.0" prefWidth="200.0" stylesheets="@styles.css">
+                     <children>
+                        <Label styleClass="city-info-label" stylesheets="@styles.css" text="Latitude" />
+                        <Pane HBox.hgrow="ALWAYS" />
+                        <Label fx:id="cityLat" alignment="CENTER_RIGHT" stylesheets="@styles.css">
+                           <styleClass>
+                              <String fx:value="city-info-label" />
+                              <String fx:value="medium" />
+                           </styleClass>
+                        </Label>
+                     </children>
+                     <padding>
+                        <Insets bottom="6.0" top="6.0" />
+                     </padding>
+                     <styleClass>
+                        <String fx:value="city-info-label-wrapper" />
+                        <String fx:value="divider-bottom" />
+                     </styleClass>
+                     <VBox.margin>
+                        <Insets left="10.0" right="10.0" />
+                     </VBox.margin>
+                  </HBox>
+                  <HBox alignment="CENTER_LEFT" prefHeight="30.0" prefWidth="200.0" stylesheets="@styles.css">
+                     <children>
+                        <Label styleClass="city-info-label" stylesheets="@styles.css" text="Population" />
+                        <Pane HBox.hgrow="ALWAYS" />
+                        <Label fx:id="cityPopulation" alignment="CENTER_RIGHT" stylesheets="@styles.css">
+                           <styleClass>
+                              <String fx:value="city-info-label" />
+                              <String fx:value="medium" />
+                           </styleClass>
+                        </Label>
+                     </children>
+                     <padding>
+                        <Insets bottom="6.0" top="6.0" />
+                     </padding>
+                     <styleClass>
+                        <String fx:value="city-info-label-wrapper" />
+                        <String fx:value="divider-bottom" />
+                     </styleClass>
+                     <VBox.margin>
+                        <Insets left="10.0" right="10.0" />
+                     </VBox.margin>
+                  </HBox>
+               </children>
+               <padding>
+                  <Insets bottom="6.0" top="6.0" />
+               </padding>
+            </VBox>
+            <VBox fx:id="mapViewWrapper" prefHeight="200.0" prefWidth="100.0" styleClass="city-info-wrapper" stylesheets="@styles.css" visible="false" HBox.hgrow="ALWAYS">
+               <children>
+                  <WebView fx:id="mapView" minHeight="-1.0" minWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" visible="false" VBox.vgrow="ALWAYS" />
+               </children>
+            </VBox>
             </children>
+         <VBox.margin>
+            <Insets />
+         </VBox.margin>
         </HBox>
     </children>
     <padding>
