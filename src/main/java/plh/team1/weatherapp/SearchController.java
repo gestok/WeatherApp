@@ -92,8 +92,12 @@ public class SearchController {
                         || city.getCountry().toLowerCase().contains(term.toLowerCase()))
                         .collect(Collectors.toCollection(FXCollections::observableArrayList));
 
-                this.filteredCities.setAll(filtered);
-                this.showCityList();
+                if (!filtered.isEmpty()) {
+                    this.filteredCities.setAll(filtered);
+                    this.showCityList();
+                } else {
+                    this.hideCityList();
+                }
             } catch (IndexOutOfBoundsException e) {
                 System.out.println(e.getMessage());
             }
