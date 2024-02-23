@@ -1,4 +1,3 @@
-
 package plh.team1.weatherapp.api;
 
 import plh.team1.weatherapp.model.CurrentCondition;
@@ -9,22 +8,21 @@ import okhttp3.Request;
 import okhttp3.Response;
 
 public class WeatherDataFetcher {
-    private static Gson gson = new Gson();
+
+    private static final Gson gson = new Gson();
     private final String urlToCall;
     private String responseString;
-    private WeatherData weatherData;
+    private final WeatherData weatherData;
     private CurrentCondition currentCondition;
     private AreaName areaName;
     private Country country;
     private NearestArea nearestArea;
-            
-    public WeatherDataFetcher(String cityName) {        
+
+    public WeatherDataFetcher(String cityName) {
         urlToCall = "https://wttr.in/" + cityName + "?format=j1";
-        this.weatherData =gson.fromJson(getResponseString(), WeatherData.class);
+        this.weatherData = gson.fromJson(getResponseString(), WeatherData.class);
 
     }
-    
-    
 
     public String getJSONString() throws IOException {
         OkHttpClient client = new OkHttpClient();
@@ -54,9 +52,9 @@ public class WeatherDataFetcher {
     }
 
     public WeatherData getWeatherData() {
-        
+
         return weatherData;
-        
+
     }
 
     public CurrentCondition getCurrentCondition() {
@@ -78,9 +76,5 @@ public class WeatherDataFetcher {
         this.country = getNearestArea().getCountry();
         return country;
     }
-
-
-    
-    
 
 }
