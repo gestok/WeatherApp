@@ -1,25 +1,13 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package plh.team1.weatherapp.api;
 
-/**
- *
- * @author geork
- */
+import plh.team1.weatherapp.model.CurrentCondition;
+
 public class Test {
-    
-    
-    
-    
-    
-    
+
     public static void main(String[] args) {
-        WeatherData weatherdata = WeatherData.fetchApi("Serres");
-        NearestArea nearestArea = weatherdata.getNearestArea();
-        AreaName city = nearestArea.getAreaName();
-        
-        System.out.println(city.getCityName());
+        WeatherDataFetcher fetch = new WeatherDataFetcher("Thessaloniki");
+        CurrentCondition cur = fetch.getCurrentCondition();
+        System.out.println(cur.getTemp());
+
     }
 }

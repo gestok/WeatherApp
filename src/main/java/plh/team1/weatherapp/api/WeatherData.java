@@ -2,11 +2,11 @@ package plh.team1.weatherapp.api;
 
 
 
+import plh.team1.weatherapp.model.CurrentCondition;
 import plh.team1.weatherapp.api.Api;
 import com.google.gson.Gson;
 import com.google.gson.annotations.SerializedName;
 import java.util.List;
-import plh.team1.weatherapp.model.CurrentCondition;
 
 public class WeatherData {
     @SerializedName("current_condition")
