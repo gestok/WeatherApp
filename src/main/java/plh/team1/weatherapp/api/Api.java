@@ -1,4 +1,4 @@
-package plh.team1.weatherapp;
+package plh.team1.weatherapp.api;
 
 import java.io.IOException;
 import okhttp3.OkHttpClient;

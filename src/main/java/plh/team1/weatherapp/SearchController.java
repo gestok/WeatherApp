@@ -1,6 +1,7 @@
 package plh.team1.weatherapp;
 
 // Java
+import plh.team1.weatherapp.model.City;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
