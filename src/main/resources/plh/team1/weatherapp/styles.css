@@ -60,9 +60,16 @@
 .clear-btn {
     -fx-text-fill: #276487;
     -fx-font-size: 16;
-    -fx-padding: 2 0 0 0;
+    -fx-padding: 0;
     -fx-background-color: transparent;
     -fx-background-insets: 0;
+}
+.action-btn {
+    -fx-padding: 0;
+    -fx-font-size: 16;
+    -fx-background-color: #276487;
+    -fx-background-insets: 0;
+    -fx-background-radius: 4;
 }
 .city-info-wrapper {
     -fx-background-color: #fafafa;
@@ -73,12 +80,26 @@
     -fx-background-radius: 4;
 }
 .city-info-label {
-    -fx-text-fill: #276488;
+    -fx-text-fill: #276487;
     -fx-font-family: "Roboto Regular";
     -fx-font-size: 14;
 }
+.favourite-btn,
+.search-btn {
+    -fx-text-fill: #f4f4f4;
+    -fx-padding: 0;
+    -fx-font-size: 16;
+    -fx-background-color: #276487;
+    -fx-background-insets: 0;
+    -fx-background-radius: 4;
+}
+.favourite-btn {
+    -fx-background-color: #499bca;
+}
 
-/* Utility Classes */
+/**
+ * Utility Classes
+ */
 .cursor-pointer {
     -fx-cursor: hand;
 }
@@ -87,6 +108,13 @@
     -fx-border-style: hidden hidden solid hidden;
     -fx-border-width: 0.8;
     -fx-border-color: #88bedd;
+}
+.divider-bottom.white {
+    -fx-border-color: #fafafa;
+}
+
+.text-white {
+    -fx-text-fill: #fcfcfc;
 }
 
 .medium {

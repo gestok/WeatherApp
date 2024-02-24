@@ -41,6 +41,8 @@ public class SearchController {
     @FXML
     private ObservableList<City> filteredCities = FXCollections.observableArrayList();
     @FXML
+    private VBox cityInfoWrapper;
+    @FXML
     private VBox cityInfo;
     @FXML
     private Label cityName;
@@ -322,6 +324,7 @@ public class SearchController {
         this.mapViewWrapper.setVisible(false);
         this.mapView.setVisible(false);
         this.cityInfo.setVisible(false);
+        this.cityInfoWrapper.setVisible(false);
     }
 
     /**
@@ -330,6 +333,7 @@ public class SearchController {
     private void showCityDetails() {
         this.mapViewWrapper.setVisible(true);
         this.mapView.setVisible(true);
+        this.cityInfoWrapper.setVisible(true);
         this.cityInfo.setVisible(true);
     }
 
