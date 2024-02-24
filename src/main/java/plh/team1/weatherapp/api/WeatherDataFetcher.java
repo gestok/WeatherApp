@@ -11,18 +11,26 @@ public class WeatherDataFetcher {
 
     private static final Gson gson = new Gson();
     private final String urlToCall;
-    private String responseString;
     private final WeatherData weatherData;
-    private CurrentCondition currentCondition;
-    private AreaName areaName;
-    private Country country;
-    private NearestArea nearestArea;
+
 
     public WeatherDataFetcher(String cityName) {
         urlToCall = "https://wttr.in/" + cityName + "?format=j1";
-        this.weatherData = gson.fromJson(getResponseString(), WeatherData.class);
+        this.weatherData = fetchWeatherData();
 
     }
+    
+    private WeatherData fetchWeatherData(){
+        String jsonResponse = null;
+        try {
+            jsonResponse = getJSONString();
+            return gson.fromJson(jsonResponse, WeatherData.class);
+        } catch (IOException e){
+            e.printStackTrace();
+        }
+        return null;
+    }
+    
 
     public String getJSONString() throws IOException {
         OkHttpClient client = new OkHttpClient();
@@ -39,42 +47,42 @@ public class WeatherDataFetcher {
         return null;
     }
 
-    public String getResponseString() {
-        if (responseString == null) {
-            try {
-                responseString = getJSONString();
-            } catch (IOException e) {
-                // Handle the exception if needed
-                e.printStackTrace();
-            }
-        }
-        return responseString;
-    }
 
-    public WeatherData getWeatherData() {
-
+    public WeatherData getWeatherData() {        
         return weatherData;
 
     }
 
     public CurrentCondition getCurrentCondition() {
-        this.currentCondition = weatherData.getCurrentCondition();
-        return currentCondition;
+        if (weatherData != null) {
+            return weatherData.getCurrentCondition();
+        } else {
+            return null;
+        }
     }
-
+    
     public NearestArea getNearestArea() {
-        this.nearestArea = weatherData.getNearestArea();
-        return nearestArea;
+        if (weatherData != null) {
+            return weatherData.getNearestArea();
+        } else {
+            return null;
+        }
     }
 
-    public AreaName getAreaName() {
-        this.areaName = weatherData.getNearestArea().getAreaName();
-        return areaName;
+  public AreaName getAreaName() {
+        if (weatherData != null && weatherData.getNearestArea() != null) {
+            return weatherData.getNearestArea().getAreaName();
+        } else {
+            return null;
+        }
     }
-
-    public Country getCountry() {
-        this.country = getNearestArea().getCountry();
-        return country;
+  
+  public Country getCountry() {
+        if (weatherData != null && weatherData.getNearestArea() != null) {
+            return weatherData.getNearestArea().getCountry();
+        } else {
+            return null;
+        }
     }
 
 }
