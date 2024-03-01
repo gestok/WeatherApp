@@ -21,33 +21,33 @@
                     <styleClass>
                         <String fx:value="cursor-pointer" />
                         <String fx:value="menu-item" />
-                  <String fx:value="report" />
+                        <String fx:value="report" />
                     </styleClass>
-               <graphic>
-                  <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../../../icons/report.png" />
-                     </image>
-                  </ImageView>
-               </graphic>
+                    <graphic>
+                        <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
+                            <image>
+                                <Image url="@../../../icons/report.png" />
+                            </image>
+                        </ImageView>
+                    </graphic>
                 </Button>
-            <Button fx:id="menuItemOverview" mnemonicParsing="false" prefHeight="54.0" prefWidth="54.0">
-               <styleClass>
-                  <String fx:value="menu-item" />
-                  <String fx:value="active" />
-               </styleClass>
-               <graphic>
-                  <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../../../icons/search.png" />
-                     </image>
-                  </ImageView>
-               </graphic>
-            </Button>
+                <Button fx:id="menuItemOverview" mnemonicParsing="false" prefHeight="54.0" prefWidth="54.0">
+                    <styleClass>
+                        <String fx:value="menu-item" />
+                        <String fx:value="active" />
+                    </styleClass>
+                    <graphic>
+                        <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                            <image>
+                                <Image url="@../../../icons/search.png" />
+                            </image>
+                        </ImageView>
+                    </graphic>
+                </Button>
             </children>
-         <padding>
-            <Insets left="20.0" right="20.0" />
-         </padding>
+            <padding>
+                <Insets left="20.0" right="20.0" />
+            </padding>
         </HBox>
         <AnchorPane fx:id="searchWrapper" prefHeight="25.0" prefWidth="200.0">
             <children>
@@ -230,18 +230,19 @@
                 <VBox fx:id="mapViewWrapper" prefHeight="200.0" prefWidth="100.0" styleClass="city-info-wrapper" stylesheets="@styles.css" visible="false" HBox.hgrow="ALWAYS">
                     <children>
                         <WebView fx:id="mapView" minHeight="-1.0" minWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS">
-                     <VBox.margin>
-                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                     </VBox.margin></WebView>
+                            <VBox.margin>
+                                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                            </VBox.margin>
+                        </WebView>
                     </children>
                 </VBox>
             </children>
             <VBox.margin>
                 <Insets />
             </VBox.margin>
-         <padding>
-            <Insets bottom="20.0" left="20.0" right="20.0" />
-         </padding>
+            <padding>
+                <Insets bottom="20.0" left="20.0" right="20.0" />
+            </padding>
         </HBox>
     </children>
 </VBox>

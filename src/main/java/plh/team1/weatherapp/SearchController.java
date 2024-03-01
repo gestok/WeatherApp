@@ -414,7 +414,7 @@ public class SearchController {
         this.cityCountry.setText(city.getCountry());
         this.cityLng.setText(this.utilities.formatToDecimals(city.getLongitude(), 4));
         this.cityLat.setText(this.utilities.formatToDecimals(city.getLatitude(), 4));
-        this.cityPopulation.setText(String.valueOf(city.getPopulation()));
+        this.cityPopulation.setText(this.utilities.toLocaleNotation(city.getPopulation()));
     }
 
     /**

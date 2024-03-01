@@ -2,6 +2,7 @@ package plh.team1.weatherapp;
 
 // Java
 import java.text.DecimalFormat;
+import java.text.NumberFormat;
 
 /**
  * This class includes many utilities methods that can be used throughout the
@@ -142,5 +143,16 @@ public class Utilities {
     public String formatToDecimals(double value, int decimals) {
         DecimalFormat decimalFormat = new DecimalFormat("0." + "0".repeat(decimals));
         return decimalFormat.format(value);
+    }
+
+    /**
+     * Method that gets an int and returns a string of the number notated.
+     *
+     * @param value
+     * @return String
+     */
+    public String toLocaleNotation(int value) {
+        NumberFormat defaultFormat = NumberFormat.getNumberInstance();
+        return defaultFormat.format(value);
     }
 }
