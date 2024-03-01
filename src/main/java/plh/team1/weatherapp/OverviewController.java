@@ -1,55 +1,52 @@
 package plh.team1.weatherapp;
 
 import java.io.IOException;
-import java.net.URL;
-import java.util.ResourceBundle;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
+import javafx.scene.control.Label;
 
-public class OverviewController implements Initializable {
+public class OverviewController {
 
+    // Variables
+    private SharedState state;
+    @FXML
+    private Label uvindex_v;
+    @FXML
+    private Label humidity_v;
+    @FXML
+    private Label wind_v;
+    @FXML
+    private Label visibility_v;
+
+    // Constructor
+    public OverviewController() {
+        this.state = SharedState.getInstance();
+    }
+
+    @FXML
+    private void initialize() {
+        if (this.state.getData() != null) {
+            this.populateStats(this.state.getData());
+        }
+    }
+
+    /**
+     * Method that switches FXML.
+     *
+     * @throws IOException
+     */
     @FXML
     private void switchToSearch() throws IOException {
         App.setRoot("Search");
     }
 
-    @FXML
-    private BarChart<String, Number> barChart;
-
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-        CategoryAxis xAxis = (CategoryAxis) barChart.getXAxis();
-        NumberAxis yAxis = (NumberAxis) barChart.getYAxis();
-        yAxis.setTickLabelsVisible(false); // Hide tick labels
-        yAxis.setTickMarkVisible(false); // Hide tick marks
-        yAxis.setMinorTickVisible(false); // Hide minor ticks
-
-        XYChart.Series<String, Number> series = new XYChart.Series<>();
-        series.getData().add(new XYChart.Data<>("Humidity", 40 + Math.random() * 60));
-        series.getData().add(new XYChart.Data<>("Visibility", 40 + Math.random() * 60));
-        series.getData().add(new XYChart.Data<>("UV Index", 40 + Math.random() * 60));
-        series.getData().add(new XYChart.Data<>("Wind Speed", 40 + Math.random() * 60));
-        series.getData().add(new XYChart.Data<>("Cloud Cover", 40 + Math.random() * 60));
-
-        barChart.getData().add(series);
-        barChart.setStyle("-fx-background-color: transparent;");
-
-        // Set the color of the bars programatically
-        for (XYChart.Data<String, Number> data : series.getData()) {
-            Double val = Double.parseDouble(data.getYValue().toString());
-            if (val > 90) {
-                data.getNode().setStyle("-fx-bar-fill: #71b1d6;");
-            } else if (val > 60) {
-                data.getNode().setStyle("-fx-bar-fill: #499bca;");
-            } else if (val > 30) {
-                data.getNode().setStyle("-fx-bar-fill: #3281ae;");
-            } else {
-                data.getNode().setStyle("-fx-bar-fill: #276487;");
-            }
-        }
+    private void populateStats(WeatherData data) {
+        this.uvindex_v.setText(this.state.getUvIndexRank());
+        this.humidity_v.setText(String.valueOf(data.getCurrentCondition().getHumidity()) + "%");
+        this.wind_v.setText(String.valueOf(data.getCurrentCondition().getWindspeedKmph()) + " km/h");
+        this.visibility_v.setText(String.valueOf(data.getCurrentCondition().getVisibility()));
     }
 }

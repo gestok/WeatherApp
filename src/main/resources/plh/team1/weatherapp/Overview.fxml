@@ -15,7 +15,7 @@
 
 <VBox spacing="20.0" styleClass="container" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="plh.team1.weatherapp.OverviewController">
     <children>
-        <HBox alignment="CENTER_RIGHT" minHeight="-Infinity" prefHeight="54.0" prefWidth="0.0" spacing="20.0" stylesheets="@styles.css">
+        <HBox alignment="CENTER_RIGHT" minHeight="-Infinity" prefHeight="54.0" prefWidth="0.0" spacing="20.0" styleClass="navigation" stylesheets="@styles.css">
             <children>
                 <Label stylesheets="@styles.css" text="Overview">
                     <styleClass>
@@ -30,44 +30,79 @@
                     </styleClass>
                 </Button>
             </children>
-            <styleClass>
-                <String fx:value="navigation" />
-                <String fx:value="divider-bottom" />
-            </styleClass>
+         <VBox.margin>
+            <Insets />
+         </VBox.margin>
+         <padding>
+            <Insets left="20.0" right="20.0" />
+         </padding>
         </HBox>
-        <HBox alignment="CENTER_LEFT" minHeight="-Infinity" prefHeight="250.0" prefWidth="200.0" styleClass="divider-bottom" stylesheets="@styles.css">
+        <HBox alignment="CENTER_LEFT" spacing="20.0" stylesheets="@styles.css">
             <children>
-                <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS">
+                <AnchorPane prefHeight="100.0" prefWidth="158.0" styleClass="stat" stylesheets="@styles.css">
                     <children>
-                        <Label styleClass="celsius" stylesheets="@styles.css" text="26°C" textFill="WHITE" />
-                        <Label styleClass="current-city" stylesheets="@styles.css" text="Athens" />
-                    </children>
-                </VBox>
-                <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0">
-                    <children>
-                        <ImageView disable="true" fitHeight="250.0" fitWidth="650.0" preserveRatio="true">
+                        <Label fx:id="uvindex_v" styleClass="stat-value" stylesheets="@styles.css" text="..." />
+                        <ImageView fitWidth="50.0" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="-8.0">
                             <image>
-                                <Image url="@../../../images/cloudy.png" />
+                                <Image url="@../../../gfx/uvindex.png" />
                             </image>
                         </ImageView>
+                        <Label styleClass="stat-title" stylesheets="@styles.css" text="UV Index" textAlignment="CENTER" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                            <effect>
+                                <GaussianBlur radius="1.2" />
+                            </effect>
+                        </Label>
                     </children>
-                </HBox>
+                </AnchorPane>
+                <AnchorPane layoutX="141.0" layoutY="11.0" prefHeight="100.0" prefWidth="158.0" styleClass="stat" stylesheets="@styles.css">
+                    <children>
+                        <Label fx:id="humidity_v" styleClass="stat-value" stylesheets="@styles.css" text="..." />
+                        <ImageView fitWidth="42.0" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="-8.0">
+                            <image>
+                                <Image url="@../../../gfx/humidity.png" />
+                            </image>
+                        </ImageView>
+                        <Label styleClass="stat-title" stylesheets="@styles.css" text="Humidity" textAlignment="CENTER" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                            <effect>
+                                <GaussianBlur radius="1.2" />
+                            </effect>
+                        </Label>
+                    </children>
+                </AnchorPane>
+                <AnchorPane layoutX="265.0" layoutY="11.0" prefHeight="100.0" prefWidth="158.0" styleClass="stat" stylesheets="@styles.css">
+                    <children>
+                        <Label fx:id="wind_v" styleClass="stat-value" stylesheets="@styles.css" text="..." />
+                        <ImageView fitWidth="52.0" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="-2.0">
+                            <image>
+                                <Image url="@../../../gfx/wind.png" />
+                            </image>
+                        </ImageView>
+                        <Label styleClass="stat-title" stylesheets="@styles.css" text="Wind" textAlignment="CENTER" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                            <effect>
+                                <GaussianBlur radius="1.2" />
+                            </effect>
+                        </Label>
+                    </children>
+                </AnchorPane>
+                <AnchorPane layoutX="507.0" layoutY="11.0" prefHeight="100.0" prefWidth="158.0" styleClass="stat" stylesheets="@styles.css">
+                    <children>
+                        <Label fx:id="visibility_v" styleClass="stat-value" stylesheets="@styles.css" text="..." />
+                        <ImageView fitWidth="62.0" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="4.0" AnchorPane.topAnchor="8.0">
+                            <image>
+                                <Image url="@../../../gfx/visibility.png" />
+                            </image>
+                        </ImageView>
+                        <Label styleClass="stat-title" stylesheets="@styles.css" text="Visibility" textAlignment="CENTER" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                            <effect>
+                                <GaussianBlur radius="1.2" />
+                            </effect>
+                        </Label>
+                    </children>
+                </AnchorPane>
             </children>
-        </HBox>
-        <HBox>
-            <children>
-                <BarChart fx:id="barChart" alternativeRowFillVisible="false" cacheShape="false" horizontalGridLinesVisible="false" horizontalZeroLineVisible="false" legendVisible="false" styleClass="chart-bar" stylesheets="@styles.css" verticalGridLinesVisible="false" verticalZeroLineVisible="false" HBox.hgrow="ALWAYS">
-                    <xAxis>
-                        <CategoryAxis />
-                    </xAxis>
-                    <yAxis>
-                        <NumberAxis />
-                    </yAxis>
-                </BarChart>
-            </children>
+         <VBox.margin>
+            <Insets left="20.0" right="20.0" />
+         </VBox.margin>
         </HBox>
     </children>
-    <padding>
-        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
-    </padding>
 </VBox>

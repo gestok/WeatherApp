@@ -15,9 +15,9 @@
 
 <VBox fx:id="root" prefHeight="720.0" prefWidth="1024.0" spacing="20.0" styleClass="container" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="plh.team1.weatherapp.SearchController">
     <children>
-        <HBox alignment="CENTER_RIGHT" minHeight="-Infinity" prefHeight="54.0" prefWidth="0.0" spacing="20.0" stylesheets="@styles.css">
+        <HBox alignment="CENTER_RIGHT" minHeight="-Infinity" prefHeight="54.0" prefWidth="0.0" spacing="20.0" styleClass="navigation" stylesheets="@styles.css">
             <children>
-                <Button fx:id="searchButton" onAction="#switchToOverview" stylesheets="@styles.css" text="Overview">
+                <Button onAction="#switchToOverview" stylesheets="@styles.css" text="Overview">
                     <styleClass>
                         <String fx:value="cursor-pointer" />
                         <String fx:value="menu-item" />
@@ -30,36 +30,35 @@
                     </styleClass>
                 </Label>
             </children>
-            <styleClass>
-                <String fx:value="navigation" />
-                <String fx:value="divider-bottom" />
-            </styleClass>
+         <padding>
+            <Insets left="20.0" right="20.0" />
+         </padding>
         </HBox>
         <AnchorPane fx:id="searchWrapper" prefHeight="25.0" prefWidth="200.0">
             <children>
-                <TextField fx:id="searchBar" prefHeight="30.0" promptText="Type city or country name to search..." styleClass="searchbar" stylesheets="@styles.css" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="80.0" />
-                <Button mnemonicParsing="false" onMouseClicked="#clearSearch" opacity="0.7" prefHeight="30.0" prefWidth="35.0" stylesheets="@styles.css" text="x" textAlignment="CENTER" AnchorPane.rightAnchor="80.0">
+                <TextField fx:id="searchBar" prefHeight="42.0" promptText="Type city or country name to search..." styleClass="searchbar" stylesheets="@styles.css" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="80.0" />
+                <Button mnemonicParsing="false" onMouseClicked="#clearSearch" opacity="0.7" prefHeight="30.0" prefWidth="35.0" stylesheets="@styles.css" text="x" textAlignment="CENTER" AnchorPane.rightAnchor="84.0" AnchorPane.topAnchor="0.0">
                     <styleClass>
                         <String fx:value="clear-btn" />
                         <String fx:value="cursor-pointer" />
                     </styleClass>
                 </Button>
-                <Button mnemonicParsing="false" prefHeight="30.0" prefWidth="30.0" stylesheets="@styles.css" AnchorPane.rightAnchor="40.0">
+                <Button fx:id="recentIconButton" mnemonicParsing="false" prefHeight="30.0" prefWidth="30.0" stylesheets="@styles.css" AnchorPane.rightAnchor="40.0" AnchorPane.topAnchor="2.0">
                     <styleClass>
                         <String fx:value="action-btn" />
                         <String fx:value="cursor-pointer" />
                     </styleClass>
                     <graphic>
-                        <ImageView fitHeight="18.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="14.0" fitWidth="14.0" pickOnBounds="true" preserveRatio="true">
                             <image>
                                 <Image url="@../../../icons/recent.png" />
                             </image>
                         </ImageView>
                     </graphic>
                 </Button>
-                <Button graphicTextGap="0.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="30.0" stylesheets="@styles.css" AnchorPane.rightAnchor="0.0">
+                <Button fx:id="favouriteIconButton" graphicTextGap="0.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="30.0" stylesheets="@styles.css" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="2.0">
                     <graphic>
-                        <ImageView fitHeight="18.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="14.0" fitWidth="14.0" pickOnBounds="true" preserveRatio="true">
                             <image>
                                 <Image url="@../../../icons/favourite.png" />
                             </image>
@@ -70,10 +69,10 @@
                         <String fx:value="cursor-pointer" />
                     </styleClass>
                 </Button>
-                <ListView fx:id="cityListView" prefHeight="0.0" prefWidth="200.0" styleClass="overlay" stylesheets="@styles.css" visible="false" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="30.0" />
+                <ListView fx:id="cityListView" prefHeight="0.0" prefWidth="200.0" styleClass="overlay" stylesheets="@styles.css" visible="false" AnchorPane.leftAnchor="4.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="30.0" />
             </children>
             <VBox.margin>
-                <Insets />
+                <Insets left="20.0" right="20.0" />
             </VBox.margin>
         </AnchorPane>
         <HBox prefHeight="100.0" prefWidth="200.0" spacing="20.0" VBox.vgrow="ALWAYS">
@@ -194,9 +193,9 @@
                             </padding>
                         </VBox>
                         <Pane prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
-                        <Button alignment="CENTER" minHeight="35.0" mnemonicParsing="false" prefWidth="320.0" stylesheets="@styles.css" text="Add to favourites">
+                        <Button fx:id="addFavButton" alignment="CENTER" minHeight="35.0" mnemonicParsing="false" onAction="#onAddToFavouritesClick" prefWidth="320.0" stylesheets="@styles.css" text="Add to favourites">
                             <VBox.margin>
-                                <Insets bottom="10.0" />
+                                <Insets bottom="12.0" />
                             </VBox.margin>
                             <styleClass>
                                 <String fx:value="favourite-btn" />
@@ -204,7 +203,7 @@
                                 <String fx:value="cursor-pointer" />
                             </styleClass>
                         </Button>
-                        <Button alignment="CENTER" minHeight="35.0" mnemonicParsing="false" prefWidth="320.0" stylesheets="@styles.css" text="Search">
+                        <Button fx:id="searchButton" alignment="CENTER" minHeight="35.0" mnemonicParsing="false" onAction="#onSearchButtonClick" prefWidth="320.0" stylesheets="@styles.css" text="Search">
                             <styleClass>
                                 <String fx:value="search-btn" />
                                 <String fx:value="bold" />
@@ -215,16 +214,19 @@
                 </VBox>
                 <VBox fx:id="mapViewWrapper" prefHeight="200.0" prefWidth="100.0" styleClass="city-info-wrapper" stylesheets="@styles.css" visible="false" HBox.hgrow="ALWAYS">
                     <children>
-                        <WebView fx:id="mapView" minHeight="-1.0" minWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" visible="false" VBox.vgrow="ALWAYS" />
+                        <WebView fx:id="mapView" minHeight="-1.0" minWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS">
+                     <VBox.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </VBox.margin></WebView>
                     </children>
                 </VBox>
             </children>
             <VBox.margin>
                 <Insets />
             </VBox.margin>
+         <padding>
+            <Insets bottom="20.0" left="20.0" right="20.0" />
+         </padding>
         </HBox>
     </children>
-    <padding>
-        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
-    </padding>
 </VBox>
