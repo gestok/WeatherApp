@@ -15,20 +15,35 @@
 
 <VBox fx:id="root" prefHeight="720.0" prefWidth="1024.0" spacing="20.0" styleClass="container" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="plh.team1.weatherapp.SearchController">
     <children>
-        <HBox alignment="CENTER_RIGHT" minHeight="-Infinity" prefHeight="54.0" prefWidth="0.0" spacing="20.0" styleClass="navigation" stylesheets="@styles.css">
+        <HBox alignment="CENTER_RIGHT" focusTraversable="true" minHeight="-Infinity" prefHeight="54.0" prefWidth="0.0" styleClass="navigation" stylesheets="@styles.css">
             <children>
-                <Button onAction="#switchToOverview" stylesheets="@styles.css" text="Overview">
+                <Button fx:id="menuItemOverview" onAction="#switchToOverview" prefHeight="54.0" prefWidth="54.0" stylesheets="@styles.css">
                     <styleClass>
                         <String fx:value="cursor-pointer" />
                         <String fx:value="menu-item" />
+                  <String fx:value="report" />
                     </styleClass>
+               <graphic>
+                  <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../../icons/report.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
                 </Button>
-                <Label stylesheets="@styles.css" text="Search">
-                    <styleClass>
-                        <String fx:value="menu-item" />
-                        <String fx:value="active" />
-                    </styleClass>
-                </Label>
+            <Button fx:id="menuItemOverview" mnemonicParsing="false" prefHeight="54.0" prefWidth="54.0">
+               <styleClass>
+                  <String fx:value="menu-item" />
+                  <String fx:value="active" />
+               </styleClass>
+               <graphic>
+                  <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../../icons/search.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
             </children>
          <padding>
             <Insets left="20.0" right="20.0" />

@@ -3,22 +3,22 @@
 }
 
 .navigation {
-    -fx-background-color: #276485;
+    -fx-background-color: #276487;
 }
 
 .menu-item {
-    -fx-padding: 14 0 14 0;
-    -fx-font-family: "Roboto Medium";
-    -fx-font-size: 15;
-    -fx-text-fill: #88bedd;
     -fx-background-color: transparent;
+    -fx-border: 0 0 0 0;
+    -fx-border-radius: 0;
+    -fx-background-radius: 0;
+    -fx-background-insets: 0;
+}
+.menu-item:hover {
+    -fx-background-color:#52839f;
 }
 
 .menu-item.active {
-    -fx-text-fill: #fff;
-    -fx-border-style: hidden hidden solid hidden;
-    -fx-border-width: 2;
-    -fx-border-color: #276487;
+    -fx-background-color: #1c465f;
 }
 
 .celsius {
@@ -48,13 +48,13 @@
     -fx-opacity: 0.8;
 }
 .stat-title {
-    -fx-text-fill: #276485;
+    -fx-text-fill: #276487;
     -fx-font-family: "Roboto Bold";
     -fx-font-size: 20;
     -fx-padding: 0 0 8 12;
 }
 .stat-value {
-    -fx-text-fill: #276485;
+    -fx-text-fill: #276487;
     -fx-font-family: "Roboto Medium";
     -fx-font-size: 14;
     -fx-padding: 14 0 0 18;

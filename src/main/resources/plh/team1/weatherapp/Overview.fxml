@@ -15,27 +15,46 @@
 
 <VBox spacing="20.0" styleClass="container" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="plh.team1.weatherapp.OverviewController">
     <children>
-        <HBox alignment="CENTER_RIGHT" minHeight="-Infinity" prefHeight="54.0" prefWidth="0.0" spacing="20.0" styleClass="navigation" stylesheets="@styles.css">
+        <HBox alignment="CENTER_RIGHT" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="54.0" styleClass="navigation" stylesheets="@styles.css">
             <children>
-                <Label stylesheets="@styles.css" text="Overview">
+                <Button fx:id="menuItemOverview" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="54.0" prefWidth="54.0">
+                    <graphic>
+                        <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
+                            <image>
+                                <Image url="@../../../icons/report.png" />
+                            </image>
+                        </ImageView>
+                    </graphic>
                     <styleClass>
                         <String fx:value="menu-item" />
+                        <String fx:value="report" />
                         <String fx:value="active" />
                     </styleClass>
-                </Label>
-                <Button fx:id="overviewButton" onAction="#switchToSearch" stylesheets="@styles.css" text="Search">
+                </Button>
+                <Button fx:id="menuItemSearch" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onAction="#switchToSearch" prefHeight="54.0" prefWidth="54.0" stylesheets="@styles.css">
                     <styleClass>
                         <String fx:value="menu-item" />
                         <String fx:value="cursor-pointer" />
+                        <String fx:value="search" />
                     </styleClass>
+                    <graphic>
+                        <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                            <image>
+                                <Image url="@../../../icons/search.png" />
+                            </image>
+                        </ImageView>
+                    </graphic>
                 </Button>
             </children>
-         <VBox.margin>
-            <Insets />
-         </VBox.margin>
-         <padding>
-            <Insets left="20.0" right="20.0" />
-         </padding>
+            <VBox.margin>
+                <Insets />
+            </VBox.margin>
+            <padding>
+                <Insets left="20.0" right="20.0" />
+            </padding>
+            <rotationAxis>
+                <Point3D />
+            </rotationAxis>
         </HBox>
         <HBox alignment="CENTER_LEFT" spacing="20.0" stylesheets="@styles.css">
             <children>
@@ -100,9 +119,9 @@
                     </children>
                 </AnchorPane>
             </children>
-         <VBox.margin>
-            <Insets left="20.0" right="20.0" />
-         </VBox.margin>
+            <VBox.margin>
+                <Insets left="20.0" right="20.0" />
+            </VBox.margin>
         </HBox>
     </children>
 </VBox>

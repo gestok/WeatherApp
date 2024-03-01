@@ -5,12 +5,20 @@ import java.io.IOException;
 
 // JavaFX
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.Tooltip;
 
 public class OverviewController {
 
     // Variables
     private SharedState state;
+    @FXML
+    private Button menuItemOverview;
+    private CustomTooltip overviewTooltip = new CustomTooltip("Report");
+    @FXML
+    private Button menuItemSearch;
+    private CustomTooltip searchTooltip = new CustomTooltip("Search");
     @FXML
     private Label uvindex_v;
     @FXML
@@ -30,6 +38,7 @@ public class OverviewController {
         if (this.state.getData() != null) {
             this.populateStats(this.state.getData());
         }
+        this.initializeTooltips();
     }
 
     /**
@@ -40,6 +49,11 @@ public class OverviewController {
     @FXML
     private void switchToSearch() throws IOException {
         App.setRoot("Search");
+    }
+
+    private void initializeTooltips() {
+        Tooltip.install(this.menuItemOverview, this.overviewTooltip);
+        Tooltip.install(this.menuItemSearch, this.searchTooltip);
     }
 
     private void populateStats(WeatherData data) {
