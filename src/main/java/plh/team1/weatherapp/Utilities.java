@@ -1,5 +1,8 @@
 package plh.team1.weatherapp;
 
+// Java
+import java.text.DecimalFormat;
+
 /**
  * This class includes many utilities methods that can be used throughout the
  * app without the need of rewriting them in every class.
@@ -126,5 +129,18 @@ public class Utilities {
         } else {
             return "Extreme";
         }
+    }
+
+    /**
+     * Method that gets a double and an int and returns a string of the double
+     * with the specified amount of int decimals.
+     *
+     * @param value
+     * @param decimals
+     * @return String
+     */
+    public String formatToDecimals(double value, int decimals) {
+        DecimalFormat decimalFormat = new DecimalFormat("0." + "0".repeat(decimals));
+        return decimalFormat.format(value);
     }
 }

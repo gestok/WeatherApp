@@ -37,7 +37,7 @@ public class SearchController {
 
     // Variables
     private SharedState state;
-    private boolean isFetching = false;
+    private Utilities utilities = new Utilities();
     private ArrayList<City> allCities = new ArrayList<>();
     private Double cityListHeight = 200.0;
     @FXML
@@ -166,7 +166,7 @@ public class SearchController {
                 // Filter the list
                 ObservableList<City> filtered = this.allCities.stream()
                         .filter(city -> city.getName().toLowerCase().contains(term.toLowerCase())
-                                || city.getCountry().toLowerCase().contains(term.toLowerCase()))
+                        || city.getCountry().toLowerCase().contains(term.toLowerCase()))
                         .collect(Collectors.toCollection(FXCollections::observableArrayList));
 
                 if (!filtered.isEmpty()) {
@@ -284,11 +284,18 @@ public class SearchController {
                     int id = cityInfo.get("id").getAsInt();
                     String name = cityInfo.get("city_ascii").getAsString();
                     String country = cityInfo.get("country").getAsString();
-                    double latitude = cityInfo.has("lat") ? cityInfo.get("lat").getAsDouble() : 0.0;
-                    double longitude = cityInfo.has("lng") ? cityInfo.get("lng").getAsDouble() : 0.0;
-                    int population = cityInfo.has("population") && !cityInfo.get("population").getAsString().isEmpty()
-                            ? cityInfo.get("population").getAsInt()
-                            : 0;
+                    double latitude = 0.0;
+                    if (cityInfo.has("lat")) {
+                        latitude = cityInfo.get("lat").getAsDouble();
+                    }
+                    double longitude = 0.0;
+                    if (cityInfo.has("lng")) {
+                        longitude = cityInfo.get("lng").getAsDouble();
+                    }
+                    int population = 0;
+                    if (cityInfo.has("population") && !cityInfo.get("population").getAsString().isEmpty()) {
+                        population = cityInfo.get("population").getAsInt();
+                    }
 
                     this.allCities.add(new City(id, name, country, latitude, longitude, population, false));
                 } catch (NumberFormatException e) {
@@ -405,8 +412,8 @@ public class SearchController {
     private void updateCityDetails(City city) {
         this.cityName.setText(city.getName());
         this.cityCountry.setText(city.getCountry());
-        this.cityLng.setText(String.valueOf(city.getLongitude()));
-        this.cityLat.setText(String.valueOf(city.getLatitude()));
+        this.cityLng.setText(this.utilities.formatToDecimals(city.getLongitude(), 4));
+        this.cityLat.setText(this.utilities.formatToDecimals(city.getLatitude(), 4));
         this.cityPopulation.setText(String.valueOf(city.getPopulation()));
     }
 

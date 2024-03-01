@@ -15,7 +15,7 @@
 
 <VBox fx:id="root" prefHeight="720.0" prefWidth="1024.0" spacing="20.0" styleClass="container" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="plh.team1.weatherapp.SearchController">
     <children>
-        <HBox alignment="CENTER_RIGHT" focusTraversable="true" minHeight="-Infinity" prefHeight="54.0" prefWidth="0.0" styleClass="navigation" stylesheets="@styles.css">
+        <HBox alignment="CENTER_RIGHT" focusTraversable="true" minHeight="-Infinity" prefHeight="54.0" prefWidth="0.0" styleClass="navigation" stylesheets="@styles.css" VBox.vgrow="NEVER">
             <children>
                 <Button fx:id="menuItemOverview" onAction="#switchToOverview" prefHeight="54.0" prefWidth="54.0" stylesheets="@styles.css">
                     <styleClass>
