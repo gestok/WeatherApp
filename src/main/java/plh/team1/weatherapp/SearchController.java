@@ -1,7 +1,6 @@
 package plh.team1.weatherapp;
 
 // Java
-import com.google.gson.Gson;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -12,6 +11,7 @@ import java.util.stream.Collectors;
 import java.util.Comparator;
 
 // Gson
+import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -25,11 +25,9 @@ import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.shape.Rectangle;
 import javafx.scene.web.WebView;
 
 // OkHttp3
@@ -168,7 +166,7 @@ public class SearchController {
                 // Filter the list
                 ObservableList<City> filtered = this.allCities.stream()
                         .filter(city -> city.getName().toLowerCase().contains(term.toLowerCase())
-                        || city.getCountry().toLowerCase().contains(term.toLowerCase()))
+                                || city.getCountry().toLowerCase().contains(term.toLowerCase()))
                         .collect(Collectors.toCollection(FXCollections::observableArrayList));
 
                 if (!filtered.isEmpty()) {
@@ -253,7 +251,8 @@ public class SearchController {
         }
         this.searchBar.setText(city.toString());
         this.addFavButton.setText(city.getIsFavourite() ? "Remove from favourites" : "Add to favourites");
-        this.addFavButton.setStyle(city.getIsFavourite() ? "-fx-background-color: #c2160a" : "-fx-background-color: #499bca");
+        this.addFavButton
+                .setStyle(city.getIsFavourite() ? "-fx-background-color: #c2160a" : "-fx-background-color: #499bca");
         this.updateMap(city.getLatitude(), city.getLongitude());
         this.updateCityDetails(city);
         this.setCityListVisibility(false);
@@ -287,7 +286,9 @@ public class SearchController {
                     String country = cityInfo.get("country").getAsString();
                     double latitude = cityInfo.has("lat") ? cityInfo.get("lat").getAsDouble() : 0.0;
                     double longitude = cityInfo.has("lng") ? cityInfo.get("lng").getAsDouble() : 0.0;
-                    int population = cityInfo.has("population") && !cityInfo.get("population").getAsString().isEmpty() ? cityInfo.get("population").getAsInt() : 0;
+                    int population = cityInfo.has("population") && !cityInfo.get("population").getAsString().isEmpty()
+                            ? cityInfo.get("population").getAsInt()
+                            : 0;
 
                     this.allCities.add(new City(id, name, country, latitude, longitude, population, false));
                 } catch (NumberFormatException e) {
@@ -390,8 +391,10 @@ public class SearchController {
             return;
         }
         this.state.getCity().setIsFavourite(!this.state.getCity().getIsFavourite());
-        this.addFavButton.setText(this.state.getCity().getIsFavourite() ? "Remove from favourites" : "Add to favourites");
-        this.addFavButton.setStyle(this.state.getCity().getIsFavourite() ? "-fx-background-color: #c2160a" : "-fx-background-color: #499bca");
+        this.addFavButton
+                .setText(this.state.getCity().getIsFavourite() ? "Remove from favourites" : "Add to favourites");
+        this.addFavButton.setStyle(this.state.getCity().getIsFavourite() ? "-fx-background-color: #c2160a"
+                : "-fx-background-color: #499bca");
     }
 
     /**

@@ -1,11 +1,10 @@
 package plh.team1.weatherapp;
 
+// Java
 import java.io.IOException;
+
+// JavaFX
 import javafx.fxml.FXML;
-import javafx.scene.chart.BarChart;
-import javafx.scene.chart.CategoryAxis;
-import javafx.scene.chart.NumberAxis;
-import javafx.scene.chart.XYChart;
 import javafx.scene.control.Label;
 
 public class OverviewController {
