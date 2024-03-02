@@ -62,7 +62,18 @@
     -fx-background-image: url("../../../gfx/cloud-overlay.png");
     -fx-background-repeat: no-repeat;
     -fx-background-size: contain;
-    -fx-background-position: right center;    
+    -fx-background-position: right center;
+}
+.prev,
+.next {
+    -fx-background-radius: 50%;
+    -fx-background-color: #e7f5fa;
+    -fx-border-color: #dddddd;
+    -fx-border-width: 0.8;
+    -fx-border-style: solid;
+    -fx-border-radius: 50%;
+    -fx-background-insets: 0;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 8, 0, 0, 2.8);
 }
 
 /**
@@ -82,7 +93,7 @@
 }
 .overlay {
     -fx-text-fill: #276487;
-    -fx-background-color: #ebfbfe;
+    -fx-background-color: #e7f5fa;
     -fx-border-color: #dddddd;
     -fx-border-width: 0.8;
     -fx-border-style: solid;
@@ -104,13 +115,13 @@
 }
 .overlay .list-cell:selected,
 .overlay .list-cell:hover {
-    -fx-text-fill: #ebfbfe;
+    -fx-text-fill: #e7f5fa;
     -fx-background-color: #276487;
     -fx-border-width: 0 0 0 0;
 }
 .overlay .virtual-flow .scroll-bar:vertical .track-background,
 .overlay .virtual-flow .scroll-bar:vertical .track {
-    -fx-background-color: #ebfbfe;
+    -fx-background-color: #e7f5fa;
 }
 .overlay .virtual-flow .scroll-bar:vertical .thumb {
     -fx-background-color: #276487;
@@ -139,7 +150,7 @@
     -fx-background-color: #52839f;
 }
 .city-info-wrapper {
-    -fx-background-color: #ebfbfe;
+    -fx-background-color: #e7f5fa;
     -fx-border-color: #dddddd;
     -fx-border-width: 0.8;
     -fx-border-style: solid;
@@ -154,7 +165,7 @@
 }
 .favourite-btn,
 .search-btn {
-    -fx-text-fill: #f4f4f4;
+    -fx-text-fill: #e7f5fa;
     -fx-padding: 0;
     -fx-font-size: 16;
     -fx-background-color: #276487;

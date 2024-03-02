@@ -60,6 +60,6 @@ public class OverviewController {
         this.uvindex_v.setText(this.state.getUvIndexRank());
         this.humidity_v.setText(String.valueOf(data.getCurrentCondition().getHumidity()) + "%");
         this.wind_v.setText(String.valueOf(data.getCurrentCondition().getWindspeedKmph()) + " km/h");
-        this.visibility_v.setText(String.valueOf(data.getCurrentCondition().getVisibility()));
+        this.visibility_v.setText(String.valueOf(data.getCurrentCondition().getVisibility()) + " km");
     }
 }
