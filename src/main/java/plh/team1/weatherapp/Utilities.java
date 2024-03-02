@@ -3,6 +3,7 @@ package plh.team1.weatherapp;
 // Java
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
+import java.util.Set;
 
 /**
  * This class includes many utilities methods that can be used throughout the
@@ -154,5 +155,37 @@ public class Utilities {
     public String toLocaleNotation(int value) {
         NumberFormat defaultFormat = NumberFormat.getNumberInstance();
         return defaultFormat.format(value);
+    }
+
+    /**
+     * Method that returns the image path of the weather condition based on the
+     * weather description value from wttr.in API response
+     *
+     * @param weatherDescValue
+     * @return String
+     */
+    public String getWeatherIcon(String weatherDescValue) {
+        Set<String> groupSunny = Set.of("Clear", "Sunny");
+        Set<String> groupCloudy = Set.of("Partly cloudy", "Freezing fog", "Cloudy", "Overcast", "Mist", "Fog");
+        Set<String> groupRain = Set.of("Freezing drizzle", "Patchy freezing drizzle possible", "Moderate or heavy rain shower", "Light rain shower", "Ice pellets", "Patchy rain possible", "Patchy light drizzle", "Light drizzle", "Light rain", "Moderate rain at times", "Moderate rain", "Heavy rain at times", "Heavy rain", "Light freezing rain", "Patchy light rain", "Moderate or heavy freezing rain");
+        Set<String> groupSnow = Set.of("Patchy sleet possible", "Light sleet", "Moderate or heavy sleet", "Light sleet showers", "Moderate or heavy sleet showers", "Moderate or heavy sleet", "Light sleet", "Heavy freezing drizzle", "Patchy snow possible", "Blizzard", "Blowing snow", "Heavy snow", "Patchy heavy snow", "Moderate snow", "Patchy moderate snow", "Light snow", "Patchy light snow", "Light snow showers", "Moderate or heavy snow showers");
+        Set<String> groupThunderRain = Set.of("Patchy light rain with thunder", "Moderate or heavy rain with thunder", "Torrential rain shower", "Thundery outbreaks possible");
+        Set<String> groupThunderSnow = Set.of("Patchy light snow with thunder", "Moderate or heavy snow with thunder");
+
+        if (groupSunny.contains(weatherDescValue)) {
+            return "sunny.png";
+        } else if (groupCloudy.contains(weatherDescValue)) {
+            return "cloudy.png";
+        } else if (groupRain.contains(weatherDescValue)) {
+            return "rainy.png";
+        } else if (groupSnow.contains(weatherDescValue)) {
+            return "snowy.png";
+        } else if (groupThunderRain.contains(weatherDescValue)) {
+            return "rainy-thunder.png";
+        } else if (groupThunderSnow.contains(weatherDescValue)) {
+            return "snowy-thunder.png";
+        } else {
+            return "";
+        }
     }
 }
