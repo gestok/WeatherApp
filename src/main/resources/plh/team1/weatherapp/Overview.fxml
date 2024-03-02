@@ -57,7 +57,7 @@
                 <Point3D />
             </rotationAxis>
         </HBox>
-        <HBox alignment="CENTER" spacing="24.0" stylesheets="@styles.css">
+        <HBox alignment="CENTER" spacing="24.0" styleClass="cloud-overlay" stylesheets="@styles.css">
             <children>
                 <FlowPane orientation="VERTICAL" prefHeight="200.0" prefWidth="0.0">
                     <children>

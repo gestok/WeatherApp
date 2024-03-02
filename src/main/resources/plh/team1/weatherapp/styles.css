@@ -37,7 +37,7 @@
 }
 
 /**
- * Overview
+ * Overview Report
  */
 .stat {
     -fx-background-image: url("../../../gfx/cloud.png");
@@ -57,6 +57,12 @@
     -fx-font-family: "Roboto Medium";
     -fx-font-size: 13;
     -fx-padding: 16 0 0 16;
+}
+.cloud-overlay {
+    -fx-background-image: url("../../../gfx/cloud-overlay.png");
+    -fx-background-repeat: no-repeat;
+    -fx-background-size: contain;
+    -fx-background-position: right center;    
 }
 
 /**
