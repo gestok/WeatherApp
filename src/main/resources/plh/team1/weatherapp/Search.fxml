@@ -31,7 +31,7 @@
                         </ImageView>
                     </graphic>
                 </Button>
-                <Button fx:id="menuItemOverview" mnemonicParsing="false" prefHeight="54.0" prefWidth="54.0">
+                <Button mnemonicParsing="false" prefHeight="54.0" prefWidth="54.0">
                     <styleClass>
                         <String fx:value="menu-item" />
                         <String fx:value="active" />
