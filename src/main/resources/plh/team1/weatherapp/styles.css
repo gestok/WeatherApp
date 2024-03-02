@@ -97,7 +97,8 @@
     -fx-border-color: #dddddd;
     -fx-margin-right: 20;
 }
-.overlay .list-cell:selected {
+.overlay .list-cell:selected,
+.overlay .list-cell:hover {
     -fx-text-fill: #ebfbfe;
     -fx-background-color: #276487;
     -fx-border-width: 0 0 0 0;
