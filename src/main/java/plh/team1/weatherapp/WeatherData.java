@@ -29,6 +29,7 @@ public class WeatherData implements Serializable {
     // κλάση. Μπορούν να παραλειφθούν αν τα δύο αυτά ταυτίζονται
     @SerializedName("current_condition")
     private List<CurrentCondition> currentCondition;
+    private List<Weather> weather;
 
     @Column(name = "CITYNAME")
     private String cityName;
@@ -38,18 +39,26 @@ public class WeatherData implements Serializable {
     }
 
     public String getCityName() {
-        return cityName;
+        return this.cityName;
     }
 
     public int getId() {
-        return id;
+        return this.id;
     }
 
     public WeatherData.CurrentCondition getCurrentCondition() {
-        return currentCondition.get(0);
+        return this.currentCondition.get(0);
+    }
+
+    public List<WeatherData.Weather> getWeather() {
+        return this.weather;
     }
 
     public static class CurrentCondition implements Serializable {
+
+        @Column(name = "FEELSLIKEC")
+        @SerializedName("FeelsLikeC")
+        private int feelsLikeC;
 
         @Column(name = "HUMIDITY")
         @SerializedName("humidity")
@@ -73,6 +82,10 @@ public class WeatherData implements Serializable {
         @Column(name = "WINDSPEEDKMPH")
         @SerializedName("windspeedKmph")
         private int windspeedKmph;
+
+        public int getFeelsLikeC() {
+            return this.feelsLikeC;
+        }
 
         public int getHumidity() {
             return this.humidity;
@@ -110,6 +123,33 @@ public class WeatherData implements Serializable {
 
         public String getValue() {
             return this.value;
+        }
+    }
+
+    public static class Weather implements Serializable {
+
+        @Column(name = "DATE")
+        @SerializedName("date")
+        private String date;
+
+        @Column(name = "MAXTEMPC")
+        @SerializedName("maxtempC")
+        private int maxtempC;
+
+        @Column(name = "MINTEMPC")
+        @SerializedName("mintempC")
+        private int mintempC;
+
+        public String getDate() {
+            return this.date;
+        }
+
+        public int getMinTempC() {
+            return this.mintempC;
+        }
+
+        public int getMaxTempC() {
+            return this.maxtempC;
         }
     }
 }

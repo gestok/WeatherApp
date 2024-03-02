@@ -11,6 +11,7 @@ public class SharedState {
     private City city;
     private WeatherData data;
     private Utilities utilities = new Utilities();
+    private int currentIndex = 0;
 
     private SharedState() {
     }
@@ -63,6 +64,11 @@ public class SharedState {
         return this.data;
     }
 
+    /**
+     * Method that returns the UV index label rank
+     *
+     * @return String
+     */
     public String getUvIndexRank() {
         if (this.data == null) {
             return "";

@@ -3,7 +3,13 @@ package plh.team1.weatherapp;
 // Java
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Locale;
 import java.util.Set;
+
+// JavaFX
+import javafx.scene.image.Image;
 
 /**
  * This class includes many utilities methods that can be used throughout the
@@ -158,34 +164,58 @@ public class Utilities {
     }
 
     /**
-     * Method that returns the image path of the weather condition based on the
+     * Method that returns the image node of the weather condition based on the
      * weather description value from wttr.in API response
      *
      * @param weatherDescValue
-     * @return String
+     * @return Image
      */
-    public String getWeatherIcon(String weatherDescValue) {
+    public Image getWeatherIcon(String weatherDescValue) {
         Set<String> groupSunny = Set.of("Clear", "Sunny");
         Set<String> groupCloudy = Set.of("Partly cloudy", "Freezing fog", "Cloudy", "Overcast", "Mist", "Fog");
-        Set<String> groupRain = Set.of("Freezing drizzle", "Patchy freezing drizzle possible", "Moderate or heavy rain shower", "Light rain shower", "Ice pellets", "Patchy rain possible", "Patchy light drizzle", "Light drizzle", "Light rain", "Moderate rain at times", "Moderate rain", "Heavy rain at times", "Heavy rain", "Light freezing rain", "Patchy light rain", "Moderate or heavy freezing rain");
-        Set<String> groupSnow = Set.of("Patchy sleet possible", "Light sleet", "Moderate or heavy sleet", "Light sleet showers", "Moderate or heavy sleet showers", "Moderate or heavy sleet", "Light sleet", "Heavy freezing drizzle", "Patchy snow possible", "Blizzard", "Blowing snow", "Heavy snow", "Patchy heavy snow", "Moderate snow", "Patchy moderate snow", "Light snow", "Patchy light snow", "Light snow showers", "Moderate or heavy snow showers");
-        Set<String> groupThunderRain = Set.of("Patchy light rain with thunder", "Moderate or heavy rain with thunder", "Torrential rain shower", "Thundery outbreaks possible");
+        Set<String> groupRain = Set.of("Freezing drizzle", "Patchy freezing drizzle possible",
+                "Moderate or heavy rain shower", "Light rain shower", "Ice pellets", "Patchy rain possible",
+                "Patchy light drizzle", "Light drizzle", "Light rain", "Moderate rain at times", "Moderate rain",
+                "Heavy rain at times", "Heavy rain", "Light freezing rain", "Patchy light rain",
+                "Moderate or heavy freezing rain");
+        Set<String> groupSnow = Set.of("Patchy sleet possible", "Light sleet", "Light sleet showers",
+                "Moderate or heavy sleet showers", "Moderate or heavy sleet", "Heavy freezing drizzle",
+                "Patchy snow possible", "Blizzard", "Blowing snow", "Heavy snow", "Patchy heavy snow", "Moderate snow",
+                "Patchy moderate snow", "Light snow", "Patchy light snow", "Light snow showers",
+                "Moderate or heavy snow showers");
+        Set<String> groupThunderRain = Set.of("Patchy light rain with thunder", "Moderate or heavy rain with thunder",
+                "Torrential rain shower", "Thundery outbreaks possible");
         Set<String> groupThunderSnow = Set.of("Patchy light snow with thunder", "Moderate or heavy snow with thunder");
 
         if (groupSunny.contains(weatherDescValue)) {
-            return "sunny.png";
+            return new Image(getClass().getResourceAsStream("/gfx/states/sunny.png"));
         } else if (groupCloudy.contains(weatherDescValue)) {
-            return "cloudy.png";
+            return new Image(getClass().getResourceAsStream("/gfx/states/cloudy.png"));
         } else if (groupRain.contains(weatherDescValue)) {
-            return "rainy.png";
+            return new Image(getClass().getResourceAsStream("/gfx/states/rainy.png"));
         } else if (groupSnow.contains(weatherDescValue)) {
-            return "snowy.png";
+            return new Image(getClass().getResourceAsStream("/gfx/states/snowy.png"));
         } else if (groupThunderRain.contains(weatherDescValue)) {
-            return "rainy-thunder.png";
+            return new Image(getClass().getResourceAsStream("/gfx/states/rainy-thunder.png"));
         } else if (groupThunderSnow.contains(weatherDescValue)) {
-            return "snowy-thunder.png";
+            return new Image(getClass().getResourceAsStream("/gfx/states/snowy-thunder.png"));
         } else {
-            return "";
+            // Fallback to sunny, in order to not break application's runtime.
+            return new Image(getClass().getResourceAsStream("/gfx/states/sunny.png"));
         }
+    }
+
+    /**
+     * Method that gets a date string as parameter in the format of "yyyy-MM-dd"
+     * and returns a date string in the format of "Day d Month".
+     *
+     * @param dateString
+     * @return String
+     */
+    public String formatDate(String dateString) {
+        LocalDate date = LocalDate.parse(dateString, DateTimeFormatter.ISO_LOCAL_DATE);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("EEEE d MMMM", Locale.ENGLISH);
+
+        return date.format(formatter);
     }
 }
