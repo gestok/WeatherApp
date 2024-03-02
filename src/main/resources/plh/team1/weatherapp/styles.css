@@ -1,5 +1,5 @@
 .container {
-    -fx-background-color: linear-gradient(from 0% 0% to 0% 40%, #94e1fb, #f4f4f4);
+    -fx-background-color: linear-gradient(from 0% 0% to 0% 40%, #9be3fb, #fbfdfd);
 }
 
 .navigation {
@@ -51,13 +51,13 @@
     -fx-text-fill: #276487;
     -fx-font-family: "Roboto Bold";
     -fx-font-size: 20;
-    -fx-padding: 0 0 8 12;
+    -fx-padding: 0 0 7 9;
 }
 .stat-value {
     -fx-text-fill: #276487;
     -fx-font-family: "Roboto Medium";
     -fx-font-size: 14;
-    -fx-padding: 14 0 0 18;
+    -fx-padding: 14 0 0 14;
 }
 
 /**
