@@ -1,5 +1,5 @@
 .container {
-    -fx-background-color: linear-gradient(from 0% 0% to 0% 40%, #9be3fb, #fbfdfd);
+    -fx-background-color: linear-gradient(#9be3fb, #fbfdfd);
 }
 
 .navigation {
@@ -45,27 +45,27 @@
     -fx-background-size: cover;
     -fx-background-position: center center;
     -fx-padding: 5;
-    -fx-opacity: 0.8;
 }
 .stat-title {
     -fx-text-fill: #276487;
     -fx-font-family: "Roboto Bold";
-    -fx-font-size: 20;
-    -fx-padding: 0 0 7 9;
+    -fx-font-size: 18;
+    -fx-padding: 0 0 12 12;
 }
 .stat-value {
     -fx-text-fill: #276487;
     -fx-font-family: "Roboto Medium";
-    -fx-font-size: 14;
-    -fx-padding: 14 0 0 14;
+    -fx-font-size: 13;
+    -fx-padding: 16 0 0 16;
 }
 
 /**
  * Search Tab
  */
 .searchbar {
-    -fx-font-size: 12;
+    -fx-font-size: 13;
     -fx-text-fill: #276487;
+    -fx-prompt-text-fill: #888888;
     -fx-background-color: transparent;
     -fx-border-radius: 8;
     -fx-background-image: url("../../../gfx/searchbar.png");
@@ -73,7 +73,6 @@
     -fx-background-size: cover;
     -fx-background-position: center center;
     -fx-padding: 0 15 8;
-    -fx-opacity: 0.8;
 }
 .overlay {
     -fx-text-fill: #276487;
@@ -113,11 +112,14 @@
 }
 
 .clear-btn {
-    -fx-text-fill: #276487;
-    -fx-font-size: 16;
+    -fx-text-fill: #888888;
+    -fx-font-size: 18;
     -fx-padding: 0;
     -fx-background-color: transparent;
     -fx-background-insets: 0;
+}
+.clear-btn:hover {
+    -fx-text-fill: #1c465f;
 }
 .action-btn {
     -fx-padding: 0;
