@@ -61,7 +61,7 @@
                 <AnchorPane prefHeight="100.0" prefWidth="158.0" styleClass="stat" stylesheets="@styles.css">
                     <children>
                         <Label fx:id="uvindex_v" styleClass="stat-value" stylesheets="@styles.css" text="..." />
-                        <ImageView fitWidth="50.0" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="-8.0">
+                        <ImageView fitWidth="55.0" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="-10.0">
                             <image>
                                 <Image url="@../../../gfx/uvindex.png" />
                             </image>
@@ -76,7 +76,7 @@
                 <AnchorPane layoutX="141.0" layoutY="11.0" prefHeight="100.0" prefWidth="158.0" styleClass="stat" stylesheets="@styles.css">
                     <children>
                         <Label fx:id="humidity_v" styleClass="stat-value" stylesheets="@styles.css" text="..." />
-                        <ImageView fitWidth="42.0" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="-8.0">
+                        <ImageView fitWidth="45.0" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="18.0" AnchorPane.topAnchor="-2.0">
                             <image>
                                 <Image url="@../../../gfx/humidity.png" />
                             </image>
@@ -91,7 +91,7 @@
                 <AnchorPane layoutX="265.0" layoutY="11.0" prefHeight="100.0" prefWidth="158.0" styleClass="stat" stylesheets="@styles.css">
                     <children>
                         <Label fx:id="wind_v" styleClass="stat-value" stylesheets="@styles.css" text="..." />
-                        <ImageView fitWidth="52.0" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="-2.0">
+                        <ImageView fitWidth="53.0" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="18.0" AnchorPane.topAnchor="-4.0">
                             <image>
                                 <Image url="@../../../gfx/wind.png" />
                             </image>
@@ -106,7 +106,7 @@
                 <AnchorPane layoutX="507.0" layoutY="11.0" prefHeight="100.0" prefWidth="158.0" styleClass="stat" stylesheets="@styles.css">
                     <children>
                         <Label fx:id="visibility_v" styleClass="stat-value" stylesheets="@styles.css" text="..." />
-                        <ImageView fitWidth="62.0" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="4.0" AnchorPane.topAnchor="8.0">
+                        <ImageView fitWidth="52.0" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="12.0" AnchorPane.topAnchor="-10.0">
                             <image>
                                 <Image url="@../../../gfx/visibility.png" />
                             </image>
