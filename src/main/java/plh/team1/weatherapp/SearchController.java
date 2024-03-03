@@ -94,13 +94,18 @@ public class SearchController {
     }
 
     /**
-     * Method that switches FXML.
+     * Methods that switches FXML.
      *
      * @throws IOException
      */
     @FXML
     private void switchToOverview() throws IOException {
         App.setRoot("Overview");
+    }
+
+    @FXML
+    private void switchToStats() throws IOException {
+        App.setRoot("Stats");
     }
 
     /**

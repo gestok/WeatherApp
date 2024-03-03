@@ -69,11 +69,6 @@ public class OverviewController {
         App.setRoot("Search");
     }
 
-    @FXML
-    private void switchToStats() throws IOException {
-        App.setRoot("Stats");
-    }
-
     /**
      * Method that initializes the tool-tips on elements.
      */

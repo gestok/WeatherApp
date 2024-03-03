@@ -20,7 +20,7 @@
             <children>
                 <Button fx:id="menuItemOverview" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="54.0" prefWidth="54.0">
                     <graphic>
-                        <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
                             <image>
                                 <Image url="@../../../icons/report.png" />
                             </image>
@@ -45,6 +45,20 @@
                             </image>
                         </ImageView>
                     </graphic>
+                </Button>
+                <Button fx:id="menuItemStats" onAction="#switchToStats" prefHeight="54.0" prefWidth="54.0" stylesheets="@styles.css">
+                    <graphic>
+                        <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+                            <image>
+                                <Image url="@../../../icons/db.png" />
+                            </image>
+                        </ImageView>
+                    </graphic>
+                    <styleClass>
+                        <String fx:value="cursor-pointer" />
+                        <String fx:value="menu-item" />
+                        <String fx:value="report" />
+                    </styleClass>
                 </Button>
             </children>
             <VBox.margin>
