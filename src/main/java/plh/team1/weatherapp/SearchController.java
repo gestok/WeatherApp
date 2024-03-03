@@ -74,8 +74,6 @@ public class SearchController {
     @FXML
     private Button addFavButton;
     @FXML
-    private Button recentIconButton;
-    @FXML
     private Button favouriteIconButton;
 
     // Constructor
@@ -450,7 +448,6 @@ public class SearchController {
     private void setButtonsState(boolean disabled) {
         this.searchButton.setDisable(disabled);
         this.addFavButton.setDisable(disabled);
-        this.recentIconButton.setDisable(disabled);
         this.favouriteIconButton.setDisable(disabled);
     }
 }

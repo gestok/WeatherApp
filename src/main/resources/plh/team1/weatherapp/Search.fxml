@@ -17,7 +17,7 @@
     <children>
         <HBox alignment="CENTER_RIGHT" focusTraversable="true" minHeight="-Infinity" prefHeight="54.0" prefWidth="0.0" styleClass="navigation" stylesheets="@styles.css" VBox.vgrow="NEVER">
             <children>
-                <Button fx:id="menuItemOverview" onAction="#switchToOverview" prefHeight="54.0" prefWidth="54.0" stylesheets="@styles.css">
+                <Button fx:id="menuItemOverview" disable="true" onAction="#switchToOverview" prefHeight="54.0" prefWidth="54.0" stylesheets="@styles.css">
                     <styleClass>
                         <String fx:value="cursor-pointer" />
                         <String fx:value="menu-item" />
