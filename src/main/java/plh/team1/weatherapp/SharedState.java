@@ -64,15 +64,5 @@ public class SharedState {
         return this.data;
     }
 
-    /**
-     * Method that returns the UV index label rank
-     *
-     * @return String
-     */
-    public String getUvIndexRank() {
-        if (this.data == null) {
-            return "";
-        }
-        return this.utilities.uvIndexRank(this.data.getCurrentCondition().getUvIndex());
-    }
+    
 }

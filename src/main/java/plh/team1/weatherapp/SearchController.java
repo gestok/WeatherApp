@@ -108,53 +108,53 @@ public class SearchController {
         App.setRoot("Stats");
     }
 
-    /**
-     * Method that triggers when "Search" button is clicked.
-     */
-    @FXML
-    private void onSearchButtonClick() throws IOException {
-        Api weatherApi = new Api();
-        weatherApi.setQuery(this.state.getCity().getName());
-        this.setButtonsState(true);
-
-        weatherApi.fetchData(new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                e.printStackTrace();
-                setButtonsState(false);
-                Platform.runLater(() -> {
-                    System.out.println("Failure!");
-                });
-            }
-
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                if (response.isSuccessful() && response.body() != null) {
-                    String responseData = response.body().string();
-                    // Process the response as needed
-                    Platform.runLater(() -> {
-                        Gson gson = new Gson();
-                        WeatherData myData = gson.fromJson(responseData, WeatherData.class);
-                        state.setData(myData);
-                    });
-                } else {
-                    // Retry with country
-                    weatherApi.setQuery(state.getCity().getCountry());
-                    weatherApi.fetchData(this);
-                }
-                setButtonsState(false);
-                Platform.runLater(() -> {
-                    try {
-                        // Update UI to reflect the completion, e.g., hide loading indicator
-                        switchToOverview();
-                    } catch (IOException error) {
-                        System.err.println(error);
-                    }
-                });
-            }
-        });
-
-    }
+//    /**
+//     * Method that triggers when "Search" button is clicked.
+//     */
+//    @FXML
+//    private void onSearchButtonClick() throws IOException {
+//        Api weatherApi = new Api();
+//        weatherApi.setQuery(this.state.getCity().getName());
+//        this.setButtonsState(true);
+//
+//        weatherApi.fetchData(new Callback() {
+//            @Override
+//            public void onFailure(Call call, IOException e) {
+//                e.printStackTrace();
+//                setButtonsState(false);
+//                Platform.runLater(() -> {
+//                    System.out.println("Failure!");
+//                });
+//            }
+//
+//            @Override
+//            public void onResponse(Call call, Response response) throws IOException {
+//                if (response.isSuccessful() && response.body() != null) {
+//                    String responseData = response.body().string();
+//                    // Process the response as needed
+//                    Platform.runLater(() -> {
+//                        Gson gson = new Gson();
+//                        WeatherData myData = gson.fromJson(responseData, WeatherData.class);
+//                        state.setData(myData);
+//                    });
+//                } else {
+//                    // Retry with country
+//                    weatherApi.setQuery(state.getCity().getCountry());
+//                    weatherApi.fetchData(this);
+//                }
+//                setButtonsState(false);
+//                Platform.runLater(() -> {
+//                    try {
+//                        // Update UI to reflect the completion, e.g., hide loading indicator
+//                        switchToOverview();
+//                    } catch (IOException error) {
+//                        System.err.println(error);
+//                    }
+//                });
+//            }
+//        });
+//
+//    }
 
     /**
      * Method that searches throughout cities JSON and filters the list results

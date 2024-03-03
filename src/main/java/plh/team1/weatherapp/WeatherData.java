@@ -70,7 +70,7 @@ public class WeatherData implements Serializable {
 
         @Column(name = "UVINDEX")
         @SerializedName("uvIndex")
-        private int uvIndex;
+        private String uvIndex;
 
         @Column(name = "VISIBILITY")
         @SerializedName("visibility")
@@ -95,7 +95,7 @@ public class WeatherData implements Serializable {
             return this.tempC;
         }
 
-        public int getUvIndex() {
+        public String getUvIndex() {
             return this.uvIndex;
         }
 
