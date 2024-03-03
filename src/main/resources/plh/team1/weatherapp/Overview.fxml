@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.text.*?>
 <?import javafx.scene.chart.*?>
 <?import javafx.scene.*?>
 <?import javafx.scene.image.*?>
@@ -13,61 +14,227 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.geometry.Insets?>
 
-<VBox spacing="20.0" styleClass="container" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="plh.team1.weatherapp.OverviewController">
+<VBox prefHeight="720.0" prefWidth="1024.0" spacing="20.0" styleClass="container" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="plh.team1.weatherapp.OverviewController">
     <children>
-        <HBox alignment="CENTER_RIGHT" minHeight="-Infinity" prefHeight="54.0" prefWidth="0.0" spacing="20.0" stylesheets="@styles.css">
+        <HBox alignment="CENTER_RIGHT" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="54.0" styleClass="navigation" stylesheets="@styles.css">
             <children>
-                <Label stylesheets="@styles.css" text="Overview">
+                <Button fx:id="menuItemOverview" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="54.0" prefWidth="54.0">
+                    <graphic>
+                        <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+                            <image>
+                                <Image url="@../../../icons/report.png" />
+                            </image>
+                        </ImageView>
+                    </graphic>
                     <styleClass>
                         <String fx:value="menu-item" />
+                        <String fx:value="report" />
                         <String fx:value="active" />
                     </styleClass>
-                </Label>
-                <Button fx:id="overviewButton" onAction="#switchToSearch" stylesheets="@styles.css" text="Search">
+                </Button>
+                <Button fx:id="menuItemSearch" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onAction="#switchToSearch" prefHeight="54.0" prefWidth="54.0" stylesheets="@styles.css">
                     <styleClass>
                         <String fx:value="menu-item" />
+                        <String fx:value="cursor-pointer" />
+                        <String fx:value="search" />
+                    </styleClass>
+                    <graphic>
+                        <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                            <image>
+                                <Image url="@../../../icons/search.png" />
+                            </image>
+                        </ImageView>
+                    </graphic>
+                </Button>
+                <Button fx:id="menuItemStats" onAction="#switchToStats" prefHeight="54.0" prefWidth="54.0" stylesheets="@styles.css">
+                    <graphic>
+                        <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+                            <image>
+                                <Image url="@../../../icons/db.png" />
+                            </image>
+                        </ImageView>
+                    </graphic>
+                    <styleClass>
+                        <String fx:value="cursor-pointer" />
+                        <String fx:value="menu-item" />
+                        <String fx:value="report" />
+                    </styleClass>
+                </Button>
+            </children>
+            <VBox.margin>
+                <Insets />
+            </VBox.margin>
+            <padding>
+                <Insets left="20.0" right="20.0" />
+            </padding>
+            <rotationAxis>
+                <Point3D />
+            </rotationAxis>
+        </HBox>
+        <HBox alignment="CENTER" fillHeight="false" styleClass="cloud-overlay" stylesheets="@styles.css" VBox.vgrow="NEVER">
+            <children>
+                <Button fx:id="previous" disable="true" maxHeight="40.0" maxWidth="40.0" minHeight="40.0" minWidth="40.0" mnemonicParsing="false" onAction="#prevDay" prefHeight="40.0" prefWidth="40.0" HBox.hgrow="NEVER">
+                    <graphic>
+                        <ImageView fitWidth="14.0" pickOnBounds="true" preserveRatio="true">
+                            <image>
+                                <Image url="@../../../icons/prev.png" />
+                            </image>
+                        </ImageView>
+                    </graphic>
+                    <HBox.margin>
+                        <Insets right="14.0" />
+                    </HBox.margin>
+                    <styleClass>
+                        <String fx:value="prev" />
+                        <String fx:value="cursor-pointer" />
+                    </styleClass>
+                </Button>
+                <AnchorPane prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
+                    <children>
+                        <HBox alignment="CENTER_LEFT" fillHeight="false" maxWidth="1.7976931348623157E308" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+                            <children>
+                                <Label fx:id="tempValue" text="10" textFill="#276487">
+                                    <font>
+                                        <Font name="System Bold" size="72.0" />
+                                    </font>
+                                </Label>
+                                <Label fx:id="tempUnit" text="°C" textFill="#276487">
+                                    <font>
+                                        <Font size="26.0" />
+                                    </font>
+                                    <HBox.margin>
+                                        <Insets bottom="30.0" />
+                                    </HBox.margin>
+                                </Label>
+                            </children>
+                        </HBox>
+                        <Label fx:id="weatherDesc" maxWidth="1.7976931348623157E308" text="Partly Cloudy" textFill="#276487" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="85.0">
+                            <font>
+                                <Font size="16.0" />
+                            </font>
+                        </Label>
+                        <HBox fillHeight="false" maxWidth="1.7976931348623157E308" spacing="6.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="110.0">
+                            <children>
+                                <ImageView fitHeight="22.0" pickOnBounds="true" preserveRatio="true" HBox.hgrow="NEVER">
+                                    <image>
+                                        <Image url="@../../../icons/location.png" />
+                                    </image>
+                                    <HBox.margin>
+                                        <Insets top="5.0" />
+                                    </HBox.margin>
+                                </ImageView>
+                                <Label fx:id="cityCountry" maxWidth="1.7976931348623157E308" text="Thessaloniki, Greece" textFill="#276487" HBox.hgrow="NEVER">
+                                    <font>
+                                        <Font name="System Bold" size="22.0" />
+                                    </font>
+                                </Label>
+                            </children>
+                        </HBox>
+                        <Label fx:id="highLowFeels" maxWidth="1.7976931348623157E308" text="16 / 9 Feels like 12" textFill="#276487" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="140.0">
+                            <font>
+                                <Font size="20.0" />
+                            </font>
+                        </Label>
+                        <Label fx:id="currentDate" maxWidth="1.7976931348623157E308" text="Saturday 2 March" textFill="#276487" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="168.0">
+                            <font>
+                                <Font size="20.0" />
+                            </font>
+                        </Label>
+                    </children>
+                </AnchorPane>
+                <FlowPane alignment="TOP_CENTER" prefWidth="300.0" prefWrapLength="0.0" HBox.hgrow="NEVER">
+                    <children>
+                        <ImageView fx:id="weatherImage" fitWidth="300.0" pickOnBounds="true">
+                            <image>
+                                <Image url="@../../../gfx/states/snowy-thunder.png" />
+                            </image>
+                        </ImageView>
+                    </children>
+                </FlowPane>
+                <FlowPane alignment="TOP_CENTER" columnHalignment="CENTER" hgap="16.0" prefWidth="340.0" prefWrapLength="300.0" vgap="16.0" HBox.hgrow="NEVER">
+                    <children>
+                        <AnchorPane prefHeight="100.0" prefWidth="158.0" styleClass="stat" stylesheets="@styles.css">
+                            <children>
+                                <Label fx:id="uvindex_v" styleClass="stat-value" stylesheets="@styles.css" text="..." />
+                                <ImageView fitWidth="55.0" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="-10.0">
+                                    <image>
+                                        <Image url="@../../../gfx/uvindex.png" />
+                                    </image>
+                                </ImageView>
+                                <Label styleClass="stat-title" stylesheets="@styles.css" text="UV Index" textAlignment="CENTER" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                                    <effect>
+                                        <GaussianBlur radius="1.2" />
+                                    </effect>
+                                </Label>
+                            </children>
+                        </AnchorPane>
+                        <AnchorPane prefHeight="100.0" prefWidth="158.0" styleClass="stat" stylesheets="@styles.css">
+                            <children>
+                                <Label fx:id="humidity_v" styleClass="stat-value" stylesheets="@styles.css" text="..." />
+                                <ImageView fitWidth="45.0" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="18.0" AnchorPane.topAnchor="-2.0">
+                                    <image>
+                                        <Image url="@../../../gfx/humidity.png" />
+                                    </image>
+                                </ImageView>
+                                <Label styleClass="stat-title" stylesheets="@styles.css" text="Humidity" textAlignment="CENTER" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                                    <effect>
+                                        <GaussianBlur radius="1.2" />
+                                    </effect>
+                                </Label>
+                            </children>
+                        </AnchorPane>
+                        <AnchorPane prefHeight="100.0" prefWidth="158.0" styleClass="stat" stylesheets="@styles.css">
+                            <children>
+                                <Label fx:id="wind_v" styleClass="stat-value" stylesheets="@styles.css" text="..." />
+                                <ImageView fitWidth="53.0" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="-4.0">
+                                    <image>
+                                        <Image url="@../../../gfx/wind.png" />
+                                    </image>
+                                </ImageView>
+                                <Label styleClass="stat-title" stylesheets="@styles.css" text="Wind" textAlignment="CENTER" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                                    <effect>
+                                        <GaussianBlur radius="1.2" />
+                                    </effect>
+                                </Label>
+                            </children>
+                        </AnchorPane>
+                        <AnchorPane prefHeight="100.0" prefWidth="158.0" styleClass="stat" stylesheets="@styles.css">
+                            <children>
+                                <Label fx:id="visibility_v" styleClass="stat-value" stylesheets="@styles.css" text="..." />
+                                <ImageView fitWidth="52.0" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="12.0" AnchorPane.topAnchor="-10.0">
+                                    <image>
+                                        <Image url="@../../../gfx/visibility.png" />
+                                    </image>
+                                </ImageView>
+                                <Label styleClass="stat-title" stylesheets="@styles.css" text="Visibility" textAlignment="CENTER" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                                    <effect>
+                                        <GaussianBlur radius="1.2" />
+                                    </effect>
+                                </Label>
+                            </children>
+                        </AnchorPane>
+                    </children>
+                </FlowPane>
+                <Button fx:id="next" maxHeight="40.0" maxWidth="40.0" minHeight="40.0" minWidth="40.0" mnemonicParsing="false" onAction="#nextDay" prefHeight="40.0" prefWidth="40.0" HBox.hgrow="NEVER">
+                    <graphic>
+                        <ImageView fitWidth="14.0" pickOnBounds="true" preserveRatio="true">
+                            <image>
+                                <Image url="@../../../icons/next.png" />
+                            </image>
+                        </ImageView>
+                    </graphic>
+                    <HBox.margin>
+                        <Insets left="14.0" />
+                    </HBox.margin>
+                    <styleClass>
+                        <String fx:value="next" />
                         <String fx:value="cursor-pointer" />
                     </styleClass>
                 </Button>
             </children>
-            <styleClass>
-                <String fx:value="navigation" />
-                <String fx:value="divider-bottom" />
-            </styleClass>
-        </HBox>
-        <HBox alignment="CENTER_LEFT" minHeight="-Infinity" prefHeight="250.0" prefWidth="200.0" styleClass="divider-bottom" stylesheets="@styles.css">
-            <children>
-                <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS">
-                    <children>
-                        <Label styleClass="celsius" stylesheets="@styles.css" text="26°C" textFill="WHITE" />
-                        <Label styleClass="current-city" stylesheets="@styles.css" text="Athens" />
-                    </children>
-                </VBox>
-                <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0">
-                    <children>
-                        <ImageView disable="true" fitHeight="250.0" fitWidth="650.0" preserveRatio="true">
-                            <image>
-                                <Image url="@../../../images/cloudy.png" />
-                            </image>
-                        </ImageView>
-                    </children>
-                </HBox>
-            </children>
-        </HBox>
-        <HBox>
-            <children>
-                <BarChart fx:id="barChart" alternativeRowFillVisible="false" cacheShape="false" horizontalGridLinesVisible="false" horizontalZeroLineVisible="false" legendVisible="false" styleClass="chart-bar" stylesheets="@styles.css" verticalGridLinesVisible="false" verticalZeroLineVisible="false" HBox.hgrow="ALWAYS">
-                    <xAxis>
-                        <CategoryAxis />
-                    </xAxis>
-                    <yAxis>
-                        <NumberAxis />
-                    </yAxis>
-                </BarChart>
-            </children>
+            <VBox.margin>
+                <Insets left="20.0" right="20.0" />
+            </VBox.margin>
         </HBox>
     </children>
-    <padding>
-        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
-    </padding>
 </VBox>

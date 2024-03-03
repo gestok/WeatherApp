@@ -11,35 +11,48 @@ import java.util.stream.Collectors;
 import java.util.Comparator;
 
 // Gson
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
 // JavaFX
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.layout.VBox;
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.web.WebView;
 
+// OkHttp3
+import okhttp3.*;
+
 public class SearchController {
 
+    // Variables
+    private SharedState state;
+    private Utilities utilities = new Utilities();
+    private ArrayList<City> allCities = new ArrayList<>();
+    private Double cityListHeight = 200.0;
     @FXML
     private VBox root;
-    private ArrayList<City> allCities = new ArrayList<>();
     @FXML
     private AnchorPane searchWrapper;
     @FXML
     private TextField searchBar;
     @FXML
     private ListView<City> cityListView;
-    private Double cityListHeight = 200.0;
     @FXML
     private ObservableList<City> filteredCities = FXCollections.observableArrayList();
+    @FXML
+    private VBox cityInfoWrapper;
     @FXML
     private VBox cityInfo;
     @FXML
@@ -56,8 +69,23 @@ public class SearchController {
     private VBox mapViewWrapper;
     @FXML
     private WebView mapView;
+    @FXML
+    private Button searchButton;
+    @FXML
+    private Button addFavButton;
+    @FXML
+    private Button favouriteIconButton;
 
-    public void initialize() {
+    // Constructor
+    public SearchController() {
+        this.state = SharedState.getInstance();
+    }
+
+    @FXML
+    private void initialize() {
+        if (this.state.getCity() != null) {
+            this.populateSearchWindow(this.state.getCity());
+        }
         this.populateCityListView();
         this.detectRootClick();
         this.detectSearchBarClick();
@@ -66,7 +94,7 @@ public class SearchController {
     }
 
     /**
-     * Function that switches FXML.
+     * Methods that switches FXML.
      *
      * @throws IOException
      */
@@ -75,28 +103,81 @@ public class SearchController {
         App.setRoot("Overview");
     }
 
+    @FXML
+    private void switchToStats() throws IOException {
+        App.setRoot("Stats");
+    }
+
     /**
-     * Function that searches throughout cities JSON and filters the list
-     * results based on string parameter term.
+     * Method that triggers when "Search" button is clicked.
+     */
+    @FXML
+    private void onSearchButtonClick() throws IOException {
+        Api weatherApi = new Api();
+        weatherApi.setQuery(this.state.getCity().getName());
+        this.setButtonsState(true);
+
+        weatherApi.fetchData(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                e.printStackTrace();
+                setButtonsState(false);
+                Platform.runLater(() -> {
+                    System.out.println("Failure!");
+                });
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                if (response.isSuccessful() && response.body() != null) {
+                    String responseData = response.body().string();
+                    // Process the response as needed
+                    Platform.runLater(() -> {
+                        Gson gson = new Gson();
+                        WeatherData myData = gson.fromJson(responseData, WeatherData.class);
+                        state.setData(myData);
+                    });
+                } else {
+                    // Retry with country
+                    weatherApi.setQuery(state.getCity().getCountry());
+                    weatherApi.fetchData(this);
+                }
+                setButtonsState(false);
+                Platform.runLater(() -> {
+                    try {
+                        // Update UI to reflect the completion, e.g., hide loading indicator
+                        switchToOverview();
+                    } catch (IOException error) {
+                        System.err.println(error);
+                    }
+                });
+            }
+        });
+
+    }
+
+    /**
+     * Method that searches throughout cities JSON and filters the list results
+     * based on string parameter term.
      *
      * @param term A string to query through the list of cities.
      */
     private void search(String term) {
         if (term.isEmpty()) {
-            this.hideCityList();
+            this.setCityListVisibility(false);
         } else {
             try {
                 // Filter the list
                 ObservableList<City> filtered = this.allCities.stream()
                         .filter(city -> city.getName().toLowerCase().contains(term.toLowerCase())
-                        || city.getCountry().toLowerCase().contains(term.toLowerCase()))
+                        || city.getAdmin().toLowerCase().contains(term.toLowerCase()))
                         .collect(Collectors.toCollection(FXCollections::observableArrayList));
 
                 if (!filtered.isEmpty()) {
                     this.filteredCities.setAll(filtered);
-                    this.showCityList();
+                    this.setCityListVisibility(true);
                 } else {
-                    this.hideCityList();
+                    this.setCityListVisibility(false);
                 }
             } catch (IndexOutOfBoundsException e) {
                 System.out.println(e.getMessage());
@@ -105,7 +186,7 @@ public class SearchController {
     }
 
     /**
-     * Clears the current search query.
+     * Method that clears the current search query.
      */
     @FXML
     private void clearSearch() {
@@ -113,13 +194,13 @@ public class SearchController {
     }
 
     /**
-     * Detects if there was a click in root and hides the overlay list of cities
-     * while also setting focus to root.
+     * Method that detects if there was a click in root and hides the overlay
+     * list of cities while also setting focus to root.
      */
     private void detectRootClick() {
         this.root.setOnMouseClicked(event -> {
             if (!this.cityListView.isFocused()) {
-                this.hideCityList();
+                this.setCityListVisibility(false);
             }
             if (this.searchBar.isFocused()) {
                 this.root.requestFocus();
@@ -128,19 +209,19 @@ public class SearchController {
     }
 
     /**
-     * Detects if there was a click in search input, and if there is a value,
-     * shows the the overlay list of cities.
+     * Method that detects if there was a click in search input, and if there is
+     * a value, shows the the overlay list of cities.
      */
     private void detectSearchBarClick() {
         this.searchBar.setOnMouseClicked(event -> {
             if (!this.searchBar.getText().isEmpty()) {
-                this.showCityList();
+                this.setCityListVisibility(true);
             }
         });
     }
 
     /**
-     * Applies change listener on search bar input.
+     * Method that applies change listener on search bar input.
      */
     private void applySearchBarChangeListener() {
         this.searchBar.textProperty().addListener((observable, oldValue, newValue) -> {
@@ -150,27 +231,41 @@ public class SearchController {
     }
 
     /**
-     * Applies click listener on list of cities.
+     * Method that applies click listener on list of cities.
      */
     private void onCityListViewClicked() {
         this.cityListView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue != null) {
-                try {
-                    this.searchBar.setText(newValue.toString());
-                    this.updateMap(newValue.getLatitude(), newValue.getLongitude());
-                    this.updateCityDetails(newValue);
-                    this.hideCityList();
-                    this.showCityDetails();
-                } catch (IndexOutOfBoundsException e) {
-                    System.err.println("Error accessing selected item: " + e.getMessage());
-                }
+            if (newValue == null) {
+                return;
             }
+            this.state.setCity(newValue);
+            this.populateSearchWindow(newValue);
         });
     }
 
     /**
-     * Loads cities JSON file and populates a list variable with the names of
-     * the cities.
+     * Method that populates Search window with the details of a given city
+     * object.
+     *
+     * @param populateCityDetails
+     */
+    private void populateSearchWindow(City city) {
+        if (city == null) {
+            return;
+        }
+        this.searchBar.setText(city.toString());
+        this.addFavButton.setText(city.getIsFavourite() ? "Remove from favourites" : "Add to favourites");
+        this.addFavButton
+                .setStyle(city.getIsFavourite() ? "-fx-background-color: #c2160a" : "-fx-background-color: #499bca");
+        this.updateMap(city.getLatitude(), city.getLongitude());
+        this.updateCityDetails(city);
+        this.setCityListVisibility(false);
+        this.setCityDetailsVisibility(true);
+    }
+
+    /**
+     * Method that loads cities JSON file and populates a list variable with the
+     * names of the cities.
      */
     private void populateCityListView() {
         JsonParser parser = new JsonParser();
@@ -184,26 +279,36 @@ public class SearchController {
         try (reader) {
             // Parse JSON
             JsonElement jsonElement = parser.parse(reader);
-            JsonObject jsonObject = jsonElement.getAsJsonObject();
+            JsonArray jsonArray = jsonElement.getAsJsonArray();
 
             // Add "City, Country" records
-            for (String cityKey : jsonObject.keySet()) {
+            for (JsonElement elem : jsonArray) {
                 try {
-                    JsonObject cityInfo = jsonObject.getAsJsonObject(cityKey);
-                    String name = cityInfo.get("city_ascii").getAsString();
+                    JsonObject cityInfo = elem.getAsJsonObject();
+                    String name = cityInfo.get("city").getAsString();
+                    String admin = cityInfo.get("admin_name").getAsString();
                     String country = cityInfo.get("country").getAsString();
-                    double latitude = cityInfo.has("lat") ? cityInfo.get("lat").getAsDouble() : 0.0;
-                    double longitude = cityInfo.has("lng") ? cityInfo.get("lng").getAsDouble() : 0.0;
-                    int population = cityInfo.has("population") && !cityInfo.get("population").getAsString().isEmpty() ? cityInfo.get("population").getAsInt() : 0;
+                    double latitude = 0.0;
+                    if (cityInfo.has("lat")) {
+                        latitude = cityInfo.get("lat").getAsDouble();
+                    }
+                    double longitude = 0.0;
+                    if (cityInfo.has("lng")) {
+                        longitude = cityInfo.get("lng").getAsDouble();
+                    }
+                    int population = 0;
+                    if (cityInfo.has("population") && !cityInfo.get("population").getAsString().isEmpty()) {
+                        population = cityInfo.get("population").getAsInt();
+                    }
 
-                    this.allCities.add(new City(name, country, latitude, longitude, population));
+                    this.allCities.add(new City(name, admin, country, latitude, longitude, population, false));
                 } catch (NumberFormatException e) {
-                    System.err.println("Error parsing city data for " + cityKey + ": " + e.getMessage());
+                    System.err.println("Error parsing city data for " + elem + ": " + e.getMessage());
                 }
             }
 
             // Sort city list
-            Collections.sort(this.allCities, Comparator.comparing(City::getName).thenComparing(City::getCountry));
+            Collections.sort(this.allCities, Comparator.comparing(City::getName).thenComparing(City::getAdmin));
 
             // Populate ListView
             this.filteredCities.setAll(this.allCities.stream().collect(Collectors.toList()));
@@ -227,9 +332,16 @@ public class SearchController {
                 + "<head>"
                 + "<link rel=\"stylesheet\" href=\"https://openlayers.org/en/v4.6.5/css/ol.css\" type=\"text/css\">"
                 + "<style>"
+                + "  body {"
+                + "    margin: 0;"
+                + "    background: #ebfbfe;"
+                + "  }"
                 + "  .map {"
-                + "    height: 526px;"
+                + "    height: 100vh;"
                 + "    width: 100%;"
+                + "  }"
+                + "  canvas {"
+                + "    border-radius: 14px;"
                 + "  }"
                 + "</style>"
                 + "<script src=\"https://openlayers.org/en/v4.6.5/build/ol.js\" type=\"text/javascript\"></script>"
@@ -284,6 +396,18 @@ public class SearchController {
         this.mapView.getEngine().loadContent(htmlContent);
     }
 
+    @FXML
+    private void onAddToFavouritesClick() {
+        if (this.state == null || this.state.getCity() == null) {
+            return;
+        }
+        this.state.getCity().setIsFavourite(!this.state.getCity().getIsFavourite());
+        this.addFavButton
+                .setText(this.state.getCity().getIsFavourite() ? "Remove from favourites" : "Add to favourites");
+        this.addFavButton.setStyle(this.state.getCity().getIsFavourite() ? "-fx-background-color: #c2160a"
+                : "-fx-background-color: #499bca");
+    }
+
     /**
      * Method that updates the city details in the info box.
      *
@@ -292,45 +416,43 @@ public class SearchController {
     private void updateCityDetails(City city) {
         this.cityName.setText(city.getName());
         this.cityCountry.setText(city.getCountry());
-        this.cityLng.setText(String.valueOf(city.getLongitude()));
-        this.cityLat.setText(String.valueOf(city.getLatitude()));
-        this.cityPopulation.setText(String.valueOf(city.getPopulation()));
+        this.cityLng.setText(this.utilities.formatToDecimals(city.getLongitude(), 4));
+        this.cityLat.setText(this.utilities.formatToDecimals(city.getLatitude(), 4));
+        this.cityPopulation.setText(this.utilities.toLocaleNotation(city.getPopulation()));
     }
 
     /**
-     * Method that hides the list of cities.
+     * Method that conditionally renders the list of cities.
+     *
+     * @param state Boolean
      */
-    private void hideCityList() {
-        AnchorPane.setTopAnchor(this.cityListView, 30.0);
-        this.cityListView.setPrefHeight(0.0);
-        this.cityListView.setVisible(false);
+    private void setCityListVisibility(boolean state) {
+        AnchorPane.setTopAnchor(this.cityListView, state ? 50.0 : 30.0);
+        this.cityListView.setPadding(new Insets(state ? 10 : 0));
+        this.cityListView.setVisible(state);
+        this.cityListView.setPrefHeight(state ? this.cityListHeight : 0.0);
     }
 
     /**
-     * Method that shows the list of cities.
+     * Method that conditionally renders all additional details for a city.
+     *
+     * @param state Boolean
      */
-    private void showCityList() {
-        AnchorPane.setTopAnchor(this.cityListView, 50.0);
-        this.cityListView.setVisible(true);
-        this.cityListView.setPrefHeight(this.cityListHeight);
+    private void setCityDetailsVisibility(boolean state) {
+        this.mapViewWrapper.setVisible(state);
+        this.mapView.setVisible(state);
+        this.cityInfo.setVisible(state);
+        this.cityInfoWrapper.setVisible(state);
     }
 
     /**
-     * Method that hides all additional details for a city.
+     * Method that conditionally disables - enables buttons.
+     *
+     * @param disabled
      */
-    private void hideCityDetails() {
-        this.mapViewWrapper.setVisible(false);
-        this.mapView.setVisible(false);
-        this.cityInfo.setVisible(false);
+    private void setButtonsState(boolean disabled) {
+        this.searchButton.setDisable(disabled);
+        this.addFavButton.setDisable(disabled);
+        this.favouriteIconButton.setDisable(disabled);
     }
-
-    /**
-     * Method that shows all additional details for a city.
-     */
-    private void showCityDetails() {
-        this.mapViewWrapper.setVisible(true);
-        this.mapView.setVisible(true);
-        this.cityInfo.setVisible(true);
-    }
-
 }

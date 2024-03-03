@@ -30,7 +30,7 @@ public class App extends Application {
         Font.loadFont(getClass().getResourceAsStream("/fonts/Roboto-Bold.ttf"), 12);
 
         // Set a scene from primary FXML
-        scene = new Scene(loadFXML("Overview"), 1024, 720);
+        scene = new Scene(loadFXML("Search"), 1024, 720);
         stage.setScene(scene);
 
         // Link stylesheet to application
