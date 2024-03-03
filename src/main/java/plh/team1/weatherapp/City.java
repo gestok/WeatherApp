@@ -1,26 +1,18 @@
 package plh.team1.weatherapp;
 
-// Jakarta
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-
-@Entity
-@Table(name = "CITIES")
 public class City {
 
-    @Id
-    private int id;
     private String name;
+    private String admin;
     private String country;
     private double latitude;
     private double longitude;
     private int population;
     private boolean isFavourite;
 
-    public City(int id, String name, String country, double latitude, double longitude, int population, boolean isFavourite) {
-        this.id = id;
+    public City(String name, String admin, String country, double latitude, double longitude, int population, boolean isFavourite) {
         this.name = name;
+        this.admin = admin;
         this.country = country;
         this.latitude = latitude;
         this.longitude = longitude;
@@ -28,12 +20,12 @@ public class City {
         this.isFavourite = isFavourite;
     }
 
-    public int getId() {
-        return this.id;
-    }
-
     public String getName() {
         return this.name;
+    }
+
+    public String getAdmin() {
+        return this.admin;
     }
 
     public String getCountry() {
@@ -62,6 +54,6 @@ public class City {
 
     @Override
     public String toString() {
-        return this.name + ", " + this.country;
+        return this.name + ", " + this.admin + ", " + this.country;
     }
 }

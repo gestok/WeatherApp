@@ -12,6 +12,7 @@ import java.util.Comparator;
 
 // Gson
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -166,7 +167,7 @@ public class SearchController {
                 // Filter the list
                 ObservableList<City> filtered = this.allCities.stream()
                         .filter(city -> city.getName().toLowerCase().contains(term.toLowerCase())
-                        || city.getCountry().toLowerCase().contains(term.toLowerCase()))
+                        || city.getAdmin().toLowerCase().contains(term.toLowerCase()))
                         .collect(Collectors.toCollection(FXCollections::observableArrayList));
 
                 if (!filtered.isEmpty()) {
@@ -275,14 +276,14 @@ public class SearchController {
         try (reader) {
             // Parse JSON
             JsonElement jsonElement = parser.parse(reader);
-            JsonObject jsonObject = jsonElement.getAsJsonObject();
+            JsonArray jsonArray = jsonElement.getAsJsonArray();
 
             // Add "City, Country" records
-            for (String cityKey : jsonObject.keySet()) {
+            for (JsonElement elem : jsonArray) {
                 try {
-                    JsonObject cityInfo = jsonObject.getAsJsonObject(cityKey);
-                    int id = cityInfo.get("id").getAsInt();
-                    String name = cityInfo.get("city_ascii").getAsString();
+                    JsonObject cityInfo = elem.getAsJsonObject();
+                    String name = cityInfo.get("city").getAsString();
+                    String admin = cityInfo.get("admin_name").getAsString();
                     String country = cityInfo.get("country").getAsString();
                     double latitude = 0.0;
                     if (cityInfo.has("lat")) {
@@ -297,14 +298,14 @@ public class SearchController {
                         population = cityInfo.get("population").getAsInt();
                     }
 
-                    this.allCities.add(new City(id, name, country, latitude, longitude, population, false));
+                    this.allCities.add(new City(name, admin, country, latitude, longitude, population, false));
                 } catch (NumberFormatException e) {
-                    System.err.println("Error parsing city data for " + cityKey + ": " + e.getMessage());
+                    System.err.println("Error parsing city data for " + elem + ": " + e.getMessage());
                 }
             }
 
             // Sort city list
-            Collections.sort(this.allCities, Comparator.comparing(City::getName).thenComparing(City::getCountry));
+            Collections.sort(this.allCities, Comparator.comparing(City::getName).thenComparing(City::getAdmin));
 
             // Populate ListView
             this.filteredCities.setAll(this.allCities.stream().collect(Collectors.toList()));

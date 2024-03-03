@@ -51,25 +51,12 @@
         </HBox>
         <AnchorPane fx:id="searchWrapper" prefHeight="25.0" prefWidth="200.0">
             <children>
-                <TextField fx:id="searchBar" prefHeight="42.0" promptText="Type city or country name to search..." styleClass="searchbar" stylesheets="@styles.css" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="80.0" />
-                <Button mnemonicParsing="false" onMouseClicked="#clearSearch" opacity="0.7" prefHeight="30.0" prefWidth="35.0" stylesheets="@styles.css" text="x" textAlignment="CENTER" AnchorPane.rightAnchor="84.0" AnchorPane.topAnchor="0.0">
+                <TextField fx:id="searchBar" prefHeight="42.0" promptText="Type city or country name to search..." styleClass="searchbar" stylesheets="@styles.css" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="40.0" />
+                <Button mnemonicParsing="false" onMouseClicked="#clearSearch" opacity="0.7" prefHeight="30.0" prefWidth="35.0" stylesheets="@styles.css" text="x" textAlignment="CENTER" AnchorPane.rightAnchor="44.0" AnchorPane.topAnchor="0.0">
                     <styleClass>
                         <String fx:value="clear-btn" />
                         <String fx:value="cursor-pointer" />
                     </styleClass>
-                </Button>
-                <Button fx:id="recentIconButton" mnemonicParsing="false" prefHeight="30.0" prefWidth="30.0" stylesheets="@styles.css" AnchorPane.rightAnchor="40.0" AnchorPane.topAnchor="2.0">
-                    <styleClass>
-                        <String fx:value="action-btn" />
-                        <String fx:value="cursor-pointer" />
-                    </styleClass>
-                    <graphic>
-                        <ImageView fitHeight="14.0" fitWidth="14.0" pickOnBounds="true" preserveRatio="true">
-                            <image>
-                                <Image url="@../../../icons/recent.png" />
-                            </image>
-                        </ImageView>
-                    </graphic>
                 </Button>
                 <Button fx:id="favouriteIconButton" graphicTextGap="0.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="30.0" stylesheets="@styles.css" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="2.0">
                     <graphic>
