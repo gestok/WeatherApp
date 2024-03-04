@@ -32,7 +32,7 @@ public class WeatherDataTest {
         
         assertEquals("Asserting Humidity", 55, currentCondition.getHumidity());
         assertEquals("Asserting Temperature", 16, currentCondition.getTempC());
-        assertEquals("Asserting UV Index", 3, currentCondition.getUvIndex());
+        assertEquals("Asserting UV Index", "3", currentCondition.getUvIndex());
         assertEquals("Weather Description", "Partly cloudy", currentCondition.getWeatherDescValue());
         assertEquals("Asserting Windspeed", 22, currentCondition.getWindspeedKmph());
     }

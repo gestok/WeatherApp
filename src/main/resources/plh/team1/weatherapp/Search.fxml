@@ -1,23 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.image.*?>
-<?import javafx.scene.text.*?>
-<?import javafx.scene.web.*?>
-<?import javafx.scene.effect.*?>
-<?import java.lang.*?>
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.Button?>
+<?import java.lang.String?>
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.web.WebView?>
 
-<VBox fx:id="root" prefHeight="720.0" prefWidth="1024.0" spacing="20.0" styleClass="container" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="plh.team1.weatherapp.SearchController">
+<VBox fx:id="root" prefHeight="720.0" prefWidth="1024.0" spacing="20.0" styleClass="container" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="plh.team1.weatherapp.SearchController">
     <children>
         <HBox alignment="CENTER_RIGHT" focusTraversable="true" minHeight="-Infinity" prefHeight="54.0" prefWidth="0.0" styleClass="navigation" stylesheets="@styles.css" VBox.vgrow="NEVER">
             <children>
-                <Button fx:id="menuItemOverview" disable="true" prefHeight="54.0" prefWidth="54.0" stylesheets="@styles.css">
+                <Button fx:id="menuItemOverview" disable="true" onAction="#switchToOverview" prefHeight="54.0" prefWidth="54.0" stylesheets="@styles.css">
                     <styleClass>
                         <String fx:value="cursor-pointer" />
                         <String fx:value="menu-item" />

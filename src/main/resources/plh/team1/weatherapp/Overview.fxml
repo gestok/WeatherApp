@@ -14,8 +14,9 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
+<?import javafx.scene.web.WebView?>
 
-<VBox prefHeight="720.0" prefWidth="1024.0" spacing="20.0" styleClass="container" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="plh.team1.weatherapp.OverviewController">
+<VBox minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1024.0" spacing="20.0" styleClass="container" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="plh.team1.weatherapp.OverviewController">
     <children>
         <HBox alignment="CENTER_RIGHT" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="54.0" styleClass="navigation" stylesheets="@styles.css">
             <children>
@@ -260,5 +261,15 @@
          </children>
       </HBox>
       <TextField fx:id="searchBar" prefHeight="42.0" promptText="Type city or country name to search..." styleClass="searchbar" stylesheets="@styles.css" />
+      <VBox fx:id="mapViewWrapper" prefHeight="220.0" prefWidth="1024.0" styleClass="city-info-wrapper" stylesheets="@styles.css" visible="false">
+         <children>
+            <WebView fx:id="mapView" layoutX="379.0" layoutY="2.0" prefHeight="265.0" prefWidth="265.0" />
+         </children>
+      </VBox>
+      <Label fx:id="cityCountyBottom" alignment="CENTER" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" text="Thessaloniki, Greece" textFill="#276487">
+         <font>
+            <Font name="System Bold" size="16.0" />
+         </font>
+      </Label>
     </children>
 </VBox>

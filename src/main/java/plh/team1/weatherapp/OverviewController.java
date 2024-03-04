@@ -2,6 +2,8 @@ package plh.team1.weatherapp;
 
 // Java
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -17,6 +19,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.VBox;
+import javafx.scene.web.WebView;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
@@ -66,6 +70,12 @@ public class OverviewController {
     private Button searchButton;
     @FXML
     private Button SaveButton;
+    @FXML
+    private VBox mapViewWrapper;
+    @FXML
+    private WebView mapView;
+    @FXML
+    private Label cityCountyBottom;
 
     // Constructor
     public OverviewController() {
@@ -75,6 +85,7 @@ public class OverviewController {
     private void initialize() {
         this.state = SharedState.getInstance();
         this.initializeTooltips();
+
     }
 
     /**
@@ -144,13 +155,11 @@ public class OverviewController {
     @FXML
     private void onSearchButtonClick(ActionEvent event) throws IOException {
 
-        System.out.println("1");
-
         Api weatherApi = new Api();
-        System.out.println("2");
+
         String cityToSearch = searchBar.getText().trim();
+
         if (cityToSearch.isEmpty()) {
-            System.out.println("Empty");
             Alert alert = new Alert(AlertType.ERROR);
             alert.setTitle("Error");
             alert.setHeaderText("City Name is blank!");
@@ -159,53 +168,148 @@ public class OverviewController {
             return;
         }
         weatherApi.setQuery(cityToSearch);
-        System.out.println(cityToSearch);
 
         weatherApi.fetchData(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
                 e.printStackTrace();
-                Platform.runLater(() -> {
-                    System.out.println("Failure!");
-                });
+                Platform.runLater(() -> System.out.println("Failure!"));
             }
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
+                Platform.runLater(() -> handleResponse(response));
+            }
+
+            private void handleResponse(Response response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    String responseData = response.body().string();
-                    // Process the response as needed
-                    Platform.runLater(() -> {
+                    try {
+                        String responseData = response.body().string();
                         Gson gson = new Gson();
-                        System.out.println("3");
+                        JsonObject jsonObject = gson.fromJson(responseData, JsonObject.class);
+                        JsonObject nearest = jsonObject.getAsJsonArray("nearest_area").get(0).getAsJsonObject();
+                        Double lat = nearest.get("latitude").getAsDouble();
+                        Double lon = nearest.get("longitude").getAsDouble();
+//                        String pop = nearest.get("population").getAsString();
+                        String country = nearest.getAsJsonArray("country").get(0).getAsJsonObject().get("value").getAsString();
+                        
+                        cityCountyBottom.setText(cityToSearch + ", " + country);
+
                         WeatherData myData = gson.fromJson(responseData, WeatherData.class);
                         myData.setCityName(cityToSearch);
                         state.setData(myData);
                         populateStats(myData, 0);
-                        System.out.println("4");
-                    });
-                } else {
-                    int statusCode = response.code();
-                    if (statusCode == 404) {
-                        Platform.runLater(() -> {
-                            Alert alert = new Alert(AlertType.ERROR);
-                            alert.setTitle("Error 404");
-                            alert.setHeaderText("City "+cityToSearch+" not found!");
-                            alert.setContentText("Please enter a valid city name!");
-                            alert.showAndWait();
-
-                        });
+                        updateMap(lat, lon);
+                        mapViewWrapper.setVisible(true);
+                        mapView.setVisible(true);
+                    } catch (IOException e) {
+                        e.printStackTrace();
                     }
-
+                } else {
+                    handleErrorResponse(response.code());
                 }
+            }
 
+            private void handleErrorResponse(int statusCode) {
+                if (statusCode == 404) {
+                    Platform.runLater(() -> {
+                        Alert alert = new Alert(AlertType.ERROR);
+                        alert.setTitle("Error 404");
+                        alert.setHeaderText("City " + cityToSearch + " not found!");
+                        alert.setContentText("Please enter a valid city name!");
+                        alert.showAndWait();
+                    });
+                }
             }
         });
     }
 
     @FXML
     private void onSaveButtonClick(ActionEvent event) {
-        System.out.println("Save Button Pressed");
+        // To be implemented
+        Alert alert = new Alert(AlertType.CONFIRMATION);
+        alert.setTitle("Confirm");
+        alert.setHeaderText("Do you want to save the current search?");
+        alert.setContentText("Tip: Saving stuff reduces your disk's lifespan");
+        alert.showAndWait();
+    }
+
+    /**
+     * Method to call when a city is selected. The method populates a web view
+     * of a map with the help of OpenLayers library.
+     *
+     * @param latitude
+     * @param longitude
+     */
+    private void updateMap(double latitude, double longitude) {
+        int zoom = 12;
+        String htmlContent = "<!DOCTYPE html>"
+                + "<html>"
+                + "<head>"
+                + "<link rel=\"stylesheet\" href=\"https://openlayers.org/en/v4.6.5/css/ol.css\" type=\"text/css\">"
+                + "<style>"
+                + "  body {"
+                + "    margin: 0;"
+                + "    background: #ebfbfe;"
+                + "  }"
+                + "  .map {"
+                + "    height: 100vh;"
+                + "    width: 100%;"
+                + "  }"
+                + "  canvas {"
+                + "    border-radius: 14px;"
+                + "  }"
+                + "</style>"
+                + "<script src=\"https://openlayers.org/en/v4.6.5/build/ol.js\" type=\"text/javascript\"></script>"
+                + "</head>"
+                + "<body>"
+                + "<div id=\"map\" class=\"map\"></div>"
+                + "<script type=\"text/javascript\">"
+                + "  var map = new ol.Map({"
+                + "    target: 'map',"
+                + "    layers: ["
+                + "      new ol.layer.Tile({"
+                + "        source: new ol.source.OSM()"
+                + "      })"
+                + "    ],"
+                + "    view: new ol.View({"
+                + "      center: ol.proj.fromLonLat([" + longitude + ", " + latitude + "]),"
+                + "      zoom: " + zoom
+                + "    }),"
+                + "    controls: ol.control.defaults({"
+                + "      attributionOptions: ({"
+                + "        collapsible: false"
+                + "      }),"
+                + "      zoom: false," // Disable default zoom controls
+                + "    }),"
+                + "    interactions: ol.interaction.defaults({"
+                + "      mouseWheelZoom: false,"
+                + "      dragPan: false,"
+                + "      doubleClickZoom: false"
+                + "    })"
+                + "  });"
+                // Marker
+                + "  var marker = new ol.Feature({"
+                + "    geometry: new ol.geom.Point("
+                + "      ol.proj.fromLonLat([" + longitude + ", " + latitude + "])"
+                + "    )"
+                + "  });"
+                + "  var vectorSource = new ol.source.Vector({"
+                + "    features: [marker]"
+                + "  });"
+                + "  var markerVectorLayer = new ol.layer.Vector({"
+                + "    source: vectorSource,"
+                + "  });"
+                // Disable right-click context menu
+                + "  document.getElementById('map').addEventListener('contextmenu', function(evt) {"
+                + "    evt.preventDefault();"
+                + "  });"
+                + "  map.addLayer(markerVectorLayer);"
+                + "</script>"
+                + "</body>"
+                + "</html>";
+
+        this.mapView.getEngine().loadContent(htmlContent);
     }
 
 }
