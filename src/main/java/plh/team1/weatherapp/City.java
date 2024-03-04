@@ -1,26 +1,9 @@
-package plh.team1.weatherapp.model;
+package plh.team1.weatherapp;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
-import java.util.HashSet;
-import java.util.Set;
-
-@Entity
 public class City {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
     private String name;
     private String country;
-
-    @OneToMany(targetEntity = CurrentCondition.class)
-    private Set<CurrentCondition> currentConditions = new HashSet<>();
-
     private double latitude;
     private double longitude;
     private int population;
@@ -43,7 +26,9 @@ public class City {
     }
 
     public String getName() {
+        
         return this.name;
+        
     }
 
     public String getCountry() {
@@ -80,22 +65,6 @@ public class City {
 
     public void setPopulation(int population) {
         this.population = population;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Set<CurrentCondition> getCurrentConditions() {
-        return currentConditions;
-    }
-
-    public void setCurrentConditions(Set<CurrentCondition> condition) {
-        this.currentConditions = condition;
     }
 
     @Override

@@ -1,7 +1,6 @@
 package plh.team1.weatherapp;
 
 // Java
-import plh.team1.weatherapp.model.City;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -26,6 +25,7 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.web.WebView;
+import plh.team1.weatherapp.serialization.WeatherData;
 
 public class SearchController {
 
@@ -150,12 +150,13 @@ public class SearchController {
      * Applies click listener on list of cities.
      */
     private void onCityListViewClicked() {
-        this.cityListView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue != null) {
+        this.cityListView.getSelectionModel().selectedItemProperty().addListener((observable, oldCity, newCity) -> {
+            System.out.println(newCity.getName());
+            if (newCity != null) {
                 try {
-                    this.searchBar.setText(newValue.toString());
-                    this.updateMap(newValue.getLatitude(), newValue.getLongitude());
-                    this.updateCityDetails(newValue);
+                    this.searchBar.setText(newCity.toString());
+                    this.updateMap(newCity.getLatitude(), newCity.getLongitude());
+                    this.updateCityDetails(newCity);
                     this.hideCityList();
                     this.showCityDetails();
                 } catch (IndexOutOfBoundsException e) {

@@ -11,4 +11,7 @@ module plh.team1.weatherapp {
 
     opens plh.team1.weatherapp to javafx.fxml, gson;
     exports plh.team1.weatherapp;
+    exports plh.team1.weatherapp.serialization;
+    opens plh.team1.weatherapp.serialization;
+    exports plh.team1.weatherapp.model;
 }

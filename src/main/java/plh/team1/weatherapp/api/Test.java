@@ -1,11 +1,14 @@
+
 package plh.team1.weatherapp.api;
+import plh.team1.weatherapp.serialization.WeatherData;
+
 
 public class Test {
-
     public static void main(String[] args) {
-        WeatherDataFetcher fetch = new WeatherDataFetcher("Thessaloniki");
-        NearestArea city = fetch.getNearestArea();
-        System.out.println(city.getAreaName().getCityName());
-
+        
+        Api fetc = new Api("Thessaloniki","Greece");
+         
+        
     }
+    
 }
