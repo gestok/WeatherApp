@@ -9,9 +9,10 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.NamedQuery;
 import jakarta.persistence.Table;
-import jakarta.persistence.Transient;
 import plh.team1.weatherapp.serialization.WeatherData;
 import java.util.Date;
 
@@ -20,6 +21,7 @@ weatherData model class for JPA
  */
 @Entity
 @Table(name = "WEATHERDATA")
+@NamedQuery(name = "find weatherdata by id", query= "Select s from WeatherDataModel s where s.id = :id")
 public class WeatherDataModel {
 
     @Column(name = "temperature", nullable = false, length = 150)
@@ -34,7 +36,10 @@ public class WeatherDataModel {
     private Date date;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+    private long weatherDataId;
+    @ManyToOne
+    private CityModel cityModel;
+
     
 
     public WeatherDataModel() {
@@ -89,14 +94,24 @@ public class WeatherDataModel {
         this.weatherDesc = weatherDesc;
     }
 
-    public long getId() {
-        return id;
+
+    public long getWeatherDataId() {
+        return weatherDataId;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public void setWeatherDataId(long weatherDataId) {
+        this.weatherDataId = weatherDataId;
     }
 
+    public CityModel getCityModel() {
+        return cityModel;
+    }
+
+    public void setCityModel(CityModel cityModel) {
+        this.cityModel = cityModel;
+    }
+    
+    
     @Override
     public String toString() {
         return "weatherDataModel{" + ", temperature=" + temperature + ", windspeed=" + windspeed + ", uvIndex=" + uvIndex + ", weatherDesc=" + weatherDesc + '}';

@@ -13,12 +13,11 @@ public class Api {
     private String urlToCall;    
 
     public Api(String cityName, String countryName) {
-        this.urlToCall = setUrl(cityName, countryName);        
+        this.setUrl(cityName, countryName);
     }
 
-    public String setUrl(String cityName, String countryName) {
-        String url = "https://wttr.in/" + cityName + "+" + countryName + "?format=j1";
-        return url;
+    public void setUrl(String cityName, String countryName) {
+        this.urlToCall=  "https://wttr.in/" + cityName + "+" + countryName + "?format=j1";        
     }
 
     public WeatherData fetchWeatherData() {

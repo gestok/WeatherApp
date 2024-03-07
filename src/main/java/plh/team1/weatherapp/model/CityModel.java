@@ -6,6 +6,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import java.util.HashSet;
@@ -25,7 +26,7 @@ public class CityModel {
     private long id;
     @Column(name = "cityname")
     private String cityName;
-    @Column(name = "countryName")
+    @Column(name = "countryNname")
     private String countryName;
     @Column(name = "latitude")
     private String latitude;
@@ -33,16 +34,25 @@ public class CityModel {
     private String longitude;
     @Column(name = "population")
     private String population;
+    @Column(name = "favourite")
+    private Boolean favourite;
+    @Column(name = "times_searched")
+    private int timesSearched;
 
-    @OneToMany(targetEntity = WeatherDataModel.class)
+    @OneToMany
+    @JoinColumn(name = "citymodel_id")
     private Set<WeatherDataModel> weatherDatas = new HashSet<>();
-
+    
+    public CityModel(){}
+    
     public CityModel(WeatherData weatherData) {
         this.cityName = weatherData.getNearestArea().getAreaName().getCityName();
         this.countryName = weatherData.getNearestArea().getCountry().getName();
         this.latitude = weatherData.getNearestArea().getLatitude();
         this.longitude = weatherData.getNearestArea().getLongitude();
         this.population = weatherData.getNearestArea().getPopulation();
+        this.favourite = false;
+        this.timesSearched = 0;
     }
 
     public long getId() {
@@ -101,25 +111,28 @@ public class CityModel {
         this.weatherDatas = weatherDatas;
     }
 
-    
-    // delete later
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (!(o instanceof CityModel)) {
-            return false;
-        }
-        CityModel city = (CityModel) o;
-        return Objects.equals(getCityName(), city.getCityName())
-                && Objects.equals(getCountryName(), city.getCountryName());
+    public Boolean getFavourite() {
+        return favourite;
+    }
+
+    public void setFavourite(Boolean favourite) {
+        this.favourite = favourite;
+    }
+
+    public int getTimesSearched() {
+        return timesSearched;
+    }
+
+    public void setTimesSearched(int timesSearched) {
+        this.timesSearched = timesSearched;
     }
     
-    @Override
-    public int hashCode(){
-        return Objects.hash(getCityName(), getCountryName());
+    public void incrementTimesSearched(){
+        this.timesSearched+=1;
     }
+
+        
+
 
     @Override
     public String toString() {
