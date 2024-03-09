@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <defs>
+    <style>
+.cls-1{fill:none;}.cls-2,.cls-3{fill:#999;stroke-miterlimit:10;}.cls-2{stroke:#666;}.cls-3{stroke:gray;stroke-width:0.5px;}.cls-4{fill:#666;}
+</style>
+  </defs>
+  <title>anemo</title>
+  <g id="Layer_2" data-name="Layer 2">
+    <g id="Layer_4" data-name="Layer 4">
+      <rect class="cls-1" width="100" height="100"/>
+    </g>
+    <g id="Layer_1-2" data-name="Layer 1">
+      <path class="cls-2" d="M50,49.3a9.8,9.8,0,0,1-5.6-1.9L40.6,91.6H59.4L55.6,47.4A9.8,9.8,0,0,1,50,49.3"/>
+      <path class="cls-3" d="M79.8,92.8H20.2a1.2,1.2,0,0,1,0-2.4H79.8a1.2,1.2,0,0,1,0,2.4Z"/>
+    </g>
+    <g id="fteroti">
+      <path class="cls-4" d="M53.5,46H46.5V14.8s3.5-7.3,7.1,0Z"/>
+      <path class="cls-4" d="M48.2,49.1l3.5-6.1,27,15.6s4.6,6.7-3.5,6.1Z"/>
+      <path class="cls-4" d="M48.4,43l3.5,6.1-27,15.6s-8.1.6-3.5-6.1Z"/>
+			<animateTransform attributeName="transform"
+    		type="rotate"
+    		from="0 50 46.2"
+    		to="360 50 46.2"
+    		begin="1s"
+    		dur="60s"
+    		repeatCount="indefinite"
+    	/>
+    </g>
+	    <g id="cyclos">
+      <circle class="cls-2" cx="50" cy="46" r="6"/>
+    </g>
+  </g>
+</svg>
+
+
