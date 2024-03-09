@@ -17,11 +17,18 @@ public class Weather {
 
     @SerializedName("mintempC")
     private String mintempC;
+    
+    private String sunHour;
+    
+    @SerializedName("totalSnow_cm")
+    private String totalSnow;
+    
+    private String uvIndex;
 
     public String getDate() {
         return this.date;
-    }
-
+    }    
+    
     public String getMinTempC() {
         return this.mintempC;
     }
@@ -29,4 +36,18 @@ public class Weather {
     public String getMaxTempC() {
         return this.maxtempC;
     }
+
+    public String getSunHour() {
+        return sunHour;
+    }
+
+    public String getTotalSnow() {
+        return totalSnow;
+    }
+
+    public String getUvIndex() {
+        return uvIndex;
+    }
+    
+    
 }

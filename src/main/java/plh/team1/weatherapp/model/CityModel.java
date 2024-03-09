@@ -52,7 +52,6 @@ public class CityModel {
         this.longitude = weatherData.getNearestArea().getLongitude();
         this.population = weatherData.getNearestArea().getPopulation();
         this.favourite = false;
-        this.timesSearched = 0;
     }
 
     public long getId() {
@@ -128,12 +127,9 @@ public class CityModel {
     }
     
     public void incrementTimesSearched(){
-        this.timesSearched+=1;
+        this.timesSearched ++;
     }
-
-        
-
-
+  
     @Override
     public String toString() {
         return "CityModel{" + ", id=" + id + ", cityName=" + cityName + ", countryName=" + countryName + '}';

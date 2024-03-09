@@ -9,16 +9,13 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.NamedQuery;
 import jakarta.persistence.Table;
 import plh.team1.weatherapp.serialization.WeatherData;
 import java.util.Date;
 
-/*
-weatherData model class for JPA
- */
+
 @Entity
 @Table(name = "WEATHERDATA")
 @NamedQuery(name = "find weatherdata by id", query= "Select s from WeatherDataModel s where s.id = :id")
@@ -33,7 +30,7 @@ public class WeatherDataModel {
     @Column(name = "weatherDesc", nullable = false, length = 150)
     private String weatherDesc;
     @Column(name = "date", nullable = false, length = 150)
-    private Date date;
+    private String date;
     @Column(name = "highTemp", nullable = false, length = 150)
     private String highTemp;
     @Column(name = "lowTemp", nullable = false, length = 150)
@@ -44,6 +41,8 @@ public class WeatherDataModel {
     private String humidity;
     @Column(name = "visibility")
     private String visibility;
+    @Column(name = "dateTime")
+    private Date dateTime;
     
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -61,19 +60,30 @@ public class WeatherDataModel {
         this.windspeed = weatherData.getCurrentCondition().getWindspeed();
         this.uvIndex = weatherData.getCurrentCondition().getUvIndex();
         this.weatherDesc = weatherData.getCurrentCondition().getWeatherDesc();        
-        this.date = new Date();
-        this.highTemp = weatherData.getWeather().getMaxTempC();
-        this.lowTemp = weatherData.getWeather().getMinTempC();
+        this.date = weatherData.getWeather(0).getDate();
+        this.highTemp = weatherData.getWeather(0).getMaxTempC(); //when the model class is created the index for accessing dates is set to 0 
+        this.lowTemp = weatherData.getWeather(0).getMinTempC();
         this.feelIsLike = weatherData.getCurrentCondition().getFeelIsLike();
         this.humidity = weatherData.getCurrentCondition().getHumidity();
         this.visibility = weatherData.getCurrentCondition().getVisibility();
+        this.dateTime = new Date(); //date time in order to query for last saved results
     }
 
-    public void setDate() {
-        this.date = new Date();
+    public Date getDateTime() {
+        return dateTime;
     }
 
-    public Date getDate() {
+    public void setDateTime(Date dateTime) {
+        this.dateTime = dateTime;
+    }
+    
+    
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    public String getDate() {
         return date;
     }
 

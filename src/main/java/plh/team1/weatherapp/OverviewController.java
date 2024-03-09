@@ -26,6 +26,7 @@ import javafx.scene.web.WebView;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
+import plh.team1.weatherapp.crud.Repo;
 import plh.team1.weatherapp.model.CityModel;
 import plh.team1.weatherapp.model.WeatherDataModel;
 
@@ -122,17 +123,22 @@ public class OverviewController {
      * @param weatherData
      * @param index
      */
-    private void populateStats(CityModel city, WeatherDataModel wd, int index) {
-        this.tempValue.setText(wd.getTemperature());
-        this.weatherDesc.setText(wd.getWeatherDesc());
+    private void populateStats( WeatherData wd, CityModel city, WeatherDataModel wdm, int index) {
+        Repo repo = new Repo();
+        city = repo.addCity(city);
+        repo.close();
+        this.tempValue.setText(wdm.getTemperature());
+        this.weatherDesc.setText(wdm.getWeatherDesc());
         this.cityCountry.setText(city.getCountryName());
-        this.highLowFeels.setText(String.format("%s° / %s° Feels like %s°", wd.getHighTemp(), wd.getLowTemp(), wd.getFeelIsLike()));
-        this.currentDate.setText(this.utilities.formatDate(wd.getDate()));
-        this.weatherImage.setImage(this.utilities.getWeatherIcon(wd.getWeatherDesc()));
-        this.uvindex_v.setText(wd.getUvIndex());
-        this.humidity_v.setText(wd.getHumidity()+ "%");
-        this.wind_v.setText(wd.getWindspeed() + " km/h");
-        this.visibility_v.setText(wd.getVisibility() + " km");
+        String highTemp = wd.getWeather(index).getMaxTempC();
+        String lowTemp = wd.getWeather(index).getMinTempC();        
+        this.highLowFeels.setText(String.format("%s° / %s° Feels like %s°", highTemp, lowTemp, wdm.getFeelIsLike()));
+        this.currentDate.setText(this.utilities.formatDate(wdm.getDate()));
+        this.weatherImage.setImage(this.utilities.getWeatherIcon(wdm.getWeatherDesc()));
+        this.uvindex_v.setText(wdm.getUvIndex());
+        this.humidity_v.setText(wdm.getHumidity()+ "%");
+        this.wind_v.setText(wdm.getWindspeed() + " km/h");
+        this.visibility_v.setText(wdm.getVisibility() + " km");
     }
 
     @FXML
@@ -165,7 +171,7 @@ public class OverviewController {
             return;
         }
         weatherApi.setQuery(cityToSearch);
-
+        
         weatherApi.fetchData(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
@@ -182,15 +188,15 @@ public class OverviewController {
                 if (response.isSuccessful() && response.body() != null) {
                     try {
                         String responseData = response.body().string();
-                        Gson gson = new Gson();
+                        Gson gson = new Gson();                        
                         WeatherData weatherData = gson.fromJson(responseData, WeatherData.class);
                         WeatherDataModel weatherDataModel = new WeatherDataModel(weatherData);
                         CityModel cityModel = new CityModel(weatherData);
 
                         cityCountyBottom.setText(cityModel.getCityName() + ", " + cityModel.getCountryName());
-
+                        
                         state.setData(weatherData);
-                        populateStats(cityModel, weatherDataModel, 0);
+                        populateStats(weatherData, cityModel, weatherDataModel, 0);
                         updateMap(Double.parseDouble(cityModel.getLatitude()), Double.parseDouble(cityModel.getLongitude()));
                         mapViewWrapper.setVisible(true);
                         mapView.setVisible(true);
@@ -218,12 +224,26 @@ public class OverviewController {
 
     @FXML
     private void onSaveButtonClick(ActionEvent event) {
-        // To be implemented
+        // To be implemented        
+        
+        Repo repo = new Repo();
+        
+        WeatherData wd = state.getData();
+        var city = new CityModel(wd);
+        var weatherData = new WeatherDataModel(wd);
+        city = repo.addCity(city);
+        weatherData = repo.addWeatherData(weatherData);
+        repo.addWeatherDataToCity(city.getId(), weatherData);
+        repo.close();
+        
         Alert alert = new Alert(AlertType.CONFIRMATION);
         alert.setTitle("Confirm");
         alert.setHeaderText("Do you want to save the current search?");
         alert.setContentText("Tip: Saving stuff reduces your disk's lifespan");
         alert.showAndWait();
+       
+        
+        
     }
 
     /**

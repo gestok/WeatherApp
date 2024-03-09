@@ -11,11 +11,11 @@ plh\team1\weatherapp\model\CityModel.class
 plh\team1\weatherapp\App.class
 plh\team1\weatherapp\SharedState.class
 plh\team1\weatherapp\crud\Repo.class
-module-info.class
 plh\team1\weatherapp\model\WeatherDataModel.class
 plh\team1\weatherapp\crud\Test.class
 plh\team1\weatherapp\serialization\Weather.class
 plh\team1\weatherapp\serialization\NearestArea.class
+plh\team1\weatherapp\Test.class
 plh\team1\weatherapp\Utilities.class
 plh\team1\weatherapp\serialization\Country.class
 plh\team1\weatherapp\CustomTooltip.class

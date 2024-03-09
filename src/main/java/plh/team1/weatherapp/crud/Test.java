@@ -54,12 +54,10 @@ public class Test {
             System.out.println(wd);
         }
         repo.findByCity(citymodel.getId());
-        Date date = new Date();
         wrm4 = repo.updateTemperature(wrm4.getWeatherDataId(), "100");
         wrm4 = repo.updateUvIndex(wrm4.getWeatherDataId(), "23");
         wrm4 = repo.updateWeatherDesc(wrm4.getWeatherDataId(), "very nice weather yes");
         wrm4 = repo.updateWindSpeed(wrm4.getWeatherDataId(), "132");
-        wrm4 = repo.updateDate(wrm4.getWeatherDataId(), date);
         
         
 

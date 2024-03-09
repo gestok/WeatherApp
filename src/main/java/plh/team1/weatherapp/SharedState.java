@@ -1,6 +1,8 @@
 package plh.team1.weatherapp;
 
 
+import plh.team1.weatherapp.model.CityModel;
+import plh.team1.weatherapp.model.WeatherDataModel;
 import plh.team1.weatherapp.serialization.WeatherData;
 /**
  * A model state class that retains application data between scenes. The model
@@ -12,6 +14,8 @@ public class SharedState {
     private static SharedState instance;
     private City city;
     private WeatherData data;
+    private WeatherDataModel weather;
+    private CityModel cityModel;
     private Utilities utilities = new Utilities();
     private int currentIndex = 0;
 

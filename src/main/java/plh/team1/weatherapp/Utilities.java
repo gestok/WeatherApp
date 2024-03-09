@@ -3,10 +3,8 @@ package plh.team1.weatherapp;
 // Java
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
 import java.util.Locale;
 import java.util.Set;
 
@@ -211,12 +209,12 @@ public class Utilities {
      * Method that gets a date string as parameter in the format of "yyyy-MM-dd"
      * and returns a date string in the format of "Day d Month".
      *
-     * @param date 
+     * @param dateString
      * @return String
      */
-    public String formatDate(Date date) {
-        SimpleDateFormat formatter = new SimpleDateFormat("EEEE d MMMM", Locale.ENGLISH);
-        String dateString = formatter.format(date);
-        return dateString;
+    public String formatDate(String dateString) {
+        LocalDate date = LocalDate.parse(dateString, DateTimeFormatter.ISO_LOCAL_DATE);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("EEEE d MMMM", Locale.ENGLISH);
+        return date.format(formatter);
     }
 }
