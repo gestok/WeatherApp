@@ -34,6 +34,17 @@ public class WeatherDataModel {
     private String weatherDesc;
     @Column(name = "date", nullable = false, length = 150)
     private Date date;
+    @Column(name = "highTemp", nullable = false, length = 150)
+    private String highTemp;
+    @Column(name = "lowTemp", nullable = false, length = 150)
+    private String lowTemp;
+    @Column(name = "feelIsLike")
+    private String feelIsLike;
+    @Column(name = "humidity")
+    private String humidity;
+    @Column(name = "visibility")
+    private String visibility;
+    
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long weatherDataId;
@@ -49,9 +60,13 @@ public class WeatherDataModel {
         this.temperature = weatherData.getCurrentCondition().getTempC();
         this.windspeed = weatherData.getCurrentCondition().getWindspeed();
         this.uvIndex = weatherData.getCurrentCondition().getUvIndex();
-        this.weatherDesc = weatherData.getCurrentCondition().getWeatherDesc();
+        this.weatherDesc = weatherData.getCurrentCondition().getWeatherDesc();        
         this.date = new Date();
-
+        this.highTemp = weatherData.getWeather().getMaxTempC();
+        this.lowTemp = weatherData.getWeather().getMinTempC();
+        this.feelIsLike = weatherData.getCurrentCondition().getFeelIsLike();
+        this.humidity = weatherData.getCurrentCondition().getHumidity();
+        this.visibility = weatherData.getCurrentCondition().getVisibility();
     }
 
     public void setDate() {
@@ -110,12 +125,55 @@ public class WeatherDataModel {
     public void setCityModel(CityModel cityModel) {
         this.cityModel = cityModel;
     }
+
+    public String getHighTemp() {
+        return highTemp;
+    }
+
+    public void setHighTemp(String highTemp) {
+        this.highTemp = highTemp;
+    }
+
+    public String getLowTemp() {
+        return lowTemp;
+    }
+
+    public void setLowTemp(String lowTemp) {
+        this.lowTemp = lowTemp;
+    }
+
+    public String getFeelIsLike() {
+        return feelIsLike;
+    }
+
+    public void setFeelIsLike(String feelIsLike) {
+        this.feelIsLike = feelIsLike;
+    }
+
+    public String getHumidity() {
+        return humidity;
+    }
+
+    public void setHumidity(String humidity) {
+        this.humidity = humidity;
+    }
+
+    public String getVisibility() {
+        return visibility;
+    }
+
+    public void setVisibility(String visibility) {
+        this.visibility = visibility;
+    }
+       
     
     
+
     @Override
     public String toString() {
-        return "weatherDataModel{" + ", temperature=" + temperature + ", windspeed=" + windspeed + ", uvIndex=" + uvIndex + ", weatherDesc=" + weatherDesc + '}';
+        return "WeatherDataModel{" + "temperature=" + temperature + ", windspeed=" + windspeed + ", uvIndex=" + uvIndex + ", weatherDesc=" + weatherDesc + ", date=" + date + ", highTemp=" + highTemp + ", lowTemp=" + lowTemp + ", feelIsLike=" + feelIsLike + ", weatherDataId=" + weatherDataId + ", cityModel=" + cityModel + '}';
     }
+   
 
 
 

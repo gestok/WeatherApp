@@ -9,7 +9,7 @@ public class CurrentCondition {
     @SerializedName("temp_C")
     private String tempC;
     @SerializedName("FeelsLikeC")
-    private String feelsLikeC;
+    private String feelsLike;
     private String uvIndex;
     @SerializedName("windspeedKmph")
     private String windspeed;
@@ -29,7 +29,7 @@ public class CurrentCondition {
     }
 
     public String getFeelIsLike() {
-        return feelsLikeC;
+        return feelsLike;
     }
 
     public String getCloudcover() {
@@ -80,13 +80,6 @@ public class CurrentCondition {
         return windspeed;
     }
 
-    public String get_feelIsLike() {
-        return feelsLikeC;
-    }
-
-    public String getFeelsLikeC() {
-        return feelsLikeC;
-    }
 
 
     public String getTempC() {

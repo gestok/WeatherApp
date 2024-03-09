@@ -1,6 +1,8 @@
 package plh.team1.weatherapp;
 
 // Java
+import plh.team1.weatherapp.api.Api;
+import plh.team1.weatherapp.serialization.WeatherData;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -24,6 +26,8 @@ import javafx.scene.web.WebView;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
+import plh.team1.weatherapp.model.CityModel;
+import plh.team1.weatherapp.model.WeatherDataModel;
 
 public class OverviewController {
 
@@ -115,27 +119,20 @@ public class OverviewController {
      * Method that populates the fields with data based on the day index
      * provided (0 is today).
      *
-     * @param data
+     * @param weatherData
      * @param index
      */
-    private void populateStats(WeatherData data, int index) {
-        this.tempValue.setText(String.valueOf(data.getCurrentCondition().getTempC()));
-        String weatherDesc = String.valueOf(data.getCurrentCondition().getWeatherDescValue());
-        this.weatherDesc.setText(weatherDesc);
-        this.cityCountry.setText(data.getCityName());
-        int highTemp = data.getWeather().get(index).getMaxTempC();
-        int lowTemp = data.getWeather().get(index).getMinTempC();
-        int feelsLike = data.getCurrentCondition().getFeelsLikeC();
-        this.highLowFeels.setText(String.format("%d° / %d° Feels like %d°", highTemp, lowTemp, feelsLike));
-        String date = data.getWeather().get(index).getDate();
-        this.currentDate.setText(this.utilities.formatDate(date));
-
-        this.weatherImage.setImage(this.utilities.getWeatherIcon(weatherDesc));
-
-        this.uvindex_v.setText(data.getCurrentCondition().getUvIndex());
-        this.humidity_v.setText(String.valueOf(data.getCurrentCondition().getHumidity()) + "%");
-        this.wind_v.setText(String.valueOf(data.getCurrentCondition().getWindspeedKmph()) + " km/h");
-        this.visibility_v.setText(String.valueOf(data.getCurrentCondition().getVisibility()) + " km");
+    private void populateStats(CityModel city, WeatherDataModel wd, int index) {
+        this.tempValue.setText(wd.getTemperature());
+        this.weatherDesc.setText(wd.getWeatherDesc());
+        this.cityCountry.setText(city.getCountryName());
+        this.highLowFeels.setText(String.format("%s° / %s° Feels like %s°", wd.getHighTemp(), wd.getLowTemp(), wd.getFeelIsLike()));
+        this.currentDate.setText(this.utilities.formatDate(wd.getDate()));
+        this.weatherImage.setImage(this.utilities.getWeatherIcon(wd.getWeatherDesc()));
+        this.uvindex_v.setText(wd.getUvIndex());
+        this.humidity_v.setText(wd.getHumidity()+ "%");
+        this.wind_v.setText(wd.getWindspeed() + " km/h");
+        this.visibility_v.setText(wd.getVisibility() + " km");
     }
 
     @FXML
@@ -186,20 +183,15 @@ public class OverviewController {
                     try {
                         String responseData = response.body().string();
                         Gson gson = new Gson();
-                        JsonObject jsonObject = gson.fromJson(responseData, JsonObject.class);
-                        JsonObject nearest = jsonObject.getAsJsonArray("nearest_area").get(0).getAsJsonObject();
-                        Double lat = nearest.get("latitude").getAsDouble();
-                        Double lon = nearest.get("longitude").getAsDouble();
-//                        String pop = nearest.get("population").getAsString();
-                        String country = nearest.getAsJsonArray("country").get(0).getAsJsonObject().get("value").getAsString();
-                        
-                        cityCountyBottom.setText(cityToSearch + ", " + country);
+                        WeatherData weatherData = gson.fromJson(responseData, WeatherData.class);
+                        WeatherDataModel weatherDataModel = new WeatherDataModel(weatherData);
+                        CityModel cityModel = new CityModel(weatherData);
 
-                        WeatherData myData = gson.fromJson(responseData, WeatherData.class);
-                        myData.setCityName(cityToSearch);
-                        state.setData(myData);
-                        populateStats(myData, 0);
-                        updateMap(lat, lon);
+                        cityCountyBottom.setText(cityModel.getCityName() + ", " + cityModel.getCountryName());
+
+                        state.setData(weatherData);
+                        populateStats(cityModel, weatherDataModel, 0);
+                        updateMap(Double.parseDouble(cityModel.getLatitude()), Double.parseDouble(cityModel.getLongitude()));
                         mapViewWrapper.setVisible(true);
                         mapView.setVisible(true);
                     } catch (IOException e) {

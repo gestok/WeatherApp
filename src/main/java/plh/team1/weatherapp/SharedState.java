@@ -1,5 +1,7 @@
 package plh.team1.weatherapp;
 
+
+import plh.team1.weatherapp.serialization.WeatherData;
 /**
  * A model state class that retains application data between scenes. The model
  * decouples the controllers from each other and makes the data (state)

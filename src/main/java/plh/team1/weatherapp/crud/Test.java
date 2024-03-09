@@ -14,12 +14,12 @@ public class Test {
     public static void main(String[] args) {
         
         //api call
-        Api api = new Api("Thessaloniki","Greece");        
+        Api api = new Api("Thessaloniki");        
         //
         WeatherData wr = api.fetchWeatherData();
         WeatherData wr2 = api.fetchWeatherData();
-        WeatherData wr3 = api.fetchWeatherData("Patra", "Greece");
-        WeatherData wr4 = api.fetchWeatherData("Kavala", "Greece");
+        WeatherData wr3 = api.fetchWeatherData("Patra", "greece");
+        WeatherData wr4 = api.fetchWeatherData("Kavala", "greece");
         Repo repo = new Repo();
         
         

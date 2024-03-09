@@ -11,6 +11,7 @@ public class WeatherData {
     private List<CurrentCondition> currentCondition;
     @SerializedName("nearest_area")
     private List<NearestArea> nearestArea;
+    private List<Weather> weather;
 
     public CurrentCondition getCurrentCondition() {
         return currentCondition.get(0);
@@ -18,6 +19,10 @@ public class WeatherData {
 
     public NearestArea getNearestArea() {
         return nearestArea.get(0);
+    }
+    
+    public Weather getWeather(){
+        return weather.get(0);
     }
 
 }
