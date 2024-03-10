@@ -44,16 +44,14 @@ public class Repo {
     // adds a cityModel object to the CITY table
     public CityModel addCity(CityModel cityToBeAdded) {
         entityManager.getTransaction().begin();
-        if (entityManager.contains(cityToBeAdded)) {
-            long id = findCity(cityToBeAdded).get(0).getId();
-            cityToBeAdded.setId(id);
-            cityToBeAdded.incrementTimesSearched();
-            entityManager.merge(cityToBeAdded);
-        } else {
+        if (findCity(cityToBeAdded) == null) { // city doesn't exist in the database
             cityToBeAdded.setTimesSearched(0);
-            entityManager.persist(cityToBeAdded);
+        } else { // city exists in the database
+            cityToBeAdded = findCity(cityToBeAdded).get(0);
+            cityToBeAdded.incrementTimesSearched();
         }
-
+        entityManager.persist(cityToBeAdded);
+        entityManager.getTransaction().commit();
 
         return cityToBeAdded;
     }
