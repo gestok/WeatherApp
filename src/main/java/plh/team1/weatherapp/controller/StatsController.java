@@ -1,7 +1,11 @@
-package plh.team1.weatherapp;
+package plh.team1.weatherapp.controller;
 
 
 // Java
+import plh.team1.weatherapp.beans.CityBeanTable;
+import plh.team1.weatherapp.beans.WeatherDataBeanTable;
+import plh.team1.weatherapp.model.WeatherData;
+import plh.team1.weatherapp.model.City;
 import java.io.IOException;
 import java.util.List;
 import javafx.application.Platform;
@@ -21,6 +25,8 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.persistence.TypedQuery;
+import plh.team1.weatherapp.App;
+import plh.team1.weatherapp.persistence.SharedState;
 
 public class StatsController {
     

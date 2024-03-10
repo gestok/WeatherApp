@@ -11,9 +11,11 @@ import javafx.scene.image.Image;
 import javafx.scene.text.Font;
 import javafx.event.EventHandler;
 
-
 // IO Imports
 import java.io.IOException;
+
+// Project Clasees
+import plh.team1.weatherapp.persistence.SharedState;
 
 /**
  * JavaFX App
@@ -49,11 +51,14 @@ public class App extends Application {
 
         // Show scene
         stage.show();
+
+        // Create Persistence Unit
         SharedState.createDB();
         
-       stage.setOnCloseRequest((WindowEvent event) -> {
-           // Perform cleanup tasks before closing
-           SharedState.closeDB();
+        // Create JVM hook for cleanup on close
+        stage.setOnCloseRequest((WindowEvent event) -> {
+            // Perform cleanup tasks before closing
+            SharedState.closeDB();
         });
     }
 
@@ -61,7 +66,7 @@ public class App extends Application {
         launch(args);
     }
 
-    static void setRoot(String fxml) throws IOException {
+    public static void setRoot(String fxml) throws IOException {
         scene.setRoot(loadFXML(fxml));
     }
 

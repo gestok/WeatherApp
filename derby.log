@@ -1,5 +1,5 @@
 ----------------------------------------------------------------
-Sun Mar 10 03:13:26 EET 2024D001 : [0] The Apache Software Foundation - Apache Derby - 10.17.1.0 - (1913217), [1] a816c00e-018e-25eb-fccc-000001aea0f0, [2] C:\WeatherApp\weatherappdb, [3] jdk.internal.loader.ClassLoaders$AppClassLoader@b1bc7ed, [4] file:/C:/Users/Test_U01/.m2/repository/org/apache/derby/derby/10.17.1.0/derby-10.17.1.0.jar
+Sun Mar 10 04:40:28 EET 2024D001 : [0] The Apache Software Foundation - Apache Derby - 10.17.1.0 - (1913217), [1] a816c00e-018e-263b-abae-000001cb8430, [2] C:\WeatherApp\weatherappdb, [3] jdk.internal.loader.ClassLoaders$AppClassLoader@b1bc7ed, [4] file:/C:/Users/Test_U01/.m2/repository/org/apache/derby/derby/10.17.1.0/derby-10.17.1.0.jar
 java.vendor=Oracle Corporation
 java.runtime.version=21.0.2+13-LTS-58
 user.dir=C:\WeatherApp

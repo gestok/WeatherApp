@@ -1,4 +1,4 @@
-package plh.team1.weatherapp;
+package plh.team1.weatherapp.utils;
 
 // Java
 import java.text.DecimalFormat;

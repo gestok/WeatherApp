@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox prefHeight="720.0" prefWidth="1024.0" spacing="20.0" styleClass="container" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="plh.team1.weatherapp.StatsController">
+<VBox prefHeight="720.0" prefWidth="1024.0" spacing="20.0" styleClass="container" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="plh.team1.weatherapp.controller.StatsController">
     <children>
         <HBox alignment="CENTER_RIGHT" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="54.0" styleClass="navigation" stylesheets="@styles.css">
             <children>

@@ -1,4 +1,4 @@
-package plh.team1.weatherapp;
+package plh.team1.weatherapp.model;
 
 import java.io.Serializable;
 import java.util.Date;

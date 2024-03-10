@@ -1,6 +1,8 @@
-package plh.team1.weatherapp;
+package plh.team1.weatherapp.controller;
 
 // Java
+import plh.team1.weatherapp.info.CityInfo;
+import plh.team1.weatherapp.utils.Utilities;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -33,6 +35,8 @@ import javafx.scene.web.WebView;
 
 // OkHttp3
 import okhttp3.*;
+import plh.team1.weatherapp.App;
+import plh.team1.weatherapp.persistence.SharedState;
 
 public class SearchController {
 

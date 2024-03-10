@@ -1,4 +1,4 @@
-package plh.team1.weatherapp;
+package plh.team1.weatherapp.controller;
 
 // Java
 import com.google.gson.Gson;
@@ -24,6 +24,16 @@ import javafx.scene.web.WebView;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
+import plh.team1.weatherapp.api.Api;
+import plh.team1.weatherapp.App;
+import plh.team1.weatherapp.persistence.SharedState;
+
+// Project Classes
+import plh.team1.weatherapp.info.WeatherDataInfo;
+import plh.team1.weatherapp.utils.Utilities;
+import plh.team1.weatherapp.utils.CustomTooltip;
+import plh.team1.weatherapp.model.WeatherData;
+import plh.team1.weatherapp.model.City;
 
 public class OverviewController {
 

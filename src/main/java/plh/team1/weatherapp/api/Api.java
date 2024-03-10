@@ -1,4 +1,4 @@
-package plh.team1.weatherapp;
+package plh.team1.weatherapp.api;
 
 // OKHttp3
 import okhttp3.CacheControl;

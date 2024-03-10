@@ -1,5 +1,6 @@
-package plh.team1.weatherapp;
+package plh.team1.weatherapp.beans;
 
+import plh.team1.weatherapp.model.WeatherData;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.ObjectProperty;

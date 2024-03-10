@@ -1,5 +1,9 @@
-package plh.team1.weatherapp;
+package plh.team1.weatherapp.persistence;
 
+import plh.team1.weatherapp.info.WeatherDataInfo;
+import plh.team1.weatherapp.info.CityInfo;
+import plh.team1.weatherapp.utils.Utilities;
+import plh.team1.weatherapp.model.City;
 import java.util.List;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityManager;
