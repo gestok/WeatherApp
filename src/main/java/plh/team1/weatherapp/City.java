@@ -1,59 +1,91 @@
 package plh.team1.weatherapp;
 
-public class City {
+import java.io.Serializable;
+import javax.persistence.*;
 
-    private String name;
-    private String admin;
-    private String country;
-    private double latitude;
-    private double longitude;
-    private int population;
-    private boolean isFavourite;
 
-    public City(String name, String admin, String country, double latitude, double longitude, int population, boolean isFavourite) {
-        this.name = name;
-        this.admin = admin;
-        this.country = country;
-        this.latitude = latitude;
-        this.longitude = longitude;
-        this.population = population;
-        this.isFavourite = isFavourite;
+@Entity
+@Table(name = "CITY")
+@NamedQueries({
+    @NamedQuery(name = "City.findAll", query = "SELECT c FROM City c"),
+    @NamedQuery(name = "City.findById", query = "SELECT c FROM City c WHERE c.id = :id"),
+    @NamedQuery(name = "City.findByThisName", query = "SELECT c FROM City c WHERE c.thisName = :thisName"),
+    @NamedQuery(name = "City.findByTimesSearched", query = "SELECT c FROM City c WHERE c.timesSearched = :timesSearched")})
+public class City implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
+    @Column(name = "ID")
+    private Integer id;
+    @Basic(optional = false)
+    @Column(name = "THIS_NAME")
+    private String thisName;
+    @Basic(optional = false)
+    @Column(name = "TIMES_SEARCHED")
+    private int timesSearched;
+
+    public City() {
     }
 
-    public String getName() {
-        return this.name;
+    public City(Integer id) {
+        this.id = id;
     }
 
-    public String getAdmin() {
-        return this.admin;
+    public City(Integer id, String thisName, int timesSearched) {
+        this.id = id;
+        this.thisName = thisName;
+        this.timesSearched = timesSearched;
     }
 
-    public String getCountry() {
-        return this.country;
+    public Integer getId() {
+        return id;
     }
 
-    public double getLatitude() {
-        return this.latitude;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
-    public double getLongitude() {
-        return this.longitude;
+    public String getThisName() {
+        return thisName;
     }
 
-    public int getPopulation() {
-        return this.population;
+    public void setThisName(String thisName) {
+        this.thisName = thisName;
     }
 
-    public boolean getIsFavourite() {
-        return this.isFavourite;
+    public int getTimesSearched() {
+        return timesSearched;
     }
 
-    public void setIsFavourite(boolean isFavourite) {
-        this.isFavourite = isFavourite;
+    public void setTimesSearched(int timesSearched) {
+        this.timesSearched = timesSearched;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 0;
+        hash += (id != null ? id.hashCode() : 0);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        // TODO: Warning - this method won't work in the case the id fields are not set
+        if (!(object instanceof City)) {
+            return false;
+        }
+        City other = (City) object;
+        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+            return false;
+        }
+        return true;
     }
 
     @Override
     public String toString() {
-        return this.name + ", " + this.admin + ", " + this.country;
+        return "com.uptobottom.City[ id=" + id + " ]";
     }
+    
 }

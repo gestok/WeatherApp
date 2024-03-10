@@ -6,8 +6,11 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import javafx.scene.image.Image;
 import javafx.scene.text.Font;
+import javafx.event.EventHandler;
+
 
 // IO Imports
 import java.io.IOException;
@@ -46,6 +49,12 @@ public class App extends Application {
 
         // Show scene
         stage.show();
+        SharedState.createDB();
+        
+       stage.setOnCloseRequest((WindowEvent event) -> {
+           // Perform cleanup tasks before closing
+           SharedState.closeDB();
+        });
     }
 
     public static void main(String[] args) {

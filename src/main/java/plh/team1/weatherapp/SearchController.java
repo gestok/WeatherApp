@@ -39,7 +39,7 @@ public class SearchController {
     // Variables
     private SharedState state;
     private Utilities utilities = new Utilities();
-    private ArrayList<City> allCities = new ArrayList<>();
+    private ArrayList<CityInfo> allCities = new ArrayList<>();
     private Double cityListHeight = 200.0;
     @FXML
     private VBox root;
@@ -48,9 +48,9 @@ public class SearchController {
     @FXML
     private TextField searchBar;
     @FXML
-    private ListView<City> cityListView;
+    private ListView<CityInfo> cityListView;
     @FXML
-    private ObservableList<City> filteredCities = FXCollections.observableArrayList();
+    private ObservableList<CityInfo> filteredCities = FXCollections.observableArrayList();
     @FXML
     private VBox cityInfoWrapper;
     @FXML
@@ -168,7 +168,7 @@ public class SearchController {
         } else {
             try {
                 // Filter the list
-                ObservableList<City> filtered = this.allCities.stream()
+                ObservableList<CityInfo> filtered = this.allCities.stream()
                         .filter(city -> city.getName().toLowerCase().contains(term.toLowerCase())
                         || city.getAdmin().toLowerCase().contains(term.toLowerCase()))
                         .collect(Collectors.toCollection(FXCollections::observableArrayList));
@@ -249,7 +249,7 @@ public class SearchController {
      *
      * @param populateCityDetails
      */
-    private void populateSearchWindow(City city) {
+    private void populateSearchWindow(CityInfo city) {
         if (city == null) {
             return;
         }
@@ -301,14 +301,14 @@ public class SearchController {
                         population = cityInfo.get("population").getAsInt();
                     }
 
-                    this.allCities.add(new City(name, admin, country, latitude, longitude, population, false));
+                    this.allCities.add(new CityInfo(name, admin, country, latitude, longitude, population, false));
                 } catch (NumberFormatException e) {
                     System.err.println("Error parsing city data for " + elem + ": " + e.getMessage());
                 }
             }
 
             // Sort city list
-            Collections.sort(this.allCities, Comparator.comparing(City::getName).thenComparing(City::getAdmin));
+            Collections.sort(this.allCities, Comparator.comparing(CityInfo::getName).thenComparing(CityInfo::getAdmin));
 
             // Populate ListView
             this.filteredCities.setAll(this.allCities.stream().collect(Collectors.toList()));
@@ -413,7 +413,7 @@ public class SearchController {
      *
      * @param city A city object.
      */
-    private void updateCityDetails(City city) {
+    private void updateCityDetails(CityInfo city) {
         this.cityName.setText(city.getName());
         this.cityCountry.setText(city.getCountry());
         this.cityLng.setText(this.utilities.formatToDecimals(city.getLongitude(), 4));

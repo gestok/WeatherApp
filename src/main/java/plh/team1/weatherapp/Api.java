@@ -1,6 +1,7 @@
 package plh.team1.weatherapp;
 
 // OKHttp3
+import okhttp3.CacheControl;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Callback;

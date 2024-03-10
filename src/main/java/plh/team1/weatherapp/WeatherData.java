@@ -1,155 +1,149 @@
 package plh.team1.weatherapp;
 
-// Java
 import java.io.Serializable;
-import java.util.List;
-
-// Gson
-import com.google.gson.annotations.SerializedName;
-
-// Jakarta
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import java.util.Date;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "WEATHERDATA")
+@NamedQueries({
+    @NamedQuery(name = "WeatherData.findAll", query = "SELECT w FROM WeatherData w"),
+    /*
+    @NamedQuery(name = "WeatherData.findById", query = "SELECT w FROM WeatherData w WHERE w.id = :id"),
+    @NamedQuery(name = "WeatherData.findByHumidity", query = "SELECT w FROM WeatherData w WHERE w.humidity = :humidity"),
+    @NamedQuery(name = "WeatherData.findByTempC", query = "SELECT w FROM WeatherData w WHERE w.tempC = :tempC"),
+    @NamedQuery(name = "WeatherData.findByUvIndex", query = "SELECT w FROM WeatherData w WHERE w.uvIndex = :uvindex"),
+    @NamedQuery(name = "WeatherData.findByWindSpeed", query = "SELECT w FROM WeatherData w WHERE w.windSpeed = :windspeedkmph"),
+    @NamedQuery(name = "WeatherData.findByWeatherDesc", query = "SELECT w FROM WeatherData w WHERE w.weatherDesc = :weatherdesc"),
+    */
+    @NamedQuery(name = "WeatherData.findByWddate", query = "SELECT w FROM WeatherData w WHERE w.wdDate = :wdDate"),
+    @NamedQuery(name = "WeatherData.findByCityId", query = "SELECT w FROM WeatherData w WHERE w.cityId = :cityId")})
 public class WeatherData implements Serializable {
 
     private static final long serialVersionUID = 1L;
-
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
     @Column(name = "ID")
-    private int id;
-    // Τα annotations συνδέουν το όνομα πεδίου στο json με όνομα πεδίου στην
-    // κλάση. Μπορούν να παραλειφθούν αν τα δύο αυτά ταυτίζονται
-    @SerializedName("current_condition")
-    private List<CurrentCondition> currentCondition;
-    private List<Weather> weather;
+    private Integer id;
+    @Column(name = "HUMIDITY")
+    private Integer humidity;
+    @Column(name = "TEMP_C")
+    private Integer tempC;
+    @Column(name = "UVINDEX")
+    private Integer uvIndex;
+    @Column(name = "WINDSPEEDKMPH")
+    private Integer windSpeed;
+    @Column(name = "WEATHERDESC")
+    private String weatherDesc;
+    @Basic(optional = false)
+    @Column(name = "WD_DATE")
+    @Temporal(TemporalType.DATE)
+    private Date wdDate;
+    @Basic(optional = false)
+    @Column(name = "CITY_ID")
+    private int cityId;
 
-    @Column(name = "CITYNAME")
-    private String cityName;
-
-    public void setCityName(String cityName) {
-        this.cityName = cityName;
+    public WeatherData() {
     }
 
-    public String getCityName() {
-        return this.cityName;
+    public WeatherData(Integer id) {
+        this.id = id;
     }
 
-    public int getId() {
-        return this.id;
+    public WeatherData(Integer id, Date wdDate, int cityId) {
+        this.id = id;
+        this.wdDate = wdDate;
+        this.cityId = cityId;
     }
 
-    public WeatherData.CurrentCondition getCurrentCondition() {
-        return this.currentCondition.get(0);
+    public Integer getId() {
+        return id;
     }
 
-    public List<WeatherData.Weather> getWeather() {
-        return this.weather;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
-    public static class CurrentCondition implements Serializable {
-
-        @Column(name = "FEELSLIKEC")
-        @SerializedName("FeelsLikeC")
-        private int feelsLikeC;
-
-        @Column(name = "HUMIDITY")
-        @SerializedName("humidity")
-        private int humidity;
-
-        @Column(name = "TEMP_C")
-        @SerializedName("temp_C")
-        private int tempC;
-
-        @Column(name = "UVINDEX")
-        @SerializedName("uvIndex")
-        private String uvIndex;
-
-        @Column(name = "VISIBILITY")
-        @SerializedName("visibility")
-        private int visibility;
-
-        @SerializedName("weatherDesc")
-        private List<WeatherDescription> weatherDesc;
-
-        @Column(name = "WINDSPEEDKMPH")
-        @SerializedName("windspeedKmph")
-        private int windspeedKmph;
-
-        public int getFeelsLikeC() {
-            return this.feelsLikeC;
-        }
-
-        public int getHumidity() {
-            return this.humidity;
-        }
-
-        public int getTempC() {
-            return this.tempC;
-        }
-
-        public String getUvIndex() {
-            return this.uvIndex;
-        }
-
-        public int getVisibility() {
-            return this.visibility;
-        }
-
-        public int getWindspeedKmph() {
-            return this.windspeedKmph;
-        }
-
-        public String getWeatherDescValue() {
-            if (this.weatherDesc != null && !this.weatherDesc.isEmpty()) {
-                return this.weatherDesc.get(0).getValue();
-            }
-            return null;
-        }
+    public Integer getHumidity() {
+        return humidity;
     }
 
-    public static class WeatherDescription implements Serializable {
-
-        @Column(name = "WEATHERDESC")
-        @SerializedName("value")
-        private String value;
-
-        public String getValue() {
-            return this.value;
-        }
+    public void setHumidity(Integer humidity) {
+        this.humidity = humidity;
     }
 
-    public static class Weather implements Serializable {
-
-        @Column(name = "DATE")
-        @SerializedName("date")
-        private String date;
-
-        @Column(name = "MAXTEMPC")
-        @SerializedName("maxtempC")
-        private int maxtempC;
-
-        @Column(name = "MINTEMPC")
-        @SerializedName("mintempC")
-        private int mintempC;
-
-        public String getDate() {
-            return this.date;
-        }
-
-        public int getMinTempC() {
-            return this.mintempC;
-        }
-
-        public int getMaxTempC() {
-            return this.maxtempC;
-        }
+    public Integer getTempC() {
+        return tempC;
     }
+
+    public void setTempC(Integer tempC) {
+        this.tempC = tempC;
+    }
+
+    public Integer getUvindex() {
+        return uvIndex;
+    }
+
+    public void setUvindex(Integer uvindex) {
+        this.uvIndex = uvindex;
+    }
+
+    public Integer getWindSpeed() {
+        return windSpeed;
+    }
+
+    public void setWindSpeed(Integer windSpeed) {
+        this.windSpeed = windSpeed;
+    }
+
+    public String getWeatherDesc() {
+        return weatherDesc;
+    }
+
+    public void setWeatherDesc(String weatherdesc) {
+        this.weatherDesc = weatherdesc;
+    }
+
+    public Date getWdDate() {
+        return wdDate;
+    }
+
+    public void setWdDate(Date wdDate) {
+        this.wdDate = wdDate;
+    }
+
+    public int getCityId() {
+        return cityId;
+    }
+
+    public void setCityId(int cityId) {
+        this.cityId = cityId;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 0;
+        hash += (id != null ? id.hashCode() : 0);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        // TODO: Warning - this method won't work in the case the id fields are not set
+        if (!(object instanceof WeatherData)) {
+            return false;
+        }
+        WeatherData other = (WeatherData) object;
+        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return "com.uptobottom.WeatherData[ id=" + id + " ]";
+    }
+    
 }

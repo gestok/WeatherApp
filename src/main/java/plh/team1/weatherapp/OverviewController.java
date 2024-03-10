@@ -118,7 +118,7 @@ public class OverviewController {
      * @param data
      * @param index
      */
-    private void populateStats(WeatherData data, int index) {
+    private void populateStats(WeatherDataInfo data, int index) {
         this.tempValue.setText(String.valueOf(data.getCurrentCondition().getTempC()));
         String weatherDesc = String.valueOf(data.getCurrentCondition().getWeatherDescValue());
         this.weatherDesc.setText(weatherDesc);
@@ -191,11 +191,28 @@ public class OverviewController {
                         Double lat = nearest.get("latitude").getAsDouble();
                         Double lon = nearest.get("longitude").getAsDouble();
 //                        String pop = nearest.get("population").getAsString();
+                        String region = nearest.getAsJsonArray("region").get(0).getAsJsonObject().get("value").getAsString();
                         String country = nearest.getAsJsonArray("country").get(0).getAsJsonObject().get("value").getAsString();
                         
-                        cityCountyBottom.setText(cityToSearch + ", " + country);
-
-                        WeatherData myData = gson.fromJson(responseData, WeatherData.class);
+                        cityCountyBottom.setText(cityToSearch + ", " + region + ", " + country);
+                        
+                        JsonObject currentCondition = jsonObject.getAsJsonArray("current_condition").get(0).getAsJsonObject();
+                        JsonObject weatherDescription = currentCondition.getAsJsonArray("weatherDesc").get(0).getAsJsonObject();
+                        
+                        City myCity = new City();
+                        myCity.setThisName(cityToSearch);
+                        SharedState.addCity(myCity);
+                        
+                        WeatherData myWeatherData = new WeatherData();
+                        myWeatherData.setHumidity(currentCondition.get("humidity").getAsInt());
+                        myWeatherData.setTempC(currentCondition.get("temp_C").getAsInt());
+                        myWeatherData.setWindSpeed(currentCondition.get("windspeedKmph").getAsInt());
+                        myWeatherData.setWeatherDesc(weatherDescription.get("value").getAsString());
+                        myWeatherData.setUvindex(currentCondition.get("uvIndex").getAsInt());                                                                     
+                                               
+                        WeatherDataInfo myData = gson.fromJson(responseData, WeatherDataInfo.class);
+                        
+                                           
                         myData.setCityName(cityToSearch);
                         state.setData(myData);
                         populateStats(myData, 0);

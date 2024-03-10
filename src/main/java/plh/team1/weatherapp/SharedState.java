@@ -1,5 +1,12 @@
 package plh.team1.weatherapp;
 
+import java.util.List;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
+import javax.persistence.Persistence;
+import javax.persistence.TypedQuery;
+
 /**
  * A model state class that retains application data between scenes. The model
  * decouples the controllers from each other and makes the data (state)
@@ -8,8 +15,10 @@ package plh.team1.weatherapp;
 public class SharedState {
 
     private static SharedState instance;
-    private City city;
-    private WeatherData data;
+    private static EntityManagerFactory emf;
+
+    private CityInfo city;
+    private WeatherDataInfo data;
     private Utilities utilities = new Utilities();
     private int currentIndex = 0;
 
@@ -33,7 +42,7 @@ public class SharedState {
      *
      * @param city
      */
-    public synchronized void setCity(City city) {
+    public synchronized void setCity(CityInfo city) {
         this.city = city;
     }
 
@@ -42,7 +51,7 @@ public class SharedState {
      *
      * @return City
      */
-    public City getCity() {
+    public CityInfo getCity() {
         return this.city;
     }
 
@@ -51,7 +60,7 @@ public class SharedState {
      *
      * @param data
      */
-    public synchronized void setData(WeatherData data) {
+    public synchronized void setData(WeatherDataInfo data) {
         this.data = data;
     }
 
@@ -60,9 +69,96 @@ public class SharedState {
      *
      * @return WeatherData
      */
-    public WeatherData getData() {
+    public WeatherDataInfo getData() {
         return this.data;
     }
 
+    public EntityManagerFactory getEmf() {
+        return this.emf;
+    }
+
+    public synchronized void setEmf(EntityManagerFactory emf) {
+        this.emf = emf;
+    }
+
+    public static void createDB() {
+        emf = Persistence.createEntityManagerFactory("weatherdataPU");
+        System.out.println("Success opening Database");
+    }
     
+    public static void closeDB() {
+        if (emf != null && emf.isOpen()) {
+            emf.close();
+            System.out.println("Success closing Database");
+        }
+        
+    }
+
+    public static void addCity(City cityToBeAdded) {
+        EntityManager em = emf.createEntityManager();
+        EntityTransaction tx = em.getTransaction();
+
+        try {
+            tx.begin();
+
+            TypedQuery<City> query = em.createNamedQuery("City.findByThisName", City.class);
+            query.setParameter("thisName", cityToBeAdded.getThisName());
+            List<City> resultList = query.getResultList();
+
+            if (!resultList.isEmpty()) {
+                // City exists, increment timesSearched
+                City existingCity = resultList.get(0);
+                existingCity.setTimesSearched(existingCity.getTimesSearched() + 1);
+                em.merge(existingCity);
+                
+            } else {
+                // City does not exist, add it with timesSearched 1
+                cityToBeAdded.setTimesSearched(1);
+                em.persist(cityToBeAdded);
+            }
+
+            tx.commit();
+        } catch (Exception e) {
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+            // Log or handle the exception appropriately
+            e.printStackTrace();
+
+        } finally {
+            em.close();
+        }
+    }
+    
+    public static void deleteCity(int cityId) {
+        EntityManager em = emf.createEntityManager();
+        EntityTransaction tx = em.getTransaction();
+
+        try {
+            tx.begin();
+
+            TypedQuery<City> query = em.createNamedQuery("City.findById", City.class);
+            query.setParameter("id", cityId);
+            List<City> resultList = query.getResultList();
+
+            if (!resultList.isEmpty()) {
+                // City exists, delete
+                City existingCity = resultList.get(0);
+                em.remove(existingCity);                
+            }
+
+            tx.commit();
+        } catch (Exception e) {
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+            // Log or handle the exception appropriately
+            e.printStackTrace();
+
+        } finally {
+            em.close();
+        }
+    }
+    
+
 }
