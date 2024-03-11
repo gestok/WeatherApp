@@ -38,8 +38,8 @@ public class WeatherData implements Serializable {
     private String weatherDesc;
     @Basic(optional = false)
     @Column(name = "WD_DATE")
-    @Temporal(TemporalType.DATE)
-    private Date wdDate;
+//    @Temporal(TemporalType.DATE)
+    private String wdDate;
     @Basic(optional = false)
     @Column(name = "CITY_ID")
     private int cityId;
@@ -51,7 +51,7 @@ public class WeatherData implements Serializable {
         this.id = id;
     }
 
-    public WeatherData(Integer id, Date wdDate, int cityId) {
+    public WeatherData(Integer id, String wdDate, int cityId) {
         this.id = id;
         this.wdDate = wdDate;
         this.cityId = cityId;
@@ -105,11 +105,11 @@ public class WeatherData implements Serializable {
         this.weatherDesc = weatherdesc;
     }
 
-    public Date getWdDate() {
+    public String getWdDate() {
         return wdDate;
     }
 
-    public void setWdDate(Date wdDate) {
+    public void setWdDate(String wdDate) {
         this.wdDate = wdDate;
     }
 

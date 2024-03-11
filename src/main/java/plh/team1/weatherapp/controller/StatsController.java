@@ -215,12 +215,15 @@ public class StatsController {
             ObservableList<CityBeanTable> data = tblCities.getItems();
             data.remove(selectedCity);
             
-            // Perform additional logic for deleting from the database or any other actions
+            // Should delete all WeatherData objects first due to FK_CONSTRAINT
+            SharedState.deleteWeatherByCityId(cityId);
+            // Delete city
             SharedState.deleteCity(cityId);
 
-            // Clear the selection after deletion
+            // Clear the tblCities view after deletion
             tblCities.getSelectionModel().clearSelection();
             
+            // Clear the weatherDataObservable list after deletion
             weatherDataObservable.clear();
         }
     }

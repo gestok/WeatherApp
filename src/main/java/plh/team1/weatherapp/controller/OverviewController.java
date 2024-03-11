@@ -3,8 +3,12 @@ package plh.team1.weatherapp.controller;
 // Java
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.Platform;
@@ -223,6 +227,8 @@ public class OverviewController {
                         myWeatherData.setWindSpeed(currentCondition.get("windspeedKmph").getAsInt());
                         myWeatherData.setWeatherDesc(weatherDescription.get("value").getAsString());
                         myWeatherData.setUvindex(currentCondition.get("uvIndex").getAsInt());
+                        myWeatherData.setWdDate(currentCondition.get("localObsDateTime").getAsString());
+                        
                         
                         state.setWdData(myWeatherData);
                                                

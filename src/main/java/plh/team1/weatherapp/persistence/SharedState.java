@@ -183,7 +183,8 @@ public class SharedState {
             if (!resultList.isEmpty()) {
                 // City exists, delete
                 City existingCity = resultList.get(0);
-                em.remove(existingCity);                
+                em.remove(existingCity);
+                em.flush();
             }
 
             tx.commit();
@@ -223,14 +224,19 @@ public class SharedState {
         return em.find(WeatherData.class, id);
     }
 
-    // deletes a weatherData record 
-    public void deleteWeatherData(WeatherData weatherData) {
+    //delete WeatherData corresponding to a city referred by id
+    public static void deleteWeatherByCityId(int cityId) {
         EntityManager em = emf.createEntityManager();
         EntityTransaction tx = em.getTransaction();
         
         tx.begin();
-        em.remove(weatherData);
+        TypedQuery query = em.createQuery(
+                "DELETE FROM WeatherData w "
+                + "WHERE w.cityId = :id", WeatherData.class);
+        query.setParameter("id", cityId);
+        int result = query.executeUpdate();
         tx.commit();
+        System.out.println("Deleted " + result + " records");
     }
 
     

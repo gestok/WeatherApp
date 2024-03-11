@@ -16,9 +16,9 @@ public class WeatherDataBeanTable {
     private SimpleIntegerProperty uvIndex = new SimpleIntegerProperty();
     private SimpleIntegerProperty windSpeed = new SimpleIntegerProperty();
     private SimpleStringProperty weatherDesc = new SimpleStringProperty();
-    private ObjectProperty<Date> wdDate = new SimpleObjectProperty<>(this, "wdDate");
+    private SimpleStringProperty wdDate = new SimpleStringProperty();
 
-    public WeatherDataBeanTable(int id, int humidity, int tempC, int uvIndex, int windSpeed, String weatherDesc, Date wdDate) {
+    public WeatherDataBeanTable(int id, int humidity, int tempC, int uvIndex, int windSpeed, String weatherDesc, String wdDate) {
         this.id.set(id);
         this.humidity.set(humidity);
         this.tempC.set(tempC);
@@ -68,11 +68,11 @@ public class WeatherDataBeanTable {
         this.weatherDesc = weatherDesc;
     }
 
-    public Date getWdDate() {
+    public String getWdDate() {
         return wdDate.get();
     }
 
-    public void setWdDate(ObjectProperty<Date> date) {
+    public void setWdDate(SimpleStringProperty date) {
         this.wdDate = date;
     }
     
@@ -93,7 +93,7 @@ public class WeatherDataBeanTable {
         int myUVIndex = data.getUvindex();
         int myWindSpeed = data.getWindSpeed();
         String myWeatherDesc = data.getWeatherDesc();
-        Date myDate = data.getWdDate();
+        String myDate = data.getWdDate();
        
 
         // Create a new CityBeanTable object using constructor-based instantiation
