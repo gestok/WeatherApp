@@ -1,6 +1,17 @@
 package plh.team1.weatherapp.crud;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParser;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
+import java.util.List;
+import plh.team1.weatherapp.City;
 import plh.team1.weatherapp.model.WeatherDataModel;
 import plh.team1.weatherapp.api.Api;
 import plh.team1.weatherapp.model.CityModel;
@@ -8,36 +19,33 @@ import plh.team1.weatherapp.serialization.WeatherData;
 import plh.team1.weatherapp.model.WeatherDataModel;
 
 public class Test {
-    
-    
-    
+
     public static void main(String[] args) {
-        
+
         //api call
-        Api api = new Api("Thessaloniki");        
+        Api api = new Api("Thessaloniki");
         //
         WeatherData wr = api.fetchWeatherData();
         WeatherData wr2 = api.fetchWeatherData();
         WeatherData wr3 = api.fetchWeatherData("Patra", "greece");
         WeatherData wr4 = api.fetchWeatherData("Kavala", "greece");
         Repo repo = new Repo();
-        
-        
+
         CityModel citymodel = new CityModel(wr);
         CityModel citymodel2 = new CityModel(wr2);
         CityModel citymodel3 = new CityModel(wr3);
         CityModel citymodel4 = new CityModel(wr4);
-        
+
         WeatherDataModel wdm = new WeatherDataModel(wr);
         WeatherDataModel wdm2 = new WeatherDataModel(wr2);
         WeatherDataModel wdm3 = new WeatherDataModel(wr3);
         WeatherDataModel wrm4 = new WeatherDataModel(wr4);
-        
+
         repo.addWeatherData(wdm3);
         repo.addWeatherData(wdm);
         repo.addWeatherData(wdm2);
         repo.addWeatherData(wrm4);
-       
+
         //this is the way of adding a new city to the repo in order to ensure IDs
         citymodel = repo.addCity(citymodel);
         citymodel2 = repo.addCity(citymodel2);
@@ -49,8 +57,8 @@ public class Test {
         repo.addWeatherDataToCity(citymodel4.getId(), wrm4);
         repo.setFavourite(citymodel2.getId(), true);
         repo.setFavourite(citymodel3.getId(), true);
-        
-        for (WeatherDataModel wd:repo.findByCity(citymodel.getId())){
+
+        for (WeatherDataModel wd : repo.findByCity(citymodel.getId())) {
             System.out.println(wd);
         }
         repo.findByCity(citymodel.getId());
@@ -58,16 +66,19 @@ public class Test {
         wrm4 = repo.updateUvIndex(wrm4.getWeatherDataId(), "23");
         wrm4 = repo.updateWeatherDesc(wrm4.getWeatherDataId(), "very nice weather yes");
         wrm4 = repo.updateWindSpeed(wrm4.getWeatherDataId(), "132");
-        
-        
+        populateCityListView();
 
+       
 
-
-        
-        
-                
-        
-        
     }
     
+    private static void populateCityListView(){
+        Repo repo = new Repo();
+        List<CityModel> cityList = repo.getCities();
+        Collections.sort(cityList, Comparator.comparing(CityModel::getCityName).thenComparing(CityModel::getAdmin_name));
+        for(CityModel city: cityList){
+            System.out.println(city.toJSON());
+        }
+    }
+
 }

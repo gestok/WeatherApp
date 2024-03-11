@@ -9,6 +9,7 @@ public class NearestArea {
     private String latitude;
     private String longitude;
     private String population;
+    private List<Region> region;
 
     public String getLongitude() {
         return longitude;
@@ -38,4 +39,8 @@ public class NearestArea {
         this.areaName.set(0, areaName);
     }
 
+    public Region getRegion() {
+        return region.get(0);
+    }
+  
 }

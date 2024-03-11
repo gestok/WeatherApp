@@ -1,7 +1,8 @@
 plh\team1\weatherapp\StatsController.class
-plh\team1\weatherapp\SearchController.class
+plh\team1\weatherapp\OverviewController$2.class
 plh\team1\weatherapp\serialization\AreaName.class
 plh\team1\weatherapp\api\Api.class
+plh\team1\weatherapp\serialization\Region.class
 plh\team1\weatherapp\OverviewController$1.class
 plh\team1\weatherapp\OverviewController.class
 plh\team1\weatherapp\serialization\CurrentCondition.class
@@ -12,11 +13,14 @@ plh\team1\weatherapp\App.class
 plh\team1\weatherapp\SharedState.class
 plh\team1\weatherapp\crud\Repo.class
 plh\team1\weatherapp\model\WeatherDataModel.class
+plh\team1\weatherapp\JSONConvertible.class
 plh\team1\weatherapp\crud\Test.class
 plh\team1\weatherapp\serialization\Weather.class
 plh\team1\weatherapp\serialization\NearestArea.class
 plh\team1\weatherapp\Test.class
+plh\team1\weatherapp\StatsController$1.class
 plh\team1\weatherapp\Utilities.class
 plh\team1\weatherapp\serialization\Country.class
+plh\team1\weatherapp\model\JSONField.class
 plh\team1\weatherapp\CustomTooltip.class
 plh\team1\weatherapp\serialization\CurrentCondition$WeatherDesc.class

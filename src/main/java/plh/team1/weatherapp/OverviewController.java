@@ -4,11 +4,15 @@ package plh.team1.weatherapp;
 import plh.team1.weatherapp.api.Api;
 import plh.team1.weatherapp.serialization.WeatherData;
 import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
+import com.google.gson.JsonElement;
 import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.List;
+import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 
@@ -17,6 +21,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
@@ -34,6 +39,7 @@ public class OverviewController {
 
     // Variables
     private SharedState state;
+
     private Utilities utilities = new Utilities();
     @FXML
     private Button menuItemOverview;
@@ -53,6 +59,8 @@ public class OverviewController {
     private Label tempValue;
     @FXML
     private Label weatherDesc;
+    @FXML
+    private Label cityCountryBottom;
     @FXML
     private Label cityCountry;
     @FXML
@@ -75,20 +83,29 @@ public class OverviewController {
     private Button searchButton;
     @FXML
     private Button SaveButton;
+    private final Tooltip saveButtonTooltip = new CustomTooltip("Saves data");
     @FXML
     private VBox mapViewWrapper;
     @FXML
     private WebView mapView;
     @FXML
     private Label cityCountyBottom;
+    //threading for db
+    private ExecutorService executor;
 
     // Constructor
     public OverviewController() {
         this.state = SharedState.getInstance();
+        this.executor = Executors.newFixedThreadPool(4);
+        this.initializeTooltips();
+        this.state.setRepo(); //instantiate repo
     }
 
+    @FXML
     private void initialize() {
-        this.state = SharedState.getInstance();
+        if (this.state.getData() != null) {
+            this.populateStats();
+        }
         this.initializeTooltips();
 
     }
@@ -99,46 +116,60 @@ public class OverviewController {
      * @throws IOException
      */
     @FXML
-    private void switchToSearch() throws IOException {
-        App.setRoot("Search");
-    }
-
-    @FXML
     private void switchToStats() throws IOException {
+        createJson("cities3.json");
         App.setRoot("Stats");
     }
 
     /**
      * Method that initializes the tool-tips on elements.
      */
+    //not working, tried removing css 
     private void initializeTooltips() {
         Tooltip.install(this.menuItemOverview, this.overviewTooltip);
         Tooltip.install(this.menuItemSearch, this.searchTooltip);
+        Tooltip.install(this.SaveButton, this.saveButtonTooltip);
     }
 
     /**
-     * Method that populates the fields with data based on the day index
-     * provided (0 is today).
-     *
-     * @param weatherData
-     * @param index
+     * adds city searched to db exports city info to JSON file cities.json
      */
-    private void populateStats( WeatherData wd, CityModel city, WeatherDataModel wdm, int index) {
-        Repo repo = new Repo();
-        city = repo.addCity(city);
-        repo.close();
+    private void addToDb() {
+        try {
+            var cityToBeAdded = this.state.getRepo().addCity(state.getCityModel());
+            state.setCityModel(cityToBeAdded);
+        } catch (Exception e) {
+            e.printStackTrace();
+        };
+    }
+
+    /**
+     * populates UI
+     */
+    private void populateStats() {
+        var wd = state.getData();
+
+        if (wd == null) {
+            return;
+        }
+        var wdm = new WeatherDataModel(wd);
+        var city = new CityModel(wd);
+        var index = state.getIndex();
+
         this.tempValue.setText(wdm.getTemperature());
         this.weatherDesc.setText(wdm.getWeatherDesc());
-        this.cityCountry.setText(city.getCountryName());
-        String highTemp = wd.getWeather(index).getMaxTempC();
-        String lowTemp = wd.getWeather(index).getMinTempC();        
+        this.cityCountry.setText(city.getCityName() + ", " + city.getCountryName());
+        String highTemp = state.getData().getWeather(index).getMaxTempC();
+        String lowTemp = state.getData().getWeather(index).getMinTempC();
         this.highLowFeels.setText(String.format("%s° / %s° Feels like %s°", highTemp, lowTemp, wdm.getFeelIsLike()));
         this.currentDate.setText(this.utilities.formatDate(wdm.getDate()));
         this.weatherImage.setImage(this.utilities.getWeatherIcon(wdm.getWeatherDesc()));
         this.uvindex_v.setText(wdm.getUvIndex());
-        this.humidity_v.setText(wdm.getHumidity()+ "%");
+        this.humidity_v.setText(wdm.getHumidity() + "%");
         this.wind_v.setText(wdm.getWindspeed() + " km/h");
         this.visibility_v.setText(wdm.getVisibility() + " km");
+        this.cityCountryBottom.setText((city.getCityName() + ", " + city.getCountryName()));
+
     }
 
     @FXML
@@ -159,19 +190,12 @@ public class OverviewController {
     private void onSearchButtonClick(ActionEvent event) throws IOException {
 
         Api weatherApi = new Api();
-
         String cityToSearch = searchBar.getText().trim();
-
         if (cityToSearch.isEmpty()) {
-            Alert alert = new Alert(AlertType.ERROR);
-            alert.setTitle("Error");
-            alert.setHeaderText("City Name is blank!");
-            alert.setContentText("Please enter a city name!");
-            alert.showAndWait();
+            infoDialog("Enter a city name");
             return;
         }
         weatherApi.setQuery(cityToSearch);
-        
         weatherApi.fetchData(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
@@ -181,69 +205,55 @@ public class OverviewController {
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-                Platform.runLater(() -> handleResponse(response));
-            }
-
-            private void handleResponse(Response response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    try {
-                        String responseData = response.body().string();
-                        Gson gson = new Gson();                        
+                    String responseData = response.body().string();
+                    Platform.runLater(() -> {
+                        Gson gson = new Gson();
                         WeatherData weatherData = gson.fromJson(responseData, WeatherData.class);
-                        WeatherDataModel weatherDataModel = new WeatherDataModel(weatherData);
-                        CityModel cityModel = new CityModel(weatherData);
-
-                        cityCountyBottom.setText(cityModel.getCityName() + ", " + cityModel.getCountryName());
-                        
                         state.setData(weatherData);
-                        populateStats(weatherData, cityModel, weatherDataModel, 0);
-                        updateMap(Double.parseDouble(cityModel.getLatitude()), Double.parseDouble(cityModel.getLongitude()));
+                        addToDb();
+                        populateStats();
+                        var city = state.getCityModel();
+                        updateMap(Double.parseDouble(city.getLatitude()), Double.parseDouble(city.getLongitude()));
                         mapViewWrapper.setVisible(true);
                         mapView.setVisible(true);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                } else {
-                    handleErrorResponse(response.code());
+                    });
+                } else if (response.code() == 404) {
+                    Platform.runLater(() -> infoDialog("City Not Found"));
                 }
             }
 
-            private void handleErrorResponse(int statusCode) {
-                if (statusCode == 404) {
-                    Platform.runLater(() -> {
-                        Alert alert = new Alert(AlertType.ERROR);
-                        alert.setTitle("Error 404");
-                        alert.setHeaderText("City " + cityToSearch + " not found!");
-                        alert.setContentText("Please enter a valid city name!");
-                        alert.showAndWait();
-                    });
-                }
-            }
         });
     }
 
     @FXML
-    private void onSaveButtonClick(ActionEvent event) {
-        // To be implemented        
-        
-        Repo repo = new Repo();
-        
-        WeatherData wd = state.getData();
-        var city = new CityModel(wd);
-        var weatherData = new WeatherDataModel(wd);
-        city = repo.addCity(city);
-        weatherData = repo.addWeatherData(weatherData);
-        repo.addWeatherDataToCity(city.getId(), weatherData);
-        repo.close();
-        
-        Alert alert = new Alert(AlertType.CONFIRMATION);
-        alert.setTitle("Confirm");
-        alert.setHeaderText("Do you want to save the current search?");
-        alert.setContentText("Tip: Saving stuff reduces your disk's lifespan");
-        alert.showAndWait();
-       
-        
-        
+    private void onSaveButtonClick() {
+
+        if (state.getData() == null) {
+            infoDialog("You have to search for a city first");
+            return;
+        }
+        Alert alert = confirmationDialog("Do you want to save the current search?", "Tip: Saving stuff reduces your disk's lifespan");
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            CompletableFuture.runAsync(new Runnable() {
+                @Override
+                public void run() {
+                    try  {
+                        var repo = state.getRepo();
+                        var wd = state.getData();
+                        var city = new CityModel(wd);
+                        var wdm = new WeatherDataModel(wd);
+
+                        repo.addWeatherData(wdm);
+                        city = repo.addCity(city);
+                        repo.addWeatherDataToCity(city.getId(), wdm);
+                    } catch (Exception NullPointerException) {
+                        
+                    }
+                }
+            });
+        }
     }
 
     /**
@@ -322,6 +332,54 @@ public class OverviewController {
                 + "</html>";
 
         this.mapView.getEngine().loadContent(htmlContent);
+    }
+
+    private void infoDialog(String errorMessage) {
+        Alert errorAlert = new Alert(AlertType.INFORMATION);
+        errorAlert.setTitle("Did you search for a city?");
+        errorAlert.setHeaderText(null);
+        errorAlert.setContentText(errorMessage);
+        errorAlert.showAndWait();
+    }
+
+    private Alert confirmationDialog(String confirmation, String additionalText) {
+        Alert alert = new Alert(AlertType.CONFIRMATION);
+        alert.setTitle("Confirm");
+        alert.setHeaderText(confirmation);
+        alert.setContentText(additionalText);
+        return alert;
+    }
+    
+     /**
+     * Creates cities.json file that contains all the cities that are associated
+     * with weatherData.
+     *
+     * @param fileName
+     */
+    private void createJson(String fileName) {
+        Gson gson = new Gson();
+        var repo = state.getRepo();
+        List<CityModel> cities = repo.getCities();
+        repo.close();
+        StringBuilder jsonContent = new StringBuilder("[");
+        for (int i = 0; i < cities.size(); i++) {
+            JsonElement element = gson.fromJson(cities.get(i).toJSON(), JsonElement.class);
+            jsonContent.append(gson.toJson(element));
+            if (i < cities.size() - 1) {
+                jsonContent.append(",\n ");
+            }
+        }
+        jsonContent.append("]");
+        //Write JSON content to file
+        try {
+            Path outputPath = Path.of("src/main/resources/data/"+fileName);
+            Files.createDirectories(outputPath.getParent());
+            Files.write(outputPath, jsonContent.toString().getBytes());
+            System.out.println("JSON objects written to file successfully.");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
 
 }

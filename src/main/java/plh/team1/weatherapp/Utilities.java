@@ -1,6 +1,11 @@
 package plh.team1.weatherapp;
 
 // Java
+import java.io.IOException;
+import java.nio.file.FileSystems;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardOpenOption;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.time.LocalDate;
@@ -10,12 +15,16 @@ import java.util.Set;
 
 // JavaFX
 import javafx.scene.image.Image;
+import plh.team1.weatherapp.model.CityModel;
 
 /**
  * This class includes many utilities methods that can be used throughout the
  * app without the need of rewriting them in every class.
  */
 public class Utilities {
+
+    private final static String FILE_NAME = "cities2.json";
+    private final static String RESOURCE_FOLDER = "src/main/resources/data/";
 
     // Constructor
     public Utilities() {
@@ -217,4 +226,9 @@ public class Utilities {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("EEEE d MMMM", Locale.ENGLISH);
         return date.format(formatter);
     }
+
+ 
+
+
+
 }

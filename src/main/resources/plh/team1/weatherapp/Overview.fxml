@@ -21,32 +21,18 @@
         <HBox alignment="CENTER_RIGHT" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="54.0" styleClass="navigation" stylesheets="@styles.css">
             <children>
                 <Button fx:id="menuItemOverview" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="54.0" prefWidth="54.0">
-                    <graphic>
-                        <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
-                            <image>
-                                <Image url="@../../../icons/report.png" />
-                            </image>
-                        </ImageView>
-                    </graphic>
                     <styleClass>
                         <String fx:value="menu-item" />
                         <String fx:value="report" />
                         <String fx:value="active" />
                     </styleClass>
-                </Button>
-                <Button fx:id="menuItemSearch" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onAction="#switchToSearch" prefHeight="54.0" prefWidth="54.0" stylesheets="@styles.css">
-                    <styleClass>
-                        <String fx:value="menu-item" />
-                        <String fx:value="cursor-pointer" />
-                        <String fx:value="search" />
-                    </styleClass>
-                    <graphic>
-                        <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+               <graphic>
+                        <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
                             <image>
                                 <Image url="@../../../icons/search.png" />
                             </image>
                         </ImageView>
-                    </graphic>
+               </graphic>
                 </Button>
                 <Button fx:id="menuItemStats" onAction="#switchToStats" prefHeight="54.0" prefWidth="54.0" stylesheets="@styles.css">
                     <graphic>
@@ -249,13 +235,17 @@
                         <String fx:value="cursor-pointer" />
                      </styleClass>
                   </Button>
-                  <Button fx:id="SaveButton" alignment="CENTER" contentDisplay="CENTER" layoutX="212.0" layoutY="6.0" minHeight="32.0" mnemonicParsing="false" onAction="#onSaveButtonClick" prefHeight="32.0" prefWidth="89.0" stylesheets="@styles.css" text="Save">
-                     <styleClass>
-                        <String fx:value="search-btn" />
-                        <String fx:value="bold" />
-                        <String fx:value="cursor-pointer" />
-                     </styleClass>
-                  </Button>
+                  <AnchorPane layoutX="204.0" layoutY="2.0">
+                     <children>
+                        <Button fx:id="SaveButton" alignment="CENTER" contentDisplay="CENTER" layoutX="8.0" layoutY="4.0" minHeight="32.0" mnemonicParsing="false" onAction="#onSaveButtonClick" prefHeight="32.0" prefWidth="89.0" stylesheets="@styles.css" text="Save">
+                           <styleClass>
+                              <String fx:value="bold" />
+                              <String fx:value="search-btn" />
+                              <String fx:value="cursor-pointer" />
+                           </styleClass>
+                        </Button>
+                     </children>
+                  </AnchorPane>
                </children>
             </AnchorPane>
          </children>
@@ -266,7 +256,7 @@
             <WebView fx:id="mapView" layoutX="379.0" layoutY="2.0" prefHeight="265.0" prefWidth="265.0" />
          </children>
       </VBox>
-      <Label fx:id="cityCountyBottom" alignment="CENTER" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" text="Thessaloniki, Greece" textFill="#276487">
+      <Label fx:id="cityCountryBottom" alignment="CENTER" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" text="Thessaloniki, Greece" textFill="#276487">
          <font>
             <Font name="System Bold" size="16.0" />
          </font>
