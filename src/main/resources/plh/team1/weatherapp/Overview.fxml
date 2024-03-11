@@ -249,13 +249,14 @@
                         <String fx:value="cursor-pointer" />
                      </styleClass>
                   </Button>
-                  <Button fx:id="SaveButton" alignment="CENTER" contentDisplay="CENTER" layoutX="212.0" layoutY="6.0" minHeight="32.0" mnemonicParsing="false" onAction="#onSaveButtonClick" prefHeight="32.0" prefWidth="89.0" stylesheets="@styles.css" text="Save">
-                     <styleClass>
-                        <String fx:value="search-btn" />
-                        <String fx:value="bold" />
-                        <String fx:value="cursor-pointer" />
-                     </styleClass>
-                  </Button>
+                  <Button fx:id="saveButton" alignment="CENTER" contentDisplay="CENTER" layoutX="212.0" layoutY="6.0" minHeight="32.0" mnemonicParsing="false" onAction="#onSaveButtonClick" prefHeight="32.0" prefWidth="89.0" stylesheets="@styles.css" text="Save" disable="true">
+    <styleClass>
+        <String fx:value="search-btn" />
+        <String fx:value="bold" />
+        <String fx:value="cursor-pointer" />
+    </styleClass>
+</Button>
+
                </children>
             </AnchorPane>
          </children>

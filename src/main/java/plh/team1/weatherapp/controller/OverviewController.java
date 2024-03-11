@@ -8,6 +8,8 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.Platform;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.event.ActionEvent;
 
 // JavaFX
@@ -15,6 +17,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
@@ -36,7 +39,7 @@ import plh.team1.weatherapp.model.WeatherData;
 import plh.team1.weatherapp.model.City;
 
 public class OverviewController {
-
+    
     // Variables
     private SharedState state;
     private Utilities utilities = new Utilities();
@@ -79,7 +82,7 @@ public class OverviewController {
     @FXML
     private Button searchButton;
     @FXML
-    private Button SaveButton;
+    private Button saveButton;
     @FXML
     private VBox mapViewWrapper;
     @FXML
@@ -95,7 +98,7 @@ public class OverviewController {
     private void initialize() {
         this.state = SharedState.getInstance();
         this.initializeTooltips();
-
+        
     }
 
     /**
@@ -175,6 +178,7 @@ public class OverviewController {
             alert.setHeaderText("City Name is blank!");
             alert.setContentText("Please enter a city name!");
             alert.showAndWait();
+            saveButton.setDisable(true);
             return;
         }
         weatherApi.setQuery(cityToSearch);
@@ -211,17 +215,18 @@ public class OverviewController {
                         
                         City myCity = new City();
                         myCity.setThisName(cityToSearch);
-                        SharedState.addCity(myCity);
+                        state.addCity(myCity);
                         
                         WeatherData myWeatherData = new WeatherData();
                         myWeatherData.setHumidity(currentCondition.get("humidity").getAsInt());
                         myWeatherData.setTempC(currentCondition.get("temp_C").getAsInt());
                         myWeatherData.setWindSpeed(currentCondition.get("windspeedKmph").getAsInt());
                         myWeatherData.setWeatherDesc(weatherDescription.get("value").getAsString());
-                        myWeatherData.setUvindex(currentCondition.get("uvIndex").getAsInt());                                                                     
-                                               
-                        WeatherDataInfo myData = gson.fromJson(responseData, WeatherDataInfo.class);
+                        myWeatherData.setUvindex(currentCondition.get("uvIndex").getAsInt());
                         
+                        state.setWdData(myWeatherData);
+                                               
+                        WeatherDataInfo myData = gson.fromJson(responseData, WeatherDataInfo.class);                        
                                            
                         myData.setCityName(cityToSearch);
                         state.setData(myData);
@@ -229,6 +234,7 @@ public class OverviewController {
                         updateMap(lat, lon);
                         mapViewWrapper.setVisible(true);
                         mapView.setVisible(true);
+                        saveButton.setDisable(false);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -245,6 +251,7 @@ public class OverviewController {
                         alert.setHeaderText("City " + cityToSearch + " not found!");
                         alert.setContentText("Please enter a valid city name!");
                         alert.showAndWait();
+                        saveButton.setDisable(true);
                     });
                 }
             }
@@ -253,13 +260,20 @@ public class OverviewController {
 
     @FXML
     private void onSaveButtonClick(ActionEvent event) {
-        // To be implemented
+
         Alert alert = new Alert(AlertType.CONFIRMATION);
         alert.setTitle("Confirm");
         alert.setHeaderText("Do you want to save the current search?");
         alert.setContentText("Tip: Saving stuff reduces your disk's lifespan");
-        alert.showAndWait();
-    }
+        alert.showAndWait()
+                    .filter(response -> response == ButtonType.OK)
+                    .ifPresent(response ->{
+                        WeatherData wd = state.getWdData();
+                        wd.setCityId(state.getCityId());
+                        state.addWeatherData(wd);
+                    });         
+
+        }
 
     /**
      * Method to call when a city is selected. The method populates a web view

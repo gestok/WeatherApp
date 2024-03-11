@@ -10,6 +10,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 import javax.persistence.TypedQuery;
+import plh.team1.weatherapp.model.WeatherData;
 
 /**
  * A model state class that retains application data between scenes. The model
@@ -23,6 +24,34 @@ public class SharedState {
 
     private CityInfo city;
     private WeatherDataInfo data;
+
+    public int getCityId() {
+        return cityId;
+    }
+
+    public void setCityId(int cityId) {
+        this.cityId = cityId;
+    }
+    
+    private int cityId;
+
+    public City getCtData() {
+        return ctData;
+    }
+
+    public void setCtData(City ctData) {
+        this.ctData = ctData;
+    }
+
+    public WeatherData getWdData() {
+        return wdData;
+    }
+
+    public void setWdData(WeatherData wdData) {
+        this.wdData = wdData;
+    }
+    private City ctData;
+    private WeatherData wdData;
     private Utilities utilities = new Utilities();
     private int currentIndex = 0;
 
@@ -98,9 +127,10 @@ public class SharedState {
         
     }
 
-    public static void addCity(City cityToBeAdded) {
+    public void addCity(City cityToBeAdded) {
         EntityManager em = emf.createEntityManager();
         EntityTransaction tx = em.getTransaction();
+        int cityId = -1;
 
         try {
             tx.begin();
@@ -113,12 +143,15 @@ public class SharedState {
                 // City exists, increment timesSearched
                 City existingCity = resultList.get(0);
                 existingCity.setTimesSearched(existingCity.getTimesSearched() + 1);
+                cityId = existingCity.getId();
                 em.merge(existingCity);
                 
             } else {
                 // City does not exist, add it with timesSearched 1
                 cityToBeAdded.setTimesSearched(1);
                 em.persist(cityToBeAdded);
+                em.flush();
+                cityId = cityToBeAdded.getId();
             }
 
             tx.commit();
@@ -131,7 +164,9 @@ public class SharedState {
 
         } finally {
             em.close();
+            
         }
+        setCityId(cityId);
     }
     
     public static void deleteCity(int cityId) {
@@ -163,6 +198,96 @@ public class SharedState {
             em.close();
         }
     }
+    
+    //adds a weatherData object to the WEATHERDATA table
+    public WeatherData addWeatherData(WeatherData weatherData) {
+        EntityManager em = emf.createEntityManager();
+        EntityTransaction tx = em.getTransaction();
+        
+        em.getTransaction().begin();
+        em.persist(weatherData);
+        em.getTransaction().commit();
+        return weatherData;
+    }
+
+    
+    // returns a cityModel object based on id
+    public City findCity(Long id) {
+        EntityManager em = emf.createEntityManager();
+        return em.find(City.class, id);
+    }
+
+    // returns a weatherDataModel object based on id
+    public WeatherData findWeatherData(Long id) {
+        EntityManager em = emf.createEntityManager();
+        return em.find(WeatherData.class, id);
+    }
+
+    // deletes a weatherData record 
+    public void deleteWeatherData(WeatherData weatherData) {
+        EntityManager em = emf.createEntityManager();
+        EntityTransaction tx = em.getTransaction();
+        
+        tx.begin();
+        em.remove(weatherData);
+        tx.commit();
+    }
+
+    
+//    public WeatherDataModel updateTemperature(Long id, String temp) {
+//        entityManager.getTransaction().begin();
+//        Query query = entityManager.createQuery("Update WeatherDataModel set temperature = :temp where id = :id");
+//        query.setParameter("id", id);
+//        query.setParameter("temp", temp);
+//        query.executeUpdate();
+//        entityManager.getTransaction().commit();
+//        entityManager.clear();
+//        return findById(id);
+//    }
+//
+//    public WeatherDataModel updateUvIndex(Long id, String uvIndex) {
+//        entityManager.getTransaction().begin();
+//        Query query = entityManager.createQuery("Update WeatherDataModel set uvIndex = :uvIndex where id = :id");
+//        query.setParameter("id", id);
+//        query.setParameter("uvIndex", uvIndex);
+//        query.executeUpdate();
+//        entityManager.getTransaction().commit();
+//        entityManager.clear();
+//        return findById(id);
+//    }
+//
+//    public WeatherDataModel updateWeatherDesc(Long id, String weatherDesc) {
+//        entityManager.getTransaction().begin();
+//        Query query = entityManager.createQuery("Update WeatherDataModel set weatherDesc = :weatherDesc where id = :id");
+//        query.setParameter("id", id);
+//        query.setParameter("weatherDesc", weatherDesc);
+//        query.executeUpdate();
+//        entityManager.getTransaction().commit();
+//        entityManager.clear();
+//        return findById(id);
+//    }
+//
+//    public WeatherDataModel updateWindSpeed(Long id, String windspeed) {
+//        entityManager.getTransaction().begin();
+//        Query query = entityManager.createQuery("Update WeatherDataModel set windspeed = :windspeed where id = :id");
+//        query.setParameter("id", id);
+//        query.setParameter("windspeed", windspeed);
+//        query.executeUpdate();
+//        entityManager.getTransaction().commit();
+//        entityManager.clear();
+//        return findById(id);
+//    }
+//
+//    public WeatherDataModel updateDate(Long id, Date date) {
+//        entityManager.getTransaction().begin();
+//        Query query = entityManager.createQuery("Update WeatherDataModel set date = :date where id = :id");
+//        query.setParameter("id", id);
+//        query.setParameter("date", date);
+//        query.executeUpdate();
+//        entityManager.getTransaction().commit();
+//        entityManager.clear();
+//        return findById(id);
+//    }
     
 
 }

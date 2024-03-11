@@ -79,7 +79,7 @@
                <children>
                   <TableView fx:id="tblCities" layoutX="347.0" layoutY="14.0" prefHeight="168.0" prefWidth="290.0">
                      <columns>
-                        <TableColumn fx:id="clmnId" prefWidth="44.80001449584961" text="Id" />
+                        <TableColumn fx:id="clmnId" prefWidth="44.80001449584961" text="Id" visible="false"/>
                         <TableColumn fx:id="clmnName" prefWidth="100.0" text="Name" />
                         <TableColumn fx:id="clmnTimesSearched" prefWidth="141.59991455078125" text="Times Searched" />
                      </columns>
@@ -92,7 +92,7 @@
                <children>
                   <TableView fx:id="tblWeatherData" layoutX="222.0" layoutY="16.0" prefHeight="155.0" prefWidth="539.0">
                      <columns>
-                        <TableColumn fx:id="clmnWeatherId" prefWidth="40" text="Id" />
+                        <TableColumn fx:id="clmnWeatherId" prefWidth="40" text="Id" visible="false"/>
                         <TableColumn fx:id="clmnDate" prefWidth="80" text="Date" />
                         <TableColumn fx:id="clmnTemperature" prefWidth="80" text="Temperature" />
                         <TableColumn fx:id="clmnHumidity" prefWidth="80" text="Humidity" />

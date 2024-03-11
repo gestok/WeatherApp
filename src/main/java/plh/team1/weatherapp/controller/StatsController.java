@@ -16,7 +16,9 @@ import java.util.Date;
 
 // JavaFX
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
@@ -181,28 +183,46 @@ public class StatsController {
     
     @FXML
     private void onDeleteButtonClick(ActionEvent event) {
-        // Handle delete button click
+        
         CityBeanTable selectedCity = tblCities.getSelectionModel().getSelectedItem();
+        
+        if (selectedCity == null) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("Please select a City");
+            alert.showAndWait();
+        } else {        
+        
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Confirm");
+            alert.setHeaderText("Do you want to delete the selected city?");
+            alert.setContentText("Tip: Deleting a city also deletes all weather records");
+            alert.showAndWait()
+                        .filter(response -> response == ButtonType.OK)
+                        .ifPresent(response ->{
+                            deleteCityFromDatabase(selectedCity);
+                        });         
 
+            }
+    }
+   
+    private void deleteCityFromDatabase(CityBeanTable selectedCity) {
+        
         if (selectedCity != null) {
             // Get the selected item and remove it from the data source
             int cityId = selectedCity.getId();
             
             ObservableList<CityBeanTable> data = tblCities.getItems();
             data.remove(selectedCity);
-
+            
             // Perform additional logic for deleting from the database or any other actions
             SharedState.deleteCity(cityId);
 
             // Clear the selection after deletion
             tblCities.getSelectionModel().clearSelection();
+            
+            weatherDataObservable.clear();
         }
-    }
-
-    private void deleteCityFromDatabase(CityBeanTable city) {
-        // Perform your logic for deleting the city from the database
-        // This might involve calling a service or DAO class
-        // ...
     }
 
     }
