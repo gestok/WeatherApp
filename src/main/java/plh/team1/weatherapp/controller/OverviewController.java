@@ -267,19 +267,22 @@ public class OverviewController {
     @FXML
     private void onSaveButtonClick(ActionEvent event) {
 
-        Alert alert = new Alert(AlertType.CONFIRMATION);
-        alert.setTitle("Confirm");
-        alert.setHeaderText("Do you want to save the current search?");
-        alert.setContentText("Tip: Saving stuff reduces your disk's lifespan");
-        alert.showAndWait()
-                    .filter(response -> response == ButtonType.OK)
-                    .ifPresent(response ->{
-                        WeatherData wd = state.getWdData();
-                        wd.setCityId(state.getCityId());
-                        state.addWeatherData(wd);
-                    });         
+        WeatherData wd = state.getWdData();
+        int cityId = state.getCityId();
+        String wdDate = wd.getWdDate();
 
+        if (state.isWdEntryDuplicate() == false) {
+            wd.setCityId(state.getCityId());
+            state.addWeatherData(wd);
+        } else {
+            Alert alert = new Alert(AlertType.WARNING);
+            alert.setTitle("Warning");
+            alert.setHeaderText("This entry already exists in the DB for this city!");
+            alert.setContentText("Entry: " + wdDate);
+            alert.showAndWait();
         }
+
+    }
 
     /**
      * Method to call when a city is selected. The method populates a web view

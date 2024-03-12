@@ -16,6 +16,7 @@ import javax.persistence.*;
     @NamedQuery(name = "WeatherData.findByWindSpeed", query = "SELECT w FROM WeatherData w WHERE w.windSpeed = :windspeedkmph"),
     @NamedQuery(name = "WeatherData.findByWeatherDesc", query = "SELECT w FROM WeatherData w WHERE w.weatherDesc = :weatherdesc"),
     */
+    @NamedQuery(name = "WeatherData.findDuplicate", query = "SELECT COUNT(w) FROM WeatherData w WHERE w.cityId = :cityId AND w.wdDate = :wdDate"),
     @NamedQuery(name = "WeatherData.findByWddate", query = "SELECT w FROM WeatherData w WHERE w.wdDate = :wdDate"),
     @NamedQuery(name = "WeatherData.findByCityId", query = "SELECT w FROM WeatherData w WHERE w.cityId = :cityId")})
 public class WeatherData implements Serializable {

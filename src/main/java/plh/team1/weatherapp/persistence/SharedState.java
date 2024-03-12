@@ -239,6 +239,14 @@ public class SharedState {
         System.out.println("Deleted " + result + " records");
     }
 
+    public boolean isWdEntryDuplicate() {
+        EntityManager em = emf.createEntityManager();
+        TypedQuery query = em.createNamedQuery("WeatherData.findDuplicate", WeatherData.class);
+        query.setParameter("cityId", cityId);
+        query.setParameter("wdDate", wdData.getWdDate());
+        long count = (long) query.getSingleResult();
+        return count != 0;
+    }
     
 //    public WeatherDataModel updateTemperature(Long id, String temp) {
 //        entityManager.getTransaction().begin();
