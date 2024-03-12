@@ -247,6 +247,7 @@
                     </columns>
                   </TableView>
                   <Button fx:id="deleteButton" layoutY="301.0" mnemonicParsing="false" onAction="#Delete" prefHeight="25.0" prefWidth="104.0" text="Delete" />
+                  <Button fx:id="exportToPdfButton" layoutX="104.0" layoutY="301.0" mnemonicParsing="false" onAction="#onSaveToPdf" prefHeight="25.0" prefWidth="104.0" text="Export" />
                </children>
             </Pane>
             </children>
