@@ -66,9 +66,7 @@ public class Test {
         Repo repo = new Repo();
         List<CityModel> cityList = repo.getCities();
         Collections.sort(cityList, Comparator.comparing(CityModel::getCityName).thenComparing(CityModel::getAdmin_name));
-        for(CityModel city: cityList){
-            System.out.println(city.toJSON());
-        }
+        
     }
 
 }

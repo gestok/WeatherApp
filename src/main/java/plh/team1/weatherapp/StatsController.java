@@ -436,4 +436,20 @@ public class StatsController {
         state.getRepo().updateWeatherDesc(dataSelected.getWeatherDataId(), valueInserted);
 
     }
+    
+    
+    @FXML
+    private void onSaveToPdf(ActionEvent event) {
+
+        List<CityModel> citiesToPrint;
+        citiesToPrint = state.getRepo().getCities();
+        if (citiesToPrint.isEmpty()) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("No Cities in DB. Cannot export");
+            alert.showAndWait();
+            return;
+        }
+        ExportPdfStats.exportPdfStats(citiesToPrint);
+    }
 }

@@ -1,7 +1,6 @@
 package plh.team1.weatherapp.model;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -10,16 +9,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
-import java.lang.reflect.Field;
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
-import plh.team1.weatherapp.JSONConvertible;
 import plh.team1.weatherapp.serialization.WeatherData;
 
 
@@ -28,34 +19,28 @@ parser of the needed serialized data
  */
 @Entity
 @Table(name = "CITY")
-public class CityModel implements JSONConvertible {
+public class CityModel   {
     
     
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
     
-    @JSONField(name = "city")
     @Column(name = "cityname")    
     private String cityName;
     
-    @JSONField(name = "country")    
     @Column(name = "countryName")
     private String countryName;
     
-    @JSONField(name = "lat")
     @Column(name = "latitude")
     private String latitude;
     
-    @JSONField(name = "long")
     @Column(name = "longitude")
     private String longitude;
     
-    @JSONField
     @Column(name = "population")
     private String population;
     
-    @JSONField
     private String admin_name;
     
     @Column(name = "favourite")
@@ -167,27 +152,7 @@ public class CityModel implements JSONConvertible {
     }
     //create custom JSON field names with the @JSONField annotation 
     //very nice
-    @Override
-    public String toJSON() {
-        GsonBuilder gsonBuilder = new GsonBuilder();
-        gsonBuilder.setPrettyPrinting();
-        Gson gson = gsonBuilder.create();
-        Map<String, String> jsonMap = new HashMap<>();
-        for (Field field : this.getClass().getDeclaredFields()) {
-            if (field.isAnnotationPresent(JSONField.class)) {
-                JSONField annotation = field.getAnnotation(JSONField.class);
-                String fieldName = annotation.name().isEmpty() ? field.getName() : annotation.name();
-                try {
-                    field.setAccessible(true); // Ensure private fields are accessible
-                    jsonMap.put(fieldName, (String) field.get(this));
-                } catch (IllegalAccessException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-        return gson.toJson(jsonMap);
-    }
-
+   
     @Override
     public String toString() {
         return  cityName + ", " + countryName +", " +  admin_name;
@@ -195,9 +160,3 @@ public class CityModel implements JSONConvertible {
 
 }
 
-@Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.FIELD)
-@interface JSONField {
-
-    String name() default ""; //Includes a name attribute for specifying the JSON field
-}
