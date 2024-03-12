@@ -24,7 +24,7 @@
                     <graphic>
                         <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
                             <image>
-                                <Image url="@../../../icons/report.png" />
+                                <Image url="@../../../icons/search.png" />
                             </image>
                         </ImageView>
                     </graphic>
@@ -43,7 +43,7 @@
                     <graphic>
                         <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                             <image>
-                                <Image url="@../../../icons/search.png" />
+                                <Image url="@../../../icons/db.png" />
                             </image>
                         </ImageView>
                     </graphic>
@@ -52,7 +52,7 @@
                     <graphic>
                         <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
                             <image>
-                                <Image url="@../../../icons/db.png" />
+                                <Image url="@../../../icons/report.png" />
                             </image>
                         </ImageView>
                     </graphic>
@@ -249,7 +249,7 @@
                         <String fx:value="cursor-pointer" />
                      </styleClass>
                   </Button>
-                  <Button fx:id="saveButton" alignment="CENTER" contentDisplay="CENTER" layoutX="212.0" layoutY="6.0" minHeight="32.0" mnemonicParsing="false" onAction="#onSaveButtonClick" prefHeight="32.0" prefWidth="89.0" stylesheets="@styles.css" text="Save" disable="true">
+                  <Button fx:id="saveButton" alignment="CENTER" contentDisplay="CENTER" disable="true" layoutX="212.0" layoutY="6.0" minHeight="32.0" mnemonicParsing="false" onAction="#onSaveButtonClick" prefHeight="32.0" prefWidth="89.0" stylesheets="@styles.css" text="Save">
     <styleClass>
         <String fx:value="search-btn" />
         <String fx:value="bold" />
