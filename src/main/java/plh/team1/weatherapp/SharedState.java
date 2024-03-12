@@ -14,7 +14,6 @@ public class SharedState {
 
     private static SharedState instance;
     private WeatherData data;
-    private City city;
     private Utilities utilities = new Utilities();
     private int index;
     private CityModel cityModel;
@@ -46,23 +45,6 @@ public class SharedState {
         this.weatherDataModel = new WeatherDataModel(data);        
     }
 
-    /**
-     * Stores the selected city data.
-     *
-     * @param city
-     */
-    public synchronized void setCity(City city) {
-        this.city = city;
-    }
-
-    /**
-     * Returns data about selected city.
-     *
-     * @return City
-     */
-    public City getCity() {
-        return this.city;
-    }
 
     /**
      * WeatherData
@@ -123,6 +105,7 @@ public class SharedState {
     
     public synchronized void setRepo() {
         this.repo = new Repo();
+        
     }
 
 

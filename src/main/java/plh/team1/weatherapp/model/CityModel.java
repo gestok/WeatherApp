@@ -166,7 +166,8 @@ public class CityModel implements JSONConvertible {
     public void incrementTimesSearched() {
         this.timesSearched++;
     }
-
+    //create custom JSON field names with the @JSONField annotation 
+    //very nice
     @Override
     public String toJSON() {
         GsonBuilder gsonBuilder = new GsonBuilder();
@@ -190,7 +191,7 @@ public class CityModel implements JSONConvertible {
 
     @Override
     public String toString() {
-        return "CityModel{" + ", id=" + id + ", cityName=" + cityName + ", countryName=" + countryName + '}';
+        return  cityName + ", " + countryName +", " +  admin_name;
     }
 
 }

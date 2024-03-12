@@ -2,9 +2,7 @@ package plh.team1.weatherapp;
 
 // Java
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.stream.Collectors;
@@ -12,16 +10,10 @@ import java.util.Comparator;
 
 // Gson
 import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.List;
 
 // JavaFX
 import javafx.application.Platform;
+import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.layout.VBox;
@@ -30,6 +22,8 @@ import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.web.WebView;
@@ -37,18 +31,17 @@ import javafx.scene.web.WebView;
 // OkHttp3
 import okhttp3.*;
 import plh.team1.weatherapp.api.Api;
-import plh.team1.weatherapp.crud.Repo;
 import plh.team1.weatherapp.model.CityModel;
+import plh.team1.weatherapp.model.WeatherDataModel;
 import plh.team1.weatherapp.serialization.WeatherData;
 
 public class StatsController {
 
     // Variables
-    private Repo repo;
     private SharedState state;
     private Utilities utilities = new Utilities();
-    private ArrayList<City> allCities = new ArrayList<>();
-    private Double cityListHeight = 200.0;
+    private ArrayList<CityModel> allCities = new ArrayList<>();
+    private Double cityListHeight = 100.0;
     @FXML
     private VBox root;
     @FXML
@@ -56,9 +49,9 @@ public class StatsController {
     @FXML
     private TextField searchBar;
     @FXML
-    private ListView<City> cityListView;
+    private ListView<CityModel> cityListView;
     @FXML
-    private ObservableList<City> filteredCities = FXCollections.observableArrayList();
+    private ObservableList<CityModel> filteredCities = FXCollections.observableArrayList();
     @FXML
     private VBox cityInfoWrapper;
     @FXML
@@ -74,31 +67,49 @@ public class StatsController {
     @FXML
     private Label cityPopulation;
     @FXML
-    private VBox mapViewWrapper;
+    private Label timesSearched;
     @FXML
-    private WebView mapView;
+    private VBox tablesWrapper;
     @FXML
     private Button searchButton;
     @FXML
     private Button addFavButton;
     @FXML
     private Button favouriteIconButton;
+    //tableview
+    @FXML
+    private TableView<WeatherDataModel> weatherTableView;
+    @FXML
+    private TableColumn<WeatherDataModel, String> temperatureColumn;
+    @FXML
+    private TableColumn<WeatherDataModel, String> humidityColumn;
+    @FXML
+    private TableColumn<WeatherDataModel, String> windSpeedColumn;
+    @FXML
+    private TableColumn<WeatherDataModel, String> uvIndexColumn;
+    @FXML
+    private TableColumn<WeatherDataModel, String> weatherDescColumn;
+    @FXML
+    private TableColumn<WeatherDataModel, String> dateColumn;
+
+    private ObservableList<WeatherDataModel> weatherDataObservableList = FXCollections.observableArrayList();
 
     // Constructor
     public StatsController() {
-        this.state = SharedState.getInstance();   
+        this.state = SharedState.getInstance();
     }
 
     @FXML
     private void initialize() {
-        if (this.state.getCity() != null) {
-            this.populateSearchWindow(this.state.getCity());
+        if (this.state.getCityModel() != null) {
+            this.populateSearchWindow(this.state.getCityModel());
         }
         this.populateCityListView();
         this.detectRootClick();
         this.detectSearchBarClick();
         this.applySearchBarChangeListener();
         this.onCityListViewClicked();
+
     }
 
     /**
@@ -113,67 +124,16 @@ public class StatsController {
 
     /**
      * Method that triggers when "Search" button is clicked.
-     */
-    @FXML
-    private void onSearchButtonClick() throws IOException {
-        Api weatherApi = new Api();
-        weatherApi.setQuery(this.state.getCity().getName());
-        this.setButtonsState(true);
-
-        weatherApi.fetchData(new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                e.printStackTrace();
-                setButtonsState(false);
-                Platform.runLater(() -> {
-                    System.out.println("Failure!");
-                });
-            }
-
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                if (response.isSuccessful() && response.body() != null) {
-                    String responseData = response.body().string();
-                    // Process the response as needed
-                    Platform.runLater(() -> {
-                        Gson gson = new Gson();
-                        WeatherData myData = gson.fromJson(responseData, WeatherData.class);
-                        state.setData(myData);
-                    });
-                } else {
-                    // Retry with country
-                    weatherApi.setQuery(state.getCity().getCountry());
-                    weatherApi.fetchData(this);
-                }
-                setButtonsState(false);
-                Platform.runLater(() -> {
-                    try {
-                        // Update UI to reflect the completion, e.g., hide loading indicator
-                        switchToOverview();
-                    } catch (IOException error) {
-                        System.err.println(error);
-                    }
-                });
-            }
-        });
-
-    }
-
-    /**
-     * Method that searches throughout cities JSON and filters the list results
-     * based on string parameter term.
-     *
-     * @param term A string to query through the list of cities.
-     */
+     */   
     private void search(String term) {
         if (term.isEmpty()) {
             this.setCityListVisibility(false);
         } else {
             try {
                 // Filter the list
-                ObservableList<City> filtered = this.allCities.stream()
-                        .filter(city -> city.getName().toLowerCase().contains(term.toLowerCase())
-                        || city.getCountry().toLowerCase().contains(term.toLowerCase()))
+                ObservableList<CityModel> filtered = this.allCities.stream()
+                        .filter(city -> city.getCityName().toLowerCase().contains(term.toLowerCase())
+                        || city.getCountryName().toLowerCase().contains(term.toLowerCase()))
                         .collect(Collectors.toCollection(FXCollections::observableArrayList));
 
                 if (!filtered.isEmpty()) {
@@ -241,7 +201,8 @@ public class StatsController {
             if (newValue == null) {
                 return;
             }
-            this.state.setCity(newValue);
+            this.state.setCityModel(newValue);
+            this.populateTableview();
             this.populateSearchWindow(newValue);
         });
     }
@@ -252,163 +213,51 @@ public class StatsController {
      *
      * @param populateCityDetails
      */
-    private void populateSearchWindow(City city) {
+    private void populateSearchWindow(CityModel city) {
         if (city == null) {
             return;
         }
         this.searchBar.setText(city.toString());
-        this.addFavButton.setText(city.getIsFavourite() ? "Remove from favourites" : "Add to favourites");
+        this.addFavButton.setText(city.getFavourite() ? "Remove from favourites" : "Add to favourites");
         this.addFavButton
-                .setStyle(city.getIsFavourite() ? "-fx-background-color: #c2160a" : "-fx-background-color: #499bca");
-        this.updateMap(city.getLatitude(), city.getLongitude());
+                .setStyle(city.getFavourite() ? "-fx-background-color: #c2160a" : "-fx-background-color: #499bca");
         this.updateCityDetails(city);
         this.setCityListVisibility(false);
         this.setCityDetailsVisibility(true);
     }
-
 
     /**
      * Method that loads cities JSON file and populates a list variable with the
      * names of the cities.
      */
     private void populateCityListView() {
-        JsonParser parser = new JsonParser();
+        //gets all the cities that are associated with some weatherdata
+        this.allCities = (ArrayList) state.getRepo().getCities();
 
-        InputStream inputStream = getClass().getClassLoader().getResourceAsStream("data/cities3.json");
-        if (inputStream == null) {
-            return;
-        }
+        // Sort city list
+        Collections.sort(this.allCities, Comparator.comparing(CityModel::getCityName).thenComparing(CityModel::getAdmin_name));
 
-        InputStreamReader reader = new InputStreamReader(inputStream, StandardCharsets.UTF_8);
-        try (reader) {
-            // Parse JSON
-            JsonElement jsonElement = parser.parse(reader);
-            JsonArray jsonArray = jsonElement.getAsJsonArray();
+        // Populate ListView
+        this.filteredCities.setAll(this.allCities.stream().collect(Collectors.toList()));
 
-            // Add "City, Country" records
-            for (JsonElement elem : jsonArray) {
-                try {
-                    JsonObject cityInfo = elem.getAsJsonObject();
-                    String name = cityInfo.get("city").getAsString();
-                    String admin = cityInfo.get("admin_name").getAsString();
-                    String country = cityInfo.get("country").getAsString();
-                    double latitude = 0.0;
-                    if (cityInfo.has("lat")) {
-                        latitude = cityInfo.get("lat").getAsDouble();
-                    }
-                    double longitude = 0.0;
-                    if (cityInfo.has("long")) {
-                        longitude = cityInfo.get("long").getAsDouble();
-                    }
-                    int population = 0;
-                    if (cityInfo.has("population") && !cityInfo.get("population").getAsString().isEmpty()) {
-                        population = cityInfo.get("population").getAsInt();
-                    }
+        this.cityListView.setItems(this.filteredCities);
 
-                    this.allCities.add(new City(name, admin, country, latitude, longitude, population, false));
-                } catch (NumberFormatException e) {
-                    System.err.println("Error parsing city data for " + elem + ": " + e.getMessage());
-                }
-            }
-
-            // Sort city list
-            Collections.sort(this.allCities, Comparator.comparing(City::getName).thenComparing(City::getAdmin));
-
-            // Populate ListView
-            this.filteredCities.setAll(this.allCities.stream().collect(Collectors.toList()));
-            this.cityListView.setItems(this.filteredCities);
-        } catch (IOException e) {
-            System.err.println("Error reading cities.json: " + e.getMessage());
-        }
     }
 
     /**
-     * Method to call when a city is selected. The method populates a web view
-     * of a map with the help of OpenLayers library.
+     * Method to add to favourites with a click
      *
-     * @param latitude
-     * @param longitude
+     *
      */
-    private void updateMap(double latitude, double longitude) {
-        int zoom = 12;
-        String htmlContent = "<!DOCTYPE html>"
-                + "<html>"
-                + "<head>"
-                + "<link rel=\"stylesheet\" href=\"https://openlayers.org/en/v4.6.5/css/ol.css\" type=\"text/css\">"
-                + "<style>"
-                + "  body {"
-                + "    margin: 0;"
-                + "    background: #ebfbfe;"
-                + "  }"
-                + "  .map {"
-                + "    height: 100vh;"
-                + "    width: 100%;"
-                + "  }"
-                + "  canvas {"
-                + "    border-radius: 14px;"
-                + "  }"
-                + "</style>"
-                + "<script src=\"https://openlayers.org/en/v4.6.5/build/ol.js\" type=\"text/javascript\"></script>"
-                + "</head>"
-                + "<body>"
-                + "<div id=\"map\" class=\"map\"></div>"
-                + "<script type=\"text/javascript\">"
-                + "  var map = new ol.Map({"
-                + "    target: 'map',"
-                + "    layers: ["
-                + "      new ol.layer.Tile({"
-                + "        source: new ol.source.OSM()"
-                + "      })"
-                + "    ],"
-                + "    view: new ol.View({"
-                + "      center: ol.proj.fromLonLat([" + longitude + ", " + latitude + "]),"
-                + "      zoom: " + zoom
-                + "    }),"
-                + "    controls: ol.control.defaults({"
-                + "      attributionOptions: ({"
-                + "        collapsible: false"
-                + "      }),"
-                + "      zoom: false," // Disable default zoom controls
-                + "    }),"
-                + "    interactions: ol.interaction.defaults({"
-                + "      mouseWheelZoom: false,"
-                + "      dragPan: false,"
-                + "      doubleClickZoom: false"
-                + "    })"
-                + "  });"
-                // Marker
-                + "  var marker = new ol.Feature({"
-                + "    geometry: new ol.geom.Point("
-                + "      ol.proj.fromLonLat([" + longitude + ", " + latitude + "])"
-                + "    )"
-                + "  });"
-                + "  var vectorSource = new ol.source.Vector({"
-                + "    features: [marker]"
-                + "  });"
-                + "  var markerVectorLayer = new ol.layer.Vector({"
-                + "    source: vectorSource,"
-                + "  });"
-                // Disable right-click context menu
-                + "  document.getElementById('map').addEventListener('contextmenu', function(evt) {"
-                + "    evt.preventDefault();"
-                + "  });"
-                + "  map.addLayer(markerVectorLayer);"
-                + "</script>"
-                + "</body>"
-                + "</html>";
-
-        this.mapView.getEngine().loadContent(htmlContent);
-    }
-
     @FXML
     private void onAddToFavouritesClick() {
-        if (this.state == null || this.state.getCity() == null) {
+        if (this.state == null || this.state.getCityModel() == null) {
             return;
         }
-        this.state.getCity().setIsFavourite(!this.state.getCity().getIsFavourite());
+        this.state.getCityModel().setFavourite(!this.state.getCityModel().getFavourite());
         this.addFavButton
-                .setText(this.state.getCity().getIsFavourite() ? "Remove from favourites" : "Add to favourites");
-        this.addFavButton.setStyle(this.state.getCity().getIsFavourite() ? "-fx-background-color: #c2160a"
+                .setText(this.state.getCityModel().getFavourite() ? "Remove from favourites" : "Add to favourites");
+        this.addFavButton.setStyle(this.state.getCityModel().getFavourite() ? "-fx-background-color: #c2160a"
                 : "-fx-background-color: #499bca");
     }
 
@@ -417,12 +266,14 @@ public class StatsController {
      *
      * @param city A city object.
      */
-    private void updateCityDetails(City city) {
-        this.cityName.setText(city.getName());
-        this.cityCountry.setText(city.getCountry());
-        this.cityLng.setText(this.utilities.formatToDecimals(city.getLongitude(), 4));
-        this.cityLat.setText(this.utilities.formatToDecimals(city.getLatitude(), 4));
-        this.cityPopulation.setText(this.utilities.toLocaleNotation(city.getPopulation()));
+    private void updateCityDetails(CityModel city) {
+        this.cityName.setText(city.getCityName());
+        this.cityCountry.setText(city.getCountryName());
+        this.cityLng.setText(this.utilities.formatToDecimals(Double.parseDouble(city.getLongitude()), 4));
+        this.cityLat.setText(this.utilities.formatToDecimals(Double.parseDouble(city.getLatitude()), 4));
+        this.cityPopulation.setText(city.getPopulation());
+        this.timesSearched.setText((Integer.toString(city.getTimesSearched())));
+        
     }
 
     /**
@@ -443,8 +294,6 @@ public class StatsController {
      * @param state Boolean
      */
     private void setCityDetailsVisibility(boolean state) {
-        this.mapViewWrapper.setVisible(state);
-        this.mapView.setVisible(state);
         this.cityInfo.setVisible(state);
         this.cityInfoWrapper.setVisible(state);
     }
@@ -459,4 +308,53 @@ public class StatsController {
         this.addFavButton.setDisable(disabled);
         this.favouriteIconButton.setDisable(disabled);
     }
+
+    /**
+     * Clears weather Table View
+     */
+    private void clearTableView() {
+        weatherDataObservableList.clear();
+    }
+
+    /**
+     * Populates tableview
+     */
+    private void populateTableview() {
+
+        //clear pre existing items in the observable list
+        clearTableView();
+        var repo = this.state.getRepo();
+        ArrayList<WeatherDataModel> data = (ArrayList) repo.findByCity(state.getCityModel().getId());
+        for (WeatherDataModel wd : data) {
+            weatherDataObservableList.add(wd);
+            System.out.println(wd.toString());
+        }
+        weatherTableView.setItems(weatherDataObservableList);
+        temperatureColumn.setCellValueFactory(cell -> {
+            String temperature = cell.getValue().getTemperature();
+            return Bindings.createStringBinding(() -> temperature);
+        });
+        dateColumn.setCellValueFactory(cell -> {
+            String date = cell.getValue().getDate();
+            return Bindings.createStringBinding(() -> date);
+        });
+        humidityColumn.setCellValueFactory(cell -> {
+            String humidity = cell.getValue().getHumidity();
+            return Bindings.createStringBinding(() -> humidity);
+        });
+        windSpeedColumn.setCellValueFactory(cell -> {
+            String windSpeed = cell.getValue().getWindspeed();
+            return Bindings.createStringBinding(() -> windSpeed);
+        });
+        uvIndexColumn.setCellValueFactory(cell -> {
+            String uvIndex = cell.getValue().getUvIndex();
+            return Bindings.createStringBinding(() -> uvIndex);
+        });
+        weatherDescColumn.setCellValueFactory(cell -> {
+            String weatherDesc = cell.getValue().getWeatherDesc();
+            return Bindings.createStringBinding(() -> weatherDesc);
+        });
+
+    }
+
 }

@@ -245,10 +245,9 @@ public class Repo implements AutoCloseable{
      */
     public WeatherDataModel updateWindSpeed(Long id, String windspeed) {
         entityManager.getTransaction().begin();
-        Query query = entityManager.createQuery("Update WeatherDataModel set windspeed = :windspeed where id = :id");
-        query.setParameter("id", id);
-        query.setParameter("windspeed", windspeed);
-        query.executeUpdate();
+        WeatherDataModel weatherData = findById(id);
+        weatherData.setWindspeed(windspeed);
+        entityManager.persist(weatherData);
         entityManager.getTransaction().commit();
         entityManager.clear();
         return findById(id);

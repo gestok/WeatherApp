@@ -228,13 +228,6 @@
          <children>
             <AnchorPane prefHeight="48.0" prefWidth="388.0">
                <children>
-                  <Button fx:id="searchButton" alignment="CENTER" contentDisplay="CENTER" layoutX="53.0" layoutY="6.0" minHeight="32.0" mnemonicParsing="false" onAction="#onSearchButtonClick" prefHeight="32.0" prefWidth="89.0" stylesheets="@styles.css" text="Search">
-                     <styleClass>
-                        <String fx:value="search-btn" />
-                        <String fx:value="bold" />
-                        <String fx:value="cursor-pointer" />
-                     </styleClass>
-                  </Button>
                   <AnchorPane layoutX="204.0" layoutY="2.0">
                      <children>
                         <Button fx:id="SaveButton" alignment="CENTER" contentDisplay="CENTER" layoutX="8.0" layoutY="4.0" minHeight="32.0" mnemonicParsing="false" onAction="#onSaveButtonClick" prefHeight="32.0" prefWidth="89.0" stylesheets="@styles.css" text="Save">
@@ -246,6 +239,13 @@
                         </Button>
                      </children>
                   </AnchorPane>
+                  <Button fx:id="searchButton" alignment="CENTER" contentDisplay="CENTER" layoutX="53.0" layoutY="6.0" minHeight="32.0" mnemonicParsing="false" onAction="#onSearchButtonClick" prefHeight="32.0" prefWidth="89.0" stylesheets="@styles.css" text="Search">
+                     <styleClass>
+                        <String fx:value="search-btn" />
+                        <String fx:value="bold" />
+                        <String fx:value="cursor-pointer" />
+                     </styleClass>
+                  </Button>
                </children>
             </AnchorPane>
          </children>

@@ -1,18 +1,8 @@
 package plh.team1.weatherapp.crud;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonParser;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Date;
 import java.util.List;
-import plh.team1.weatherapp.City;
-import plh.team1.weatherapp.model.WeatherDataModel;
 import plh.team1.weatherapp.api.Api;
 import plh.team1.weatherapp.model.CityModel;
 import plh.team1.weatherapp.serialization.WeatherData;
@@ -65,7 +55,7 @@ public class Test {
         wrm4 = repo.updateTemperature(wrm4.getWeatherDataId(), "100");
         wrm4 = repo.updateUvIndex(wrm4.getWeatherDataId(), "23");
         wrm4 = repo.updateWeatherDesc(wrm4.getWeatherDataId(), "very nice weather yes");
-        wrm4 = repo.updateWindSpeed(wrm4.getWeatherDataId(), "132");
+        wrm4 = repo.updateWindSpeed(wrm4.getWeatherDataId(), "111111");
         populateCityListView();
 
        

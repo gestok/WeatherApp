@@ -4,15 +4,9 @@ package plh.team1.weatherapp;
 import plh.team1.weatherapp.api.Api;
 import plh.team1.weatherapp.serialization.WeatherData;
 import com.google.gson.Gson;
-import com.google.gson.JsonElement;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 
@@ -31,7 +25,6 @@ import javafx.scene.web.WebView;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
-import plh.team1.weatherapp.crud.Repo;
 import plh.team1.weatherapp.model.CityModel;
 import plh.team1.weatherapp.model.WeatherDataModel;
 
@@ -43,10 +36,7 @@ public class OverviewController {
     private Utilities utilities = new Utilities();
     @FXML
     private Button menuItemOverview;
-    private CustomTooltip overviewTooltip = new CustomTooltip("Report");
-    @FXML
-    private Button menuItemSearch;
-    private CustomTooltip searchTooltip = new CustomTooltip("Search");
+    private final Tooltip overviewTooltip = new CustomTooltip("Search");   
     @FXML
     private Label uvindex_v;
     @FXML
@@ -74,29 +64,28 @@ public class OverviewController {
     @FXML
     private Button next;
     @FXML
-    private Button menuItemStats;
-    @FXML
     private Label tempUnit;
     @FXML
     private TextField searchBar;
     @FXML
     private Button searchButton;
+    private final Tooltip searchButtonTooltip = new CustomTooltip("Click to begin a search");
     @FXML
     private Button SaveButton;
-    private final Tooltip saveButtonTooltip = new CustomTooltip("Saves data");
+    private final Tooltip saveButtonTooltip = new CustomTooltip("Click to save the search");
+    @FXML
+    private Button menuItemStats;
+    private final Tooltip menuItemStatsTooltip = new CustomTooltip("Click to browse data");
     @FXML
     private VBox mapViewWrapper;
     @FXML
     private WebView mapView;
     @FXML
     private Label cityCountyBottom;
-    //threading for db
-    private ExecutorService executor;
 
     // Constructor
     public OverviewController() {
         this.state = SharedState.getInstance();
-        this.executor = Executors.newFixedThreadPool(4);
         this.initializeTooltips();
         this.state.setRepo(); //instantiate repo
     }
@@ -117,7 +106,6 @@ public class OverviewController {
      */
     @FXML
     private void switchToStats() throws IOException {
-        createJson("cities3.json");
         App.setRoot("Stats");
     }
 
@@ -127,8 +115,9 @@ public class OverviewController {
     //not working, tried removing css 
     private void initializeTooltips() {
         Tooltip.install(this.menuItemOverview, this.overviewTooltip);
-        Tooltip.install(this.menuItemSearch, this.searchTooltip);
         Tooltip.install(this.SaveButton, this.saveButtonTooltip);
+        Tooltip.install(this.searchButton, this.searchButtonTooltip);
+        Tooltip.install(this.menuItemStats, this.menuItemStatsTooltip);
     }
 
     /**
@@ -239,7 +228,7 @@ public class OverviewController {
             CompletableFuture.runAsync(new Runnable() {
                 @Override
                 public void run() {
-                    try  {
+                    try {
                         var repo = state.getRepo();
                         var wd = state.getData();
                         var city = new CityModel(wd);
@@ -249,7 +238,7 @@ public class OverviewController {
                         city = repo.addCity(city);
                         repo.addWeatherDataToCity(city.getId(), wdm);
                     } catch (Exception NullPointerException) {
-                        
+
                     }
                 }
             });
@@ -348,38 +337,6 @@ public class OverviewController {
         alert.setHeaderText(confirmation);
         alert.setContentText(additionalText);
         return alert;
-    }
-    
-     /**
-     * Creates cities.json file that contains all the cities that are associated
-     * with weatherData.
-     *
-     * @param fileName
-     */
-    private void createJson(String fileName) {
-        Gson gson = new Gson();
-        var repo = state.getRepo();
-        List<CityModel> cities = repo.getCities();
-        repo.close();
-        StringBuilder jsonContent = new StringBuilder("[");
-        for (int i = 0; i < cities.size(); i++) {
-            JsonElement element = gson.fromJson(cities.get(i).toJSON(), JsonElement.class);
-            jsonContent.append(gson.toJson(element));
-            if (i < cities.size() - 1) {
-                jsonContent.append(",\n ");
-            }
-        }
-        jsonContent.append("]");
-        //Write JSON content to file
-        try {
-            Path outputPath = Path.of("src/main/resources/data/"+fileName);
-            Files.createDirectories(outputPath.getParent());
-            Files.write(outputPath, jsonContent.toString().getBytes());
-            System.out.println("JSON objects written to file successfully.");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
     }
 
 }
