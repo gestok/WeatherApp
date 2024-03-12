@@ -267,7 +267,7 @@
             <WebView fx:id="mapView" layoutX="379.0" layoutY="2.0" prefHeight="265.0" prefWidth="265.0" />
          </children>
       </VBox>
-      <Label fx:id="cityCountyBottom" alignment="CENTER" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" text="Thessaloniki, Greece" textFill="#276487">
+      <Label fx:id="cityCountyBottom" alignment="CENTER" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" text="" textFill="#276487">
          <font>
             <Font name="System Bold" size="16.0" />
          </font>

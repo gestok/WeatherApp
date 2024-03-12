@@ -98,12 +98,19 @@ public class OverviewController {
     // Constructor
     public OverviewController() {
         this.state = SharedState.getInstance();
+       
     }
-
-    private void initialize() {
+    @FXML
+    private void initialize() {        
         this.state = SharedState.getInstance();
         this.initializeTooltips();
         
+        if (this.state.getCity() != null) {
+            searchBar.setText(this.state.getCity().getName());
+        }
+        if (this.state.getData()!= null) {
+            populateStats(state.getData(), 0);
+        }       
     }
 
     /**
@@ -176,6 +183,8 @@ public class OverviewController {
         Api weatherApi = new Api();
 
         String cityToSearch = searchBar.getText().trim();
+        
+        
 
         if (cityToSearch.isEmpty()) {
             Alert alert = new Alert(AlertType.ERROR);
