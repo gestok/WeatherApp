@@ -1,5 +1,10 @@
 package plh.team1.weatherapp;
 
+import plh.team1.weatherapp.crud.Repo;
+import plh.team1.weatherapp.model.CityModel;
+import plh.team1.weatherapp.model.WeatherDataModel;
+import plh.team1.weatherapp.serialization.WeatherData;
+
 /**
  * A model state class that retains application data between scenes. The model
  * decouples the controllers from each other and makes the data (state)
@@ -8,12 +13,12 @@ package plh.team1.weatherapp;
 public class SharedState {
 
     private static SharedState instance;
-    private City city;
     private WeatherData data;
-    private Utilities utilities = new Utilities();
-    private int currentIndex = 0;
-
-    private SharedState() {
+    private int index;
+    private CityModel cityModel;
+    private Repo repo;
+    private WeatherDataModel weatherDataModel;
+     private SharedState() {
     }
 
     /**
@@ -29,50 +34,83 @@ public class SharedState {
     }
 
     /**
-     * Stores the selected city data.
-     *
-     * @param city
-     */
-    public synchronized void setCity(City city) {
-        this.city = city;
-    }
-
-    /**
-     * Returns data about selected city.
-     *
-     * @return City
-     */
-    public City getCity() {
-        return this.city;
-    }
-
-    /**
      * Stores the weather data response for reuse.
      *
      * @param data
      */
     public synchronized void setData(WeatherData data) {
         this.data = data;
+        this.cityModel = new CityModel(data);
+        this.weatherDataModel = new WeatherDataModel(data);        
     }
 
+
     /**
-     * Returns the weather data response.
+     * WeatherData
      *
-     * @return WeatherData
+     *
      */
-    public WeatherData getData() {
+    public synchronized WeatherData getData() {
         return this.data;
     }
 
     /**
-     * Method that returns the UV index label rank
+     * Index
      *
-     * @return String
+     * @param index
      */
-    public String getUvIndexRank() {
-        if (this.data == null) {
-            return "";
-        }
-        return this.utilities.uvIndexRank(this.data.getCurrentCondition().getUvIndex());
+    public synchronized void setIndex(int index) {
+        this.index = index;
     }
+
+    public synchronized int getIndex() {
+        return this.index;
+    }
+
+    /**
+     * CityModel
+     *
+     */
+    public synchronized CityModel getCityModel() {
+        return cityModel;
+    }
+
+    public synchronized void setCityModel(CityModel cityModel) {
+        this.cityModel = cityModel;
+    }
+
+    /**
+     * WeatherDataModel
+     *
+     * @return
+     */
+    public synchronized WeatherDataModel getWeatherDataModel() {
+        return weatherDataModel;
+    }
+
+    public synchronized void setWeatherDataModel(WeatherDataModel weatherDataModel) {
+        this.weatherDataModel = weatherDataModel;
+    }
+
+    /**
+     * Database
+     *
+     */
+    public synchronized Repo getRepo() {
+        return repo;
+    }
+    
+    
+    
+    public synchronized void setRepo() {
+        this.repo = new Repo();
+        
+    }
+
+
+
+   
+
+   
+
 }
