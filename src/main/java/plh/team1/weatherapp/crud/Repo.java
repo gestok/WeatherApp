@@ -10,7 +10,7 @@ import java.util.Date;
 import java.util.List;
 import plh.team1.weatherapp.model.WeatherDataModel;
 
-public class Repo implements AutoCloseable{
+public class Repo implements AutoCloseable {
 
     private EntityManager entityManager;
     private EntityManagerFactory emf;
@@ -25,9 +25,10 @@ public class Repo implements AutoCloseable{
         this.emf = Persistence.createEntityManagerFactory(pu);
         this.entityManager = this.emf.createEntityManager();
     }
-    
+
     /**
      * Helper method that Uses Name and Country to prevent dublicates
+     *
      * @param cityModel
      * @return null or list
      */
@@ -46,11 +47,13 @@ public class Repo implements AutoCloseable{
         return resultList;
     }
 
-    /** adds a city to the database
-     * If we intend to use the pojo later in our code the correct 
-     * practice of using the method is: citydummy = addCity(citydummy);
+    /**
+     * adds a city to the database If we intend to use the pojo later in our
+     * code the correct practice of using the method is: citydummy =
+     * addCity(citydummy);
+     *
      * @param cityToBeAdded
-     * @return cityModel 
+     * @return cityModel
      */
     public CityModel addCity(CityModel cityToBeAdded) {
         entityManager.getTransaction().begin();
@@ -58,25 +61,26 @@ public class Repo implements AutoCloseable{
             cityToBeAdded.setTimesSearched(1);
         } else { // city exists in the database
             cityToBeAdded = findCity(cityToBeAdded).get(0); //ensures id stays the same 
-            
+
         }
         entityManager.persist(cityToBeAdded);
         entityManager.getTransaction().commit();
 
         return cityToBeAdded;
     }
-    
-    public void incrementSearched(CityModel citySearched){
+
+    public void incrementSearched(CityModel citySearched) {
         entityManager.getTransaction().begin();
         citySearched.incrementTimesSearched();
         entityManager.persist(citySearched);
         entityManager.getTransaction().commit();
     }
-    
+
     /**
      * Handles the isFavourite field
+     *
      * @param id
-     * @param bool 
+     * @param bool
      */
     public void setFavourite(Long id, boolean bool) {
         CityModel cityModel = findCity(id);
@@ -86,11 +90,11 @@ public class Repo implements AutoCloseable{
         entityManager.getTransaction().commit();
     }
 
-
     /**
      * Adds a weatherDataModel to the db
+     *
      * @param weatherDataModel
-     * @return 
+     * @return
      */
     public WeatherDataModel addWeatherData(WeatherDataModel weatherDataModel) {
         entityManager.getTransaction().begin();
@@ -101,8 +105,9 @@ public class Repo implements AutoCloseable{
 
     /**
      * Associates the weatherDataModel entity with the city entity
+     *
      * @param id
-     * @param weatherDataModel 
+     * @param weatherDataModel
      */
     public void addWeatherDataToCity(Long id, WeatherDataModel weatherDataModel) {
         entityManager.getTransaction().begin();
@@ -118,6 +123,7 @@ public class Repo implements AutoCloseable{
 
     /**
      * searches for a cityModel based on given ID
+     *
      * @param id
      * @return cityModel
      */
@@ -127,26 +133,29 @@ public class Repo implements AutoCloseable{
 
     /**
      * Searches for a weatherDataModel based on a given ID
+     *
      * @param id
-     * @return 
+     * @return
      */
     public WeatherDataModel findWeatherData(Long id) {
         return entityManager.find(WeatherDataModel.class, id);
     }
 
-     
     /**
      * Deletes a weatherData record from the db
-     * @param weatherDataModel 
+     *
+     * @param weatherDataModel
      */
     public void deleteWeatherData(WeatherDataModel weatherDataModel) {
         entityManager.getTransaction().begin();
         entityManager.remove(weatherDataModel);
         entityManager.getTransaction().commit();
     }
+
     /**
      * Deletes all WeatherData associated with provided cityId
-     * @param id 
+     *
+     * @param id
      */
     public void deleteCityData(Long id) {
         entityManager.getTransaction().begin();
@@ -158,11 +167,12 @@ public class Repo implements AutoCloseable{
         int result = query.executeUpdate();
         entityManager.getTransaction().commit();
     }
-    
+
     /**
      * Lists all WeatherData corresponding to a city referred by id
+     *
      * @param id
-     * @return 
+     * @return
      */
     public List<WeatherDataModel> findByCity(Long id) {
         entityManager.getTransaction().begin();
@@ -173,16 +183,17 @@ public class Repo implements AutoCloseable{
                 + "where b.id = :id"
         );
         query.setParameter("id", id);
-        
+
         entityManager.persist(city);
         entityManager.getTransaction().commit();
         return query.getResultList();
     }
 
     /**
-     * Returns a weatherDataModel object 
+     * Returns a weatherDataModel object
+     *
      * @param id
-     * @return 
+     * @return
      */
     public WeatherDataModel findById(Long id) {
         Query query = entityManager.createNamedQuery("find weatherdata by id");
@@ -190,12 +201,13 @@ public class Repo implements AutoCloseable{
         return (WeatherDataModel) query.getSingleResult();
 
     }
-    
+
     /**
      * Updates temp field
+     *
      * @param id
      * @param temp
-     * @return 
+     * @return
      */
     public WeatherDataModel updateTemperature(Long id, String temp) {
         entityManager.getTransaction().begin();
@@ -207,12 +219,13 @@ public class Repo implements AutoCloseable{
         entityManager.clear();
         return findById(id);
     }
-    
+
     /**
      * Updates uvIndex field
+     *
      * @param id
      * @param uvIndex
-     * @return 
+     * @return
      */
     public WeatherDataModel updateUvIndex(Long id, String uvIndex) {
         entityManager.getTransaction().begin();
@@ -224,13 +237,13 @@ public class Repo implements AutoCloseable{
         entityManager.clear();
         return findById(id);
     }
-    
-  
+
     /**
      * Updates weatherDesc field
+     *
      * @param id
      * @param weatherDesc
-     * @return 
+     * @return
      */
     public WeatherDataModel updateWeatherDesc(Long id, String weatherDesc) {
         entityManager.getTransaction().begin();
@@ -242,12 +255,13 @@ public class Repo implements AutoCloseable{
         entityManager.clear();
         return findById(id);
     }
-    
+
     /**
      * Updates windSpeed
+     *
      * @param id
      * @param windspeed
-     * @return 
+     * @return
      */
     public WeatherDataModel updateWindSpeed(Long id, String windspeed) {
         entityManager.getTransaction().begin();
@@ -258,12 +272,13 @@ public class Repo implements AutoCloseable{
         entityManager.clear();
         return findById(id);
     }
-    
+
     /**
      * updates Date
+     *
      * @param id
      * @param date
-     * @return 
+     * @return
      */
     public WeatherDataModel updateDate(Long id, Date date) {
         entityManager.getTransaction().begin();
@@ -275,17 +290,28 @@ public class Repo implements AutoCloseable{
         entityManager.clear();
         return findById(id);
     }
+
     /**
      * Lists all cities that have been searched at list once
-     * @return 
+     *
+     * @return
      */
-    public List<CityModel> getCities(){
+    public List<CityModel> getCities() {
         return entityManager.createQuery("Select c from CityModel c", CityModel.class).getResultList();
     }
-    
+
     @Override
     public void close() {
         this.entityManager.close();
         this.emf.close();
+    }
+
+    public WeatherDataModel updateHumidity(long id, String valueInserted) {
+        entityManager.getTransaction().begin();
+        WeatherDataModel wd = findById(id);
+        wd.setHumidity(valueInserted);
+        entityManager.getTransaction().commit();
+        entityManager.clear();
+        return findById(id);
     }
 }

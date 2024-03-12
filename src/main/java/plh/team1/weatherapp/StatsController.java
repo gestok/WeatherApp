@@ -24,9 +24,9 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableColumn.CellEditEvent;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.layout.AnchorPane;
 
 // OkHttp3
@@ -91,11 +91,10 @@ public class StatsController {
     private TableColumn<WeatherDataModel, String> dateColumn;
 
     private ObservableList<WeatherDataModel> weatherDataObservableList = FXCollections.observableArrayList();
-    
+
     @FXML
     private Button deleteButton;
 
-    
     // Constructor
     public StatsController() {
         this.state = SharedState.getInstance();
@@ -113,6 +112,13 @@ public class StatsController {
         this.onCityListViewClicked();
         Label placeholderLabel = new Label("No saved data!!");
         this.weatherTableView.setPlaceholder(placeholderLabel);
+        //Update the table to allow for the first and last name fields to be editable 
+        weatherTableView.setEditable(true);
+        temperatureColumn.setCellFactory(TextFieldTableCell.forTableColumn());
+        humidityColumn.setCellFactory(TextFieldTableCell.forTableColumn());
+        windSpeedColumn.setCellFactory(TextFieldTableCell.forTableColumn());
+        uvIndexColumn.setCellFactory(TextFieldTableCell.forTableColumn());
+        weatherDescColumn.setCellFactory(TextFieldTableCell.forTableColumn());
 
     }
 
@@ -128,7 +134,7 @@ public class StatsController {
 
     /**
      * Method that triggers when "Search" button is clicked.
-     */   
+     */
     private void search(String term) {
         if (term.isEmpty()) {
             this.setCityListVisibility(false);
@@ -277,7 +283,7 @@ public class StatsController {
         this.cityLat.setText(this.utilities.formatToDecimals(Double.parseDouble(city.getLatitude()), 4));
         this.cityPopulation.setText(city.getPopulation());
         this.timesSearched.setText((Integer.toString(city.getTimesSearched())));
-        
+
     }
 
     /**
@@ -359,36 +365,75 @@ public class StatsController {
         });
 
     }
-    
-    
-    public void Delete(ActionEvent actionEvent){
-        if (state.getCityModel() == null){
+
+    public void Delete(ActionEvent actionEvent) {
+        if (state.getCityModel() == null) {
             return;
         }
-        Alert alert = confirmationDialog("Are you sure you want to delete" + state.getCityModel().getCityName() + " from your database?","");
+        Alert alert = confirmationDialog("Are you sure you want to delete " + state.getCityModel().getCityName()
+                + ", " + state.getCityModel().getCountryName()
+                + " from your database?", "");
         Optional<ButtonType> result = alert.showAndWait();
-        if (result.isPresent() && result.get() == ButtonType.OK){
+        if (result.isPresent() && result.get() == ButtonType.OK) {
             weatherDataObservableList.clear();
-            state.getRepo().deleteCityData(state.getCityModel().getId());        
-        }else {
+            state.getRepo().deleteCityData(state.getCityModel().getId());
+        } else {
             return;
         }
-        
-        
-     }
-    
-    
-        private Alert confirmationDialog(String confirmation, String additionalText) {
+
+    }
+
+    private Alert confirmationDialog(String confirmation, String additionalText) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Confirm");
         alert.setHeaderText(confirmation);
         alert.setContentText(additionalText);
         return alert;
     }
-        
-        public void changeDate(CellEditEvent edditedCell){
-            //
-            
-        }
 
+    public void changeTemperature(TableColumn.CellEditEvent edittedCell) {        //
+
+        WeatherDataModel dataSelected = weatherTableView.getSelectionModel().getSelectedItem();
+        String valueInserted = edittedCell.getNewValue().toString();
+        dataSelected.setTemperature(valueInserted);
+        state.getRepo().updateTemperature(dataSelected.getWeatherDataId(), valueInserted);
+
+    }
+    
+    
+    public void changeHumidity(TableColumn.CellEditEvent edittedCell) {        //
+
+        WeatherDataModel dataSelected = weatherTableView.getSelectionModel().getSelectedItem();
+        String valueInserted = edittedCell.getNewValue().toString();
+        dataSelected.setTemperature(valueInserted);
+        state.getRepo().updateHumidity(dataSelected.getWeatherDataId(), valueInserted);
+
+    }
+    
+    public void changeWindSpeed(TableColumn.CellEditEvent edittedCell) {        //
+
+        WeatherDataModel dataSelected = weatherTableView.getSelectionModel().getSelectedItem();
+        String valueInserted = edittedCell.getNewValue().toString();
+        dataSelected.setWindspeed(valueInserted);
+        state.getRepo().updateWindSpeed(dataSelected.getWeatherDataId(), valueInserted);
+
+    }
+    
+    public void changeUvIndex(TableColumn.CellEditEvent edittedCell) {        //
+
+        WeatherDataModel dataSelected = weatherTableView.getSelectionModel().getSelectedItem();
+        String valueInserted = edittedCell.getNewValue().toString();
+        dataSelected.setUvIndex(valueInserted);
+        state.getRepo().updateUvIndex(dataSelected.getWeatherDataId(), valueInserted);
+
+    }
+    
+    public void changeWeatherDesc(TableColumn.CellEditEvent edittedCell) {        //
+
+        WeatherDataModel dataSelected = weatherTableView.getSelectionModel().getSelectedItem();
+        String valueInserted = edittedCell.getNewValue().toString();
+        dataSelected.setWeatherDesc(valueInserted);
+        state.getRepo().updateWeatherDesc(dataSelected.getWeatherDataId(), valueInserted);
+
+    }
 }

@@ -239,11 +239,11 @@
                   <TableView fx:id="weatherTableView" prefHeight="300.0" prefWidth="642.0">
                     <columns>
                         <TableColumn fx:id="dateColumn" prefWidth="105.0" text="Date" />
-                      <TableColumn fx:id="temperatureColumn" prefWidth="103.0" text="Temperature" />
-                      <TableColumn fx:id="humidityColumn" minWidth="0.0" prefWidth="108.0" text="Humidity" />
-                        <TableColumn fx:id="windSpeedColumn" prefWidth="104.0" text="Windspeed" />
-                        <TableColumn fx:id="uvIndexColumn" prefWidth="109.0" text="UvIndex" />
-                        <TableColumn fx:id="weatherDescColumn" prefWidth="112.0" text="Weather Description" />
+                      <TableColumn fx:id="temperatureColumn" onEditCommit="#changeTemperature" prefWidth="103.0" text="Temperature" />
+                      <TableColumn fx:id="humidityColumn" minWidth="0.0" onEditCommit="#changeHumidity" prefWidth="108.0" text="Humidity" />
+                        <TableColumn fx:id="windSpeedColumn" onEditCommit="#changeWindSpeed" prefWidth="104.0" text="Windspeed" />
+                        <TableColumn fx:id="uvIndexColumn" onEditCommit="#changeUvIndex" prefWidth="109.0" text="UvIndex" />
+                        <TableColumn fx:id="weatherDescColumn" onEditCommit="#changeWeatherDesc" prefWidth="112.0" text="Weather Description" />
                     </columns>
                   </TableView>
                   <Button fx:id="deleteButton" layoutY="301.0" mnemonicParsing="false" onAction="#Delete" prefHeight="25.0" prefWidth="104.0" text="Delete" />
