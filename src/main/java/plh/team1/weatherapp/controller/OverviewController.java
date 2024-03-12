@@ -274,6 +274,11 @@ public class OverviewController {
         if (state.isWdEntryDuplicate() == false) {
             wd.setCityId(state.getCityId());
             state.addWeatherData(wd);
+            Alert alert = new Alert(AlertType.INFORMATION);
+            alert.setTitle("Information");
+            alert.setHeaderText("Entry successfully added!");
+            alert.showAndWait();
+            
         } else {
             Alert alert = new Alert(AlertType.WARNING);
             alert.setTitle("Warning");
