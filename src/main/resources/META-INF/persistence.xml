@@ -6,15 +6,16 @@
         <class>plh.team1.weatherapp.model.CityModel</class>
         <properties>
             <!--Database connection settings -->
-            <property name="jakarta.persistence.jdbc.url" value="jdbc:h2:~/test3"/>
+            <property name="jakarta.persistence.jdbc.url" value="jdbc:derby:db;create=true"/>
             <property name="jakarta.persistence.jdbc.user" value=""/>
-            <property name="jakarta.persistence.jdbc.driver" value="org.h2.Driver"/>
+            <property name="jakarta.persistence.jdbc.driver" value="org.apache.derby.jdbc.EmbeddedDriver"/>
             <property name="jakarta.persistence.jdbc.password" value=""/>
             <!--Hibernate specific configuration -->
-            <property name="hibernate.dialect" value="org.hibernate.dialect.H2Dialect"/>
+            
             <property name="hibernate.show_sql" value="true"/>
             <property name="hibernate.format_sql" value="true"/>
             <property name="hibernate.hbm2ddl.auto" value="update"/>
+
         </properties>
     </persistence-unit>
 </persistence>

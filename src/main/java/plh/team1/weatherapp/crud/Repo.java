@@ -58,12 +58,19 @@ public class Repo implements AutoCloseable{
             cityToBeAdded.setTimesSearched(1);
         } else { // city exists in the database
             cityToBeAdded = findCity(cityToBeAdded).get(0); //ensures id stays the same 
-            cityToBeAdded.incrementTimesSearched();
+            
         }
         entityManager.persist(cityToBeAdded);
         entityManager.getTransaction().commit();
 
         return cityToBeAdded;
+    }
+    
+    public void incrementSearched(CityModel citySearched){
+        entityManager.getTransaction().begin();
+        citySearched.incrementTimesSearched();
+        entityManager.persist(citySearched);
+        entityManager.getTransaction().commit();
     }
     
     /**
@@ -167,7 +174,6 @@ public class Repo implements AutoCloseable{
         );
         query.setParameter("id", id);
         
-        city.incrementTimesSearched();
         entityManager.persist(city);
         entityManager.getTransaction().commit();
         return query.getResultList();

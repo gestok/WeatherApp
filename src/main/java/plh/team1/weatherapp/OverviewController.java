@@ -125,8 +125,9 @@ public class OverviewController {
      */
     private void addToDb() {
         try {
-            var cityToBeAdded = this.state.getRepo().addCity(state.getCityModel());
+            var cityToBeAdded = state.getRepo().addCity(state.getCityModel());
             state.setCityModel(cityToBeAdded);
+            state.getRepo().incrementSearched(cityToBeAdded);
         } catch (Exception e) {
             e.printStackTrace();
         };

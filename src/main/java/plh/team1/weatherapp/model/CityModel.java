@@ -2,7 +2,6 @@ package plh.team1.weatherapp.model;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import java.util.Objects;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

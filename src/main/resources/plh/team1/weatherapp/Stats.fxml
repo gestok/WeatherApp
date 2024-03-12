@@ -246,6 +246,7 @@
                         <TableColumn fx:id="weatherDescColumn" prefWidth="112.0" text="Weather Description" />
                     </columns>
                   </TableView>
+                  <Button fx:id="deleteButton" layoutY="301.0" mnemonicParsing="false" onAction="#Delete" prefHeight="25.0" prefWidth="104.0" text="Delete" />
                </children>
             </Pane>
             </children>
