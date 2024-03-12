@@ -10,6 +10,7 @@ import javax.persistence.*;
     @NamedQuery(name = "City.findAll", query = "SELECT c FROM City c"),
     @NamedQuery(name = "City.findById", query = "SELECT c FROM City c WHERE c.id = :id"),
     @NamedQuery(name = "City.findByThisName", query = "SELECT c FROM City c WHERE c.thisName = :thisName"),
+    @NamedQuery(name = "City.findAllSortedByTimesSearched", query = "SELECT c FROM City c ORDER BY c.timesSearched DESC"),
     @NamedQuery(name = "City.findByTimesSearched", query = "SELECT c FROM City c WHERE c.timesSearched = :timesSearched")})
 public class City implements Serializable {
 

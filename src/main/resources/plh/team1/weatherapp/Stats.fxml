@@ -73,7 +73,7 @@
       <VBox alignment="CENTER" prefHeight="658.0" prefWidth="560.0" spacing="20.0">
          <children>
             <Label text="Δεδομένα Πόλεων" />
-            <Button mnemonicParsing="false" text="Export to PDF" />
+            <Button fx:id="BtnExport" mnemonicParsing="false" onAction="#onSavePDFButtonClick" text="Export to PDF" />
             <Button fx:id="BtnDelete" mnemonicParsing="false" onAction="#onDeleteButtonClick" text="Delete City" />
             <AnchorPane prefHeight="200.0" prefWidth="200.0">
                <children>

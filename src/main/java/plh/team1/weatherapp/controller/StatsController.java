@@ -6,6 +6,7 @@ import plh.team1.weatherapp.beans.CityBeanTable;
 import plh.team1.weatherapp.beans.WeatherDataBeanTable;
 import plh.team1.weatherapp.model.WeatherData;
 import plh.team1.weatherapp.model.City;
+import plh.team1.weatherapp.utils.ExportPdfStats;
 import java.io.IOException;
 import java.util.List;
 import javafx.application.Platform;
@@ -181,6 +182,22 @@ public class StatsController {
         em.close();
     }
     
+    @FXML
+    private void onSavePDFButtonClick(ActionEvent event) {
+        
+        List<City> citiesToPrint;
+        em = SharedState.getInstance().getEmf().createEntityManager();
+        TypedQuery query = em.createNamedQuery("City.findAllSortedByTimesSearched", City.class);
+        citiesToPrint = query.getResultList();
+        if (citiesToPrint.isEmpty()) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("No Cities in DB. Cannot export");
+            alert.showAndWait();
+            return;
+        }
+        ExportPdfStats.exportPdfStats(citiesToPrint);
+    }
     @FXML
     private void onDeleteButtonClick(ActionEvent event) {
         
