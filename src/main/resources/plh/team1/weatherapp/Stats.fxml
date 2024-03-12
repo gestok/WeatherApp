@@ -193,7 +193,7 @@
                                 </HBox>
                         <HBox alignment="CENTER_LEFT" prefHeight="32.0" prefWidth="379.0" styleClass="city-info-label-wrapper" stylesheets="@styles.css">
                            <children>
-                              <Label prefHeight="20.0" prefWidth="78.0" styleClass="city-info-label" stylesheets="@styles.css" text="#api calls" />
+                              <Label prefHeight="20.0" prefWidth="78.0" styleClass="city-info-label" stylesheets="@styles.css" text="Api Calls" />
                               <Pane HBox.hgrow="ALWAYS" />
                               <Label fx:id="timesSearched" alignment="CENTER" stylesheets="@styles.css">
                                  <styleClass>

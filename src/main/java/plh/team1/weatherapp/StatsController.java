@@ -8,11 +8,7 @@ import java.util.Collections;
 import java.util.stream.Collectors;
 import java.util.Comparator;
 
-// Gson
-import com.google.gson.Gson;
-
 // JavaFX
-import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -26,14 +22,10 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.web.WebView;
 
 // OkHttp3
-import okhttp3.*;
-import plh.team1.weatherapp.api.Api;
 import plh.team1.weatherapp.model.CityModel;
 import plh.team1.weatherapp.model.WeatherDataModel;
-import plh.team1.weatherapp.serialization.WeatherData;
 
 public class StatsController {
 
@@ -93,7 +85,9 @@ public class StatsController {
     private TableColumn<WeatherDataModel, String> dateColumn;
 
     private ObservableList<WeatherDataModel> weatherDataObservableList = FXCollections.observableArrayList();
+    
 
+    
     // Constructor
     public StatsController() {
         this.state = SharedState.getInstance();
@@ -109,6 +103,8 @@ public class StatsController {
         this.detectSearchBarClick();
         this.applySearchBarChangeListener();
         this.onCityListViewClicked();
+        Label placeholderLabel = new Label("No saved data!!");
+        this.weatherTableView.setPlaceholder(placeholderLabel);
 
     }
 
@@ -254,7 +250,7 @@ public class StatsController {
         if (this.state == null || this.state.getCityModel() == null) {
             return;
         }
-        this.state.getCityModel().setFavourite(!this.state.getCityModel().getFavourite());
+        state.getRepo().setFavourite(state.getCityModel().getId(), !state.getCityModel().getFavourite());
         this.addFavButton
                 .setText(this.state.getCityModel().getFavourite() ? "Remove from favourites" : "Add to favourites");
         this.addFavButton.setStyle(this.state.getCityModel().getFavourite() ? "-fx-background-color: #c2160a"
@@ -327,7 +323,6 @@ public class StatsController {
         ArrayList<WeatherDataModel> data = (ArrayList) repo.findByCity(state.getCityModel().getId());
         for (WeatherDataModel wd : data) {
             weatherDataObservableList.add(wd);
-            System.out.println(wd.toString());
         }
         weatherTableView.setItems(weatherDataObservableList);
         temperatureColumn.setCellValueFactory(cell -> {

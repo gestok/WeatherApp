@@ -14,7 +14,6 @@ public class SharedState {
 
     private static SharedState instance;
     private WeatherData data;
-    private Utilities utilities = new Utilities();
     private int index;
     private CityModel cityModel;
     private Repo repo;

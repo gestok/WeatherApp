@@ -72,7 +72,7 @@ public class OverviewController {
     private final Tooltip searchButtonTooltip = new CustomTooltip("Click to begin a search");
     @FXML
     private Button SaveButton;
-    private final Tooltip saveButtonTooltip = new CustomTooltip("Click to save the search");
+    private final Tooltip saveButtonTooltip = new CustomTooltip("Click to save");
     @FXML
     private Button menuItemStats;
     private final Tooltip menuItemStatsTooltip = new CustomTooltip("Click to browse data");
@@ -121,7 +121,7 @@ public class OverviewController {
     }
 
     /**
-     * adds city searched to db exports city info to JSON file cities.json
+     * adds city searched to db 
      */
     private void addToDb() {
         try {
