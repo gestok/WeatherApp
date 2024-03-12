@@ -1,8 +1,6 @@
-package plh.team1.weatherapp.controller;
+package plh.team1.weatherapp;
 
 // Java
-import plh.team1.weatherapp.info.CityInfo;
-import plh.team1.weatherapp.utils.Utilities;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -35,8 +33,11 @@ import javafx.scene.web.WebView;
 
 // OkHttp3
 import okhttp3.*;
-import plh.team1.weatherapp.App;
+import plh.team1.weatherapp.api.Api;
+import plh.team1.weatherapp.info.CityInfo;
 import plh.team1.weatherapp.persistence.SharedState;
+import plh.team1.weatherapp.utils.Utilities;
+import plh.team1.weatherapp.utils.WebViewHelper;
 
 public class SearchController {
 
@@ -90,11 +91,11 @@ public class SearchController {
         if (this.state.getCity() != null) {
             this.populateSearchWindow(this.state.getCity());
         }
-        this.populateCityListView();
+        this.populateCityInfoListView();
         this.detectRootClick();
         this.detectSearchBarClick();
         this.applySearchBarChangeListener();
-        this.onCityListViewClicked();
+        this.onCityInfoListViewClicked();
     }
 
     /**
@@ -112,53 +113,13 @@ public class SearchController {
         App.setRoot("Stats");
     }
 
-//    /**
-//     * Method that triggers when "Search" button is clicked.
-//     */
-//    @FXML
-//    private void onSearchButtonClick() throws IOException {
-//        Api weatherApi = new Api();
-//        weatherApi.setQuery(this.state.getCity().getName());
-//        this.setButtonsState(true);
-//
-//        weatherApi.fetchData(new Callback() {
-//            @Override
-//            public void onFailure(Call call, IOException e) {
-//                e.printStackTrace();
-//                setButtonsState(false);
-//                Platform.runLater(() -> {
-//                    System.out.println("Failure!");
-//                });
-//            }
-//
-//            @Override
-//            public void onResponse(Call call, Response response) throws IOException {
-//                if (response.isSuccessful() && response.body() != null) {
-//                    String responseData = response.body().string();
-//                    // Process the response as needed
-//                    Platform.runLater(() -> {
-//                        Gson gson = new Gson();
-//                        WeatherData myData = gson.fromJson(responseData, WeatherData.class);
-//                        state.setData(myData);
-//                    });
-//                } else {
-//                    // Retry with country
-//                    weatherApi.setQuery(state.getCity().getCountry());
-//                    weatherApi.fetchData(this);
-//                }
-//                setButtonsState(false);
-//                Platform.runLater(() -> {
-//                    try {
-//                        // Update UI to reflect the completion, e.g., hide loading indicator
-//                        switchToOverview();
-//                    } catch (IOException error) {
-//                        System.err.println(error);
-//                    }
-//                });
-//            }
-//        });
-//
-//    }
+    /**
+     * Method that triggers when "Search" button is clicked.
+     */
+    @FXML
+    private void onSearchButtonClick() throws IOException {
+        switchToOverview();
+    }
 
     /**
      * Method that searches throughout cities JSON and filters the list results
@@ -168,7 +129,7 @@ public class SearchController {
      */
     private void search(String term) {
         if (term.isEmpty()) {
-            this.setCityListVisibility(false);
+            this.setCityInfoListVisibility(false);
         } else {
             try {
                 // Filter the list
@@ -179,9 +140,9 @@ public class SearchController {
 
                 if (!filtered.isEmpty()) {
                     this.filteredCities.setAll(filtered);
-                    this.setCityListVisibility(true);
+                    this.setCityInfoListVisibility(true);
                 } else {
-                    this.setCityListVisibility(false);
+                    this.setCityInfoListVisibility(false);
                 }
             } catch (IndexOutOfBoundsException e) {
                 System.out.println(e.getMessage());
@@ -204,7 +165,7 @@ public class SearchController {
     private void detectRootClick() {
         this.root.setOnMouseClicked(event -> {
             if (!this.cityListView.isFocused()) {
-                this.setCityListVisibility(false);
+                this.setCityInfoListVisibility(false);
             }
             if (this.searchBar.isFocused()) {
                 this.root.requestFocus();
@@ -219,7 +180,7 @@ public class SearchController {
     private void detectSearchBarClick() {
         this.searchBar.setOnMouseClicked(event -> {
             if (!this.searchBar.getText().isEmpty()) {
-                this.setCityListVisibility(true);
+                this.setCityInfoListVisibility(true);
             }
         });
     }
@@ -237,7 +198,7 @@ public class SearchController {
     /**
      * Method that applies click listener on list of cities.
      */
-    private void onCityListViewClicked() {
+    private void onCityInfoListViewClicked() {
         this.cityListView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue == null) {
                 return;
@@ -251,7 +212,7 @@ public class SearchController {
      * Method that populates Search window with the details of a given city
      * object.
      *
-     * @param populateCityDetails
+     * @param populateCityInfoDetails
      */
     private void populateSearchWindow(CityInfo city) {
         if (city == null) {
@@ -261,17 +222,19 @@ public class SearchController {
         this.addFavButton.setText(city.getIsFavourite() ? "Remove from favourites" : "Add to favourites");
         this.addFavButton
                 .setStyle(city.getIsFavourite() ? "-fx-background-color: #c2160a" : "-fx-background-color: #499bca");
-        this.updateMap(city.getLatitude(), city.getLongitude());
-        this.updateCityDetails(city);
-        this.setCityListVisibility(false);
-        this.setCityDetailsVisibility(true);
+        mapView.getEngine()
+                .loadContent(WebViewHelper
+                        .formatMapHtml(city.getLatitude(), city.getLongitude()));
+        this.updateCityInfoDetails(city);
+        this.setCityInfoListVisibility(false);
+        this.setCityInfoDetailsVisibility(true);
     }
 
     /**
      * Method that loads cities JSON file and populates a list variable with the
      * names of the cities.
      */
-    private void populateCityListView() {
+    private void populateCityInfoListView() {
         JsonParser parser = new JsonParser();
 
         InputStream inputStream = getClass().getClassLoader().getResourceAsStream("data/cities.json");
@@ -285,24 +248,24 @@ public class SearchController {
             JsonElement jsonElement = parser.parse(reader);
             JsonArray jsonArray = jsonElement.getAsJsonArray();
 
-            // Add "City, Country" records
+            // Add "CityInfo, Country" records
             for (JsonElement elem : jsonArray) {
                 try {
-                    JsonObject cityInfo = elem.getAsJsonObject();
-                    String name = cityInfo.get("city").getAsString();
-                    String admin = cityInfo.get("admin_name").getAsString();
-                    String country = cityInfo.get("country").getAsString();
+                    JsonObject cityInfoLocal = elem.getAsJsonObject();
+                    String name = cityInfoLocal.get("city").getAsString();
+                    String admin = cityInfoLocal.get("admin_name").getAsString();
+                    String country = cityInfoLocal.get("country").getAsString();
                     double latitude = 0.0;
-                    if (cityInfo.has("lat")) {
-                        latitude = cityInfo.get("lat").getAsDouble();
+                    if (cityInfoLocal.has("lat")) {
+                        latitude = cityInfoLocal.get("lat").getAsDouble();
                     }
                     double longitude = 0.0;
-                    if (cityInfo.has("lng")) {
-                        longitude = cityInfo.get("lng").getAsDouble();
+                    if (cityInfoLocal.has("lng")) {
+                        longitude = cityInfoLocal.get("lng").getAsDouble();
                     }
                     int population = 0;
-                    if (cityInfo.has("population") && !cityInfo.get("population").getAsString().isEmpty()) {
-                        population = cityInfo.get("population").getAsInt();
+                    if (cityInfoLocal.has("population") && !cityInfoLocal.get("population").getAsString().isEmpty()) {
+                        population = cityInfoLocal.get("population").getAsInt();
                     }
 
                     this.allCities.add(new CityInfo(name, admin, country, latitude, longitude, population, false));
@@ -322,84 +285,7 @@ public class SearchController {
         }
     }
 
-    /**
-     * Method to call when a city is selected. The method populates a web view
-     * of a map with the help of OpenLayers library.
-     *
-     * @param latitude
-     * @param longitude
-     */
-    private void updateMap(double latitude, double longitude) {
-        int zoom = 12;
-        String htmlContent = "<!DOCTYPE html>"
-                + "<html>"
-                + "<head>"
-                + "<link rel=\"stylesheet\" href=\"https://openlayers.org/en/v4.6.5/css/ol.css\" type=\"text/css\">"
-                + "<style>"
-                + "  body {"
-                + "    margin: 0;"
-                + "    background: #ebfbfe;"
-                + "  }"
-                + "  .map {"
-                + "    height: 100vh;"
-                + "    width: 100%;"
-                + "  }"
-                + "  canvas {"
-                + "    border-radius: 14px;"
-                + "  }"
-                + "</style>"
-                + "<script src=\"https://openlayers.org/en/v4.6.5/build/ol.js\" type=\"text/javascript\"></script>"
-                + "</head>"
-                + "<body>"
-                + "<div id=\"map\" class=\"map\"></div>"
-                + "<script type=\"text/javascript\">"
-                + "  var map = new ol.Map({"
-                + "    target: 'map',"
-                + "    layers: ["
-                + "      new ol.layer.Tile({"
-                + "        source: new ol.source.OSM()"
-                + "      })"
-                + "    ],"
-                + "    view: new ol.View({"
-                + "      center: ol.proj.fromLonLat([" + longitude + ", " + latitude + "]),"
-                + "      zoom: " + zoom
-                + "    }),"
-                + "    controls: ol.control.defaults({"
-                + "      attributionOptions: ({"
-                + "        collapsible: false"
-                + "      }),"
-                + "      zoom: false," // Disable default zoom controls
-                + "    }),"
-                + "    interactions: ol.interaction.defaults({"
-                + "      mouseWheelZoom: false,"
-                + "      dragPan: false,"
-                + "      doubleClickZoom: false"
-                + "    })"
-                + "  });"
-                // Marker
-                + "  var marker = new ol.Feature({"
-                + "    geometry: new ol.geom.Point("
-                + "      ol.proj.fromLonLat([" + longitude + ", " + latitude + "])"
-                + "    )"
-                + "  });"
-                + "  var vectorSource = new ol.source.Vector({"
-                + "    features: [marker]"
-                + "  });"
-                + "  var markerVectorLayer = new ol.layer.Vector({"
-                + "    source: vectorSource,"
-                + "  });"
-                // Disable right-click context menu
-                + "  document.getElementById('map').addEventListener('contextmenu', function(evt) {"
-                + "    evt.preventDefault();"
-                + "  });"
-                + "  map.addLayer(markerVectorLayer);"
-                + "</script>"
-                + "</body>"
-                + "</html>";
-
-        this.mapView.getEngine().loadContent(htmlContent);
-    }
-
+    
     @FXML
     private void onAddToFavouritesClick() {
         if (this.state == null || this.state.getCity() == null) {
@@ -417,7 +303,7 @@ public class SearchController {
      *
      * @param city A city object.
      */
-    private void updateCityDetails(CityInfo city) {
+    private void updateCityInfoDetails(CityInfo city) {
         this.cityName.setText(city.getName());
         this.cityCountry.setText(city.getCountry());
         this.cityLng.setText(this.utilities.formatToDecimals(city.getLongitude(), 4));
@@ -430,7 +316,7 @@ public class SearchController {
      *
      * @param state Boolean
      */
-    private void setCityListVisibility(boolean state) {
+    private void setCityInfoListVisibility(boolean state) {
         AnchorPane.setTopAnchor(this.cityListView, state ? 50.0 : 30.0);
         this.cityListView.setPadding(new Insets(state ? 10 : 0));
         this.cityListView.setVisible(state);
@@ -442,7 +328,7 @@ public class SearchController {
      *
      * @param state Boolean
      */
-    private void setCityDetailsVisibility(boolean state) {
+    private void setCityInfoDetailsVisibility(boolean state) {
         this.mapViewWrapper.setVisible(state);
         this.mapView.setVisible(state);
         this.cityInfo.setVisible(state);
