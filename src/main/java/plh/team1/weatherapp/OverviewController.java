@@ -1,14 +1,8 @@
 package plh.team1.weatherapp;
 
 // Java
-import plh.team1.weatherapp.api.Api;
-import plh.team1.weatherapp.serialization.WeatherData;
-import com.google.gson.Gson;
 import java.io.IOException;
 import java.util.Optional;
-import java.util.concurrent.CompletableFuture;
-import javafx.application.Platform;
-import javafx.event.ActionEvent;
 
 // JavaFX
 import javafx.fxml.FXML;
@@ -18,25 +12,34 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.control.Tooltip;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 import javafx.scene.web.WebView;
+import javafx.application.Platform;
+import javafx.event.ActionEvent;
+
+// Gson
+import com.google.gson.Gson;
+
+// OkHttp3
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
+
+import plh.team1.weatherapp.api.Api;
+import plh.team1.weatherapp.serialization.WeatherData;
 import plh.team1.weatherapp.model.CityModel;
 import plh.team1.weatherapp.model.WeatherDataModel;
 
 public class OverviewController {
 
     // Variables
-    private SharedState state;
+    private final SharedState state;
+    private final Api weatherApi = new Api();
+    private final Utilities utilities = new Utilities();
 
-    private Utilities utilities = new Utilities();
     @FXML
     private Button menuItemOverview;
-    private final Tooltip overviewTooltip = new CustomTooltip("Search");
     @FXML
     private Label uvindex_v;
     @FXML
@@ -50,8 +53,6 @@ public class OverviewController {
     @FXML
     private Label weatherDesc;
     @FXML
-    private Label cityCountryBottom;
-    @FXML
     private Label cityCountry;
     @FXML
     private Label highLowFeels;
@@ -60,36 +61,17 @@ public class OverviewController {
     @FXML
     private ImageView weatherImage;
     @FXML
-    private Button previous;
-    @FXML
-    private Button next;
-    @FXML
-    private Label tempUnit;
-    @FXML
     private TextField searchBar;
-    @FXML
-    private Button searchButton;
-    private final Tooltip searchButtonTooltip = new CustomTooltip("Click to begin a search");
-    @FXML
-    private Button SaveButton;
-    private final Tooltip saveButtonTooltip = new CustomTooltip("Click to save");
-    @FXML
-    private Button menuItemStats;
-    private final Tooltip menuItemStatsTooltip = new CustomTooltip("Click to browse data");
     @FXML
     private VBox mapViewWrapper;
     @FXML
     private WebView mapView;
-    @FXML
-    private Label cityCountyBottom;
-
     private boolean saveButtonState;
 
     // Constructor
     public OverviewController() {
         this.state = SharedState.getInstance();
-        this.initializeTooltips();
-        this.state.setRepo(); //instantiate repo
+        this.state.setRepo(); // instantiate repo
     }
 
     @FXML
@@ -97,7 +79,6 @@ public class OverviewController {
         if (this.state.getData() != null) {
             this.populateStats();
         }
-        this.initializeTooltips();
         this.saveButtonState = false;
 
     }
@@ -113,18 +94,7 @@ public class OverviewController {
     }
 
     /**
-     * Method that initializes the tool-tips on elements.
-     */
-    //not working, tried removing css 
-    private void initializeTooltips() {
-        Tooltip.install(this.menuItemOverview, this.overviewTooltip);
-        Tooltip.install(this.SaveButton, this.saveButtonTooltip);
-        Tooltip.install(this.searchButton, this.searchButtonTooltip);
-        Tooltip.install(this.menuItemStats, this.menuItemStatsTooltip);
-    }
-
-    /**
-     * adds city searched to db
+     * Adds city searched to db
      */
     private void addToDb() {
         try {
@@ -132,7 +102,7 @@ public class OverviewController {
             state.setCityModel(cityToBeAdded);
         } catch (Exception e) {
             e.printStackTrace();
-        };
+        }
     }
 
     /**
@@ -160,35 +130,19 @@ public class OverviewController {
         this.humidity_v.setText(wdm.getHumidity() + "%");
         this.wind_v.setText(wdm.getWindspeed() + " km/h");
         this.visibility_v.setText(wdm.getVisibility() + " km");
-        this.cityCountryBottom.setText((city.getCityName() + ", " + city.getCountryName()));
-
     }
 
     @FXML
-    private void nextDay() {
-        this.getDayData(0);
-    }
+    private void onSearch() throws IOException {
+        String cityToSearch = this.searchBar.getText().trim();
 
-    @FXML
-    private void prevDay() {
-        this.getDayData(0);
-    }
-
-    private void getDayData(int index) {
-        return;
-    }
-
-    @FXML
-    private void onSearchButtonClick(ActionEvent event) throws IOException {
-
-        Api weatherApi = new Api();
-        String cityToSearch = searchBar.getText().trim();
         if (cityToSearch.isEmpty()) {
             infoDialog("Enter a city name");
             return;
         }
-        weatherApi.setQuery(cityToSearch);
-        weatherApi.fetchData(new Callback() {
+
+        this.weatherApi.setQuery(cityToSearch);
+        this.weatherApi.fetchData(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
                 e.printStackTrace();
@@ -233,7 +187,8 @@ public class OverviewController {
             infoDialog("You have already saved this!");
             return;
         }
-        Alert alert = confirmationDialog("Do you want to save the current search?", "Tip: Saving stuff reduces your disk's lifespan");
+        Alert alert = confirmationDialog("Do you want to save the current search?",
+                "Tip: Saving stuff reduces your disk's lifespan");
         Optional<ButtonType> result = alert.showAndWait();
         if (result.isPresent() && result.get() == ButtonType.OK) {
             state.getRepo().addWeatherDataToCity(this.state.getCityModel().getId(), this.state.getWeatherDataModel());
