@@ -2,13 +2,17 @@ package plh.team1.weatherapp;
 
 // Java
 import java.io.IOException;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.stream.Collectors;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
+import java.awt.Desktop;
+import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 // JavaFX
 import javafx.beans.binding.Bindings;
@@ -37,7 +41,9 @@ public class StatsController {
 
     // Variables
     private SharedState state;
-    private Utilities utilities = new Utilities();
+    private final Utilities utilities = new Utilities();
+    private final Path exportsDirectoryPath = Paths.get("exports");
+    private Optional<File> mostRecentPdfFile = null;
     private ArrayList<CityModel> allCities = new ArrayList<>();
     private Double cityListHeight = 100.0;
     @FXML
@@ -91,7 +97,8 @@ public class StatsController {
     private TableColumn<WeatherDataModel, String> dateColumn;
 
     private ObservableList<WeatherDataModel> weatherDataObservableList = FXCollections.observableArrayList();
-
+    @FXML
+    private Button viewExportedReportBtn;
     @FXML
     private Button deleteButton;
 
@@ -114,6 +121,14 @@ public class StatsController {
         this.onCityListViewClicked();
         this.initializeTableView();
 
+        try {
+            this.mostRecentPdfFile = findMostRecentPdfFile(exportsDirectoryPath);
+            if (this.mostRecentPdfFile != null) {
+                this.viewExportedReportBtn.setDisable(false);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -397,7 +412,7 @@ public class StatsController {
     }
 
     public void changeTemperature(TableColumn.CellEditEvent editedCell) {
-        
+
         if (!isConfirmedAfterAlert()) {
             weatherTableView.refresh();
             return;
@@ -419,7 +434,7 @@ public class StatsController {
     }
 
     public void changeHumidity(TableColumn.CellEditEvent editedCell) {
-        
+
         if (!isConfirmedAfterAlert()) {
             weatherTableView.refresh();
             return;
@@ -440,7 +455,7 @@ public class StatsController {
     }
 
     public void changeWindSpeed(TableColumn.CellEditEvent editedCell) {
-        
+
         if (!isConfirmedAfterAlert()) {
             weatherTableView.refresh();
             return;
@@ -461,7 +476,7 @@ public class StatsController {
     }
 
     public void changeUvIndex(TableColumn.CellEditEvent editedCell) {
-        
+
         if (!isConfirmedAfterAlert()) {
             weatherTableView.refresh();
             return;
@@ -482,12 +497,12 @@ public class StatsController {
     }
 
     public void changeWeatherDesc(TableColumn.CellEditEvent edittedCell) {
-        
+
         if (!isConfirmedAfterAlert()) {
             weatherTableView.refresh();
             return;
         }
-        
+
         WeatherDataModel dataSelected = weatherTableView.getSelectionModel().getSelectedItem();
         String valueInserted = edittedCell.getNewValue().toString();
         dataSelected.setWeatherDesc(valueInserted);
@@ -508,6 +523,40 @@ public class StatsController {
             return;
         }
         ExportPdfStats.exportPdfStats(citiesToPrint);
+
+        this.viewExportedReportBtn.setDisable(false);
+    }
+
+    @FXML
+    private void onViewExportedReportBtnClick() {
+        try {
+            Optional<File> mostRecentPdfFile = findMostRecentPdfFile(exportsDirectoryPath);
+            if (mostRecentPdfFile.isPresent()) {
+                File pdfFile = mostRecentPdfFile.get();
+                if (Desktop.isDesktopSupported()) {
+                    Desktop.getDesktop().open(pdfFile);
+                } else {
+                    System.out.println("AWT Desktop is not supported!");
+                }
+            } else {
+                System.out.println("No PDF files found in the directory!");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private Optional<File> findMostRecentPdfFile(Path directoryPath) throws IOException {
+        try {
+            return Files.walk(directoryPath, 1)
+                    .filter(Files::isRegularFile)
+                    .filter(p -> p.toString().endsWith(".pdf"))
+                    .max(Comparator.comparingLong(p -> p.toFile().lastModified()))
+                    .map(Path::toFile);
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw e;
+        }
     }
 
     /**
@@ -524,14 +573,14 @@ public class StatsController {
         alert.setContentText(additionalText);
         return alert;
     }
-    
+
     /**
      * Confirmation helper method
      *
      * @param void
      * @return
      */
-     private boolean isConfirmedAfterAlert() {
+    private boolean isConfirmedAfterAlert() {
         Alert alert = confirmationDialog("Are you sure you want to modify this record?",
                 "This action modifies the database!");
 

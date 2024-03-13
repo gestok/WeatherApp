@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.text.*?>
 <?import java.lang.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
@@ -253,14 +254,20 @@
                         </TableView>
                         <HBox alignment="CENTER" prefHeight="50.0" prefWidth="200.0" spacing="10.0">
                             <children>
-                                <Button fx:id="deleteButton" mnemonicParsing="false" onAction="#Delete" prefHeight="25.0" prefWidth="104.0" text="Delete">
+                                <Button fx:id="deleteButton" mnemonicParsing="false" onAction="#Delete" prefHeight="30.0" prefWidth="150.0" text="Delete">
                                     <styleClass>
                                         <String fx:value="search-btn" />
                                         <String fx:value="danger" />
                                         <String fx:value="cursor-pointer" />
                                     </styleClass>
                                 </Button>
-                                <Button fx:id="exportToPdfButton" mnemonicParsing="false" onAction="#onSaveToPdf" prefHeight="25.0" prefWidth="104.0" text="Export">
+                                <Button fx:id="exportToPdfButton" mnemonicParsing="false" onAction="#onSaveToPdf" prefHeight="30.0" prefWidth="150.0" text="Export">
+                                    <styleClass>
+                                        <String fx:value="search-btn" />
+                                        <String fx:value="cursor-pointer" />
+                                    </styleClass>
+                                </Button>
+                                <Button fx:id="viewExportedReportBtn" disable="true" layoutX="337.0" layoutY="23.0" mnemonicParsing="false" onAction="#onViewExportedReportBtnClick" prefHeight="30.0" prefWidth="150.0" text="View last export">
                                     <styleClass>
                                         <String fx:value="search-btn" />
                                         <String fx:value="cursor-pointer" />

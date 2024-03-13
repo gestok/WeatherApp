@@ -248,7 +248,8 @@
     -fx-background: #f96f96;
 }
 
-.table-view:row-selection .virtual-flow .scroll-bar:horizontal {
+.table-view:row-selection .virtual-flow .scroll-bar:horizontal,
+.table-view:row-selection .virtual-flow .scroll-bar:vertical {
     -fx-background-radius: 18;
     -fx-border-radius: 18;
     -fx-background-color: transparent;
@@ -256,6 +257,8 @@
 }
 
 .table-view:row-selection .virtual-flow .scroll-bar:horizontal .increment-button,
-.table-view:row-selection .virtual-flow .scroll-bar:horizontal .decrement-button {
+.table-view:row-selection .virtual-flow .scroll-bar:horizontal .decrement-button,
+.table-view:row-selection .virtual-flow .scroll-bar:vertical .increment-button,
+.table-view:row-selection .virtual-flow .scroll-bar:vertical .decrement-button {
     -fx-opacity: 0;
 }

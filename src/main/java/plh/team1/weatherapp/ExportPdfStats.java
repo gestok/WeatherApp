@@ -27,7 +27,7 @@ public class ExportPdfStats {
     private static final String FONT_PATH = "fonts/Roboto-Regular.ttf";
 
     public static void exportPdfStats(List<CityModel> cityList) {
-        String pdfFilePath = "report_" + util.getDateIdentifier() + ".pdf";
+        String pdfFilePath = "exports/report_" + util.getDateIdentifier() + ".pdf";
 
         try {
             createPdf(pdfFilePath, cityList);
