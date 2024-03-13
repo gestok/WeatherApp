@@ -83,6 +83,8 @@ public class OverviewController {
     @FXML
     private Label cityCountyBottom;
 
+    private boolean saveButtonState;
+
     // Constructor
     public OverviewController() {
         this.state = SharedState.getInstance();
@@ -96,6 +98,7 @@ public class OverviewController {
             this.populateStats();
         }
         this.initializeTooltips();
+        this.saveButtonState = false;
 
     }
 
@@ -200,6 +203,7 @@ public class OverviewController {
                         Gson gson = new Gson();
                         WeatherData weatherData = gson.fromJson(responseData, WeatherData.class);
                         state.setData(weatherData);
+                        saveButtonState = true;
                         addToDb();
                         populateStats();
                         var city = state.getCityModel();
@@ -215,33 +219,27 @@ public class OverviewController {
         });
     }
 
+    /**
+     * Method that saves a recently searched city in the db
+     */
     @FXML
-    private void onSaveButtonClick() {
+    private void onSaveButtonClick(ActionEvent event) {
 
-        if (state.getData() == null) {
+        if (this.state.getCityModel() == null) {
             infoDialog("You have to search for a city first");
+            return;
+        }
+        if (this.saveButtonState == false) {
+            infoDialog("You have already saved this!");
             return;
         }
         Alert alert = confirmationDialog("Do you want to save the current search?", "Tip: Saving stuff reduces your disk's lifespan");
         Optional<ButtonType> result = alert.showAndWait();
         if (result.isPresent() && result.get() == ButtonType.OK) {
-            CompletableFuture.runAsync(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        var repo = state.getRepo();
-                        var wd = state.getData();
-                        var city = new CityModel(wd);
-                        var wdm = new WeatherDataModel(wd);
-
-                        repo.addWeatherData(wdm);
-                        city = repo.addCity(city);
-                        repo.addWeatherDataToCity(city.getId(), wdm);
-                    } catch (Exception NullPointerException) {
-
-                    }
-                }
-            });
+            state.getRepo().addWeatherDataToCity(this.state.getCityModel().getId(), this.state.getWeatherDataModel());
+            this.saveButtonState = false;
+        } else {
+            return;
         }
     }
 
