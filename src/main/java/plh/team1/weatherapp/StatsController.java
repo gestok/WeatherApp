@@ -110,16 +110,23 @@ public class StatsController {
         this.detectSearchBarClick();
         this.applySearchBarChangeListener();
         this.onCityListViewClicked();
-        Label placeholderLabel = new Label("No saved data!!");
-        this.weatherTableView.setPlaceholder(placeholderLabel);
-        //Update the table to allow for the first and last name fields to be editable 
+        this.initializeTableView();
+
+    }
+
+    /**
+     * Helper method that initializes weatherTableView and prepares it for
+     * editing
+     */
+    private void initializeTableView() {
+
+        this.weatherTableView.setPlaceholder(new Label("No saved data!"));
         weatherTableView.setEditable(true);
         temperatureColumn.setCellFactory(TextFieldTableCell.forTableColumn());
         humidityColumn.setCellFactory(TextFieldTableCell.forTableColumn());
         windSpeedColumn.setCellFactory(TextFieldTableCell.forTableColumn());
         uvIndexColumn.setCellFactory(TextFieldTableCell.forTableColumn());
         weatherDescColumn.setCellFactory(TextFieldTableCell.forTableColumn());
-
     }
 
     /**
@@ -375,6 +382,7 @@ public class StatsController {
                 + " from your database?", "");
         Optional<ButtonType> result = alert.showAndWait();
         if (result.isPresent() && result.get() == ButtonType.OK) {
+            System.out.println(filteredCities.get(0).toString());
             weatherDataObservableList.clear();
             state.getRepo().deleteCityData(state.getCityModel().getId());
         } else {
