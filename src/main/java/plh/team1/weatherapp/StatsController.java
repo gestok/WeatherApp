@@ -202,9 +202,13 @@ public class StatsController {
      * a value, shows the the overlay list of cities.
      */
     private void detectSearchBarClick() {
+
         this.searchBar.setOnMouseClicked(event -> {
             if (!this.searchBar.getText().isEmpty()) {
                 this.setCityListVisibility(true);
+            } else {
+                this.setCityListVisibility(true);
+                this.populateCityListView();
             }
         });
     }
