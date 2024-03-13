@@ -397,6 +397,11 @@ public class StatsController {
     }
 
     public void changeTemperature(TableColumn.CellEditEvent editedCell) {
+        
+        if (!isConfirmedAfterAlert()) {
+            weatherTableView.refresh();
+            return;
+        }
 
         WeatherDataModel dataSelected = weatherTableView.getSelectionModel().getSelectedItem();
         try {
@@ -413,7 +418,12 @@ public class StatsController {
 
     }
 
-    public void changeHumidity(TableColumn.CellEditEvent editedCell) {        //
+    public void changeHumidity(TableColumn.CellEditEvent editedCell) {
+        
+        if (!isConfirmedAfterAlert()) {
+            weatherTableView.refresh();
+            return;
+        }
 
         WeatherDataModel dataSelected = weatherTableView.getSelectionModel().getSelectedItem();
         try {
@@ -430,6 +440,11 @@ public class StatsController {
     }
 
     public void changeWindSpeed(TableColumn.CellEditEvent editedCell) {
+        
+        if (!isConfirmedAfterAlert()) {
+            weatherTableView.refresh();
+            return;
+        }
 
         WeatherDataModel dataSelected = weatherTableView.getSelectionModel().getSelectedItem();
         try {
@@ -446,6 +461,11 @@ public class StatsController {
     }
 
     public void changeUvIndex(TableColumn.CellEditEvent editedCell) {
+        
+        if (!isConfirmedAfterAlert()) {
+            weatherTableView.refresh();
+            return;
+        }
 
         WeatherDataModel dataSelected = weatherTableView.getSelectionModel().getSelectedItem();
         try {
@@ -461,8 +481,13 @@ public class StatsController {
 
     }
 
-    public void changeWeatherDesc(TableColumn.CellEditEvent edittedCell) {        //
-
+    public void changeWeatherDesc(TableColumn.CellEditEvent edittedCell) {
+        
+        if (!isConfirmedAfterAlert()) {
+            weatherTableView.refresh();
+            return;
+        }
+        
         WeatherDataModel dataSelected = weatherTableView.getSelectionModel().getSelectedItem();
         String valueInserted = edittedCell.getNewValue().toString();
         dataSelected.setWeatherDesc(valueInserted);
@@ -499,4 +524,26 @@ public class StatsController {
         alert.setContentText(additionalText);
         return alert;
     }
+    
+    /**
+     * Confirmation helper method
+     *
+     * @param void
+     * @return
+     */
+     private boolean isConfirmedAfterAlert() {
+        Alert alert = confirmationDialog("Are you sure you want to modify this record?",
+                "This action modifies the database!");
+
+        Optional<ButtonType> result = alert.showAndWait();
+
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            return true;
+        } else if (result.get() == ButtonType.CANCEL) {
+            return false;
+        } else {
+            return false;
+        }
+    }
+
 }
