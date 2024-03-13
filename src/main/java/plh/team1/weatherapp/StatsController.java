@@ -379,6 +379,9 @@ public class StatsController {
         if (cityToBeRemoved == null) {
             return;
         }
+        if (this.filteredCities.isEmpty()) {
+            return;
+        }
         Alert alert = confirmationDialog("Are you sure you want to delete " + cityToBeRemoved.getCityName()
                 + ", " + cityToBeRemoved.getCountryName()
                 + " from your database?", "");
@@ -397,7 +400,7 @@ public class StatsController {
     }
 
     public void changeTemperature(TableColumn.CellEditEvent editedCell) {
-        
+
         if (!isConfirmedAfterAlert()) {
             weatherTableView.refresh();
             return;
@@ -419,7 +422,7 @@ public class StatsController {
     }
 
     public void changeHumidity(TableColumn.CellEditEvent editedCell) {
-        
+
         if (!isConfirmedAfterAlert()) {
             weatherTableView.refresh();
             return;
@@ -440,7 +443,7 @@ public class StatsController {
     }
 
     public void changeWindSpeed(TableColumn.CellEditEvent editedCell) {
-        
+
         if (!isConfirmedAfterAlert()) {
             weatherTableView.refresh();
             return;
@@ -461,7 +464,7 @@ public class StatsController {
     }
 
     public void changeUvIndex(TableColumn.CellEditEvent editedCell) {
-        
+
         if (!isConfirmedAfterAlert()) {
             weatherTableView.refresh();
             return;
@@ -482,12 +485,12 @@ public class StatsController {
     }
 
     public void changeWeatherDesc(TableColumn.CellEditEvent edittedCell) {
-        
+
         if (!isConfirmedAfterAlert()) {
             weatherTableView.refresh();
             return;
         }
-        
+
         WeatherDataModel dataSelected = weatherTableView.getSelectionModel().getSelectedItem();
         String valueInserted = edittedCell.getNewValue().toString();
         dataSelected.setWeatherDesc(valueInserted);
@@ -524,14 +527,14 @@ public class StatsController {
         alert.setContentText(additionalText);
         return alert;
     }
-    
+
     /**
      * Confirmation helper method
      *
      * @param void
      * @return
      */
-     private boolean isConfirmedAfterAlert() {
+    private boolean isConfirmedAfterAlert() {
         Alert alert = confirmationDialog("Are you sure you want to modify this record?",
                 "This action modifies the database!");
 
