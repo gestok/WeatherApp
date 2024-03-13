@@ -1,21 +1,16 @@
 package plh.team1.weatherapp;
 
 // Java
-import java.io.IOException;
-import java.nio.file.FileSystems;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.StandardOpenOption;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 import java.util.Set;
 
 // JavaFX
 import javafx.scene.image.Image;
-import plh.team1.weatherapp.model.CityModel;
 
 /**
  * This class includes many utilities methods that can be used throughout the
@@ -227,8 +222,14 @@ public class Utilities {
         return date.format(formatter);
     }
 
- 
-
-
-
+    /**
+     * Method that returns a string identifier to be used for PDF exports.
+     *
+     * @return String
+     */
+    public String getDateIdentifier() {
+        LocalDateTime now = LocalDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd-HH-mm-ss");
+        return now.format(formatter);
+    }
 }

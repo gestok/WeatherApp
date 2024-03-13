@@ -25,26 +25,26 @@
                         <String fx:value="menu-item" />
                         <String fx:value="stats" />
                     </styleClass>
-               <graphic>
+                    <graphic>
                         <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                             <image>
                                 <Image url="@../../../icons/search.png" />
                             </image>
                         </ImageView>
-               </graphic>
+                    </graphic>
                 </Button>
                 <Button mnemonicParsing="false" prefHeight="54.0" prefWidth="54.0">
                     <styleClass>
                         <String fx:value="menu-item" />
                         <String fx:value="active" />
                     </styleClass>
-               <graphic>
+                    <graphic>
                         <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
                             <image>
                                 <Image url="@../../../icons/db.png" />
                             </image>
                         </ImageView>
-               </graphic>
+                    </graphic>
                 </Button>
             </children>
             <padding>
@@ -191,24 +191,24 @@
                                         <Insets left="10.0" right="10.0" />
                                     </VBox.margin>
                                 </HBox>
-                        <HBox alignment="CENTER_LEFT" prefHeight="32.0" prefWidth="379.0" styleClass="city-info-label-wrapper" stylesheets="@styles.css">
-                           <children>
-                              <Label prefHeight="20.0" prefWidth="78.0" styleClass="city-info-label" stylesheets="@styles.css" text="Api Calls" />
-                              <Pane HBox.hgrow="ALWAYS" />
-                              <Label fx:id="timesSearched" alignment="CENTER" stylesheets="@styles.css">
-                                 <styleClass>
-                                    <String fx:value="city-info-label" />
-                                    <String fx:value="medium" />
-                                 </styleClass>
-                              </Label>
-                           </children>
-                           <padding>
-                              <Insets bottom="6.0" top="6.0" />
-                           </padding>
-                           <VBox.margin>
-                              <Insets left="10.0" right="10.0" />
-                           </VBox.margin>
-                        </HBox>
+                                <HBox alignment="CENTER_LEFT" prefHeight="32.0" prefWidth="379.0" styleClass="city-info-label-wrapper" stylesheets="@styles.css">
+                                    <children>
+                                        <Label prefHeight="20.0" prefWidth="78.0" styleClass="city-info-label" stylesheets="@styles.css" text="Api Calls" />
+                                        <Pane HBox.hgrow="ALWAYS" />
+                                        <Label fx:id="timesSearched" alignment="CENTER" stylesheets="@styles.css">
+                                            <styleClass>
+                                                <String fx:value="city-info-label" />
+                                                <String fx:value="medium" />
+                                            </styleClass>
+                                        </Label>
+                                    </children>
+                                    <padding>
+                                        <Insets bottom="6.0" top="6.0" />
+                                    </padding>
+                                    <VBox.margin>
+                                        <Insets left="10.0" right="10.0" />
+                                    </VBox.margin>
+                                </HBox>
                             </children>
                             <padding>
                                 <Insets bottom="6.0" top="6.0" />
@@ -234,22 +234,22 @@
                         </Button>
                     </children>
                 </VBox>
-            <Pane prefHeight="564.0" prefWidth="642.0">
-               <children>
-                  <TableView fx:id="weatherTableView" prefHeight="300.0" prefWidth="642.0">
-                    <columns>
-                        <TableColumn fx:id="dateColumn" prefWidth="105.0" text="Date" />
-                      <TableColumn fx:id="temperatureColumn" onEditCommit="#changeTemperature" prefWidth="103.0" text="Temperature" />
-                      <TableColumn fx:id="humidityColumn" minWidth="0.0" onEditCommit="#changeHumidity" prefWidth="108.0" text="Humidity" />
-                        <TableColumn fx:id="windSpeedColumn" onEditCommit="#changeWindSpeed" prefWidth="104.0" text="Windspeed" />
-                        <TableColumn fx:id="uvIndexColumn" onEditCommit="#changeUvIndex" prefWidth="109.0" text="UvIndex" />
-                        <TableColumn fx:id="weatherDescColumn" onEditCommit="#changeWeatherDesc" prefWidth="112.0" text="Weather Description" />
-                    </columns>
-                  </TableView>
-                  <Button fx:id="deleteButton" layoutY="301.0" mnemonicParsing="false" onAction="#Delete" prefHeight="25.0" prefWidth="104.0" text="Delete" />
-                  <Button fx:id="exportToPdfButton" layoutX="104.0" layoutY="301.0" mnemonicParsing="false" onAction="#onSaveToPdf" prefHeight="25.0" prefWidth="104.0" text="Export" />
-               </children>
-            </Pane>
+                <Pane prefHeight="564.0" prefWidth="642.0">
+                    <children>
+                        <TableView fx:id="weatherTableView" prefHeight="300.0" prefWidth="642.0">
+                            <columns>
+                                <TableColumn fx:id="dateColumn" prefWidth="105.0" text="Date" />
+                                <TableColumn fx:id="temperatureColumn" onEditCommit="#changeTemperature" prefWidth="103.0" text="Temperature" />
+                                <TableColumn fx:id="humidityColumn" minWidth="0.0" onEditCommit="#changeHumidity" prefWidth="108.0" text="Humidity" />
+                                <TableColumn fx:id="windSpeedColumn" onEditCommit="#changeWindSpeed" prefWidth="104.0" text="Windspeed" />
+                                <TableColumn fx:id="uvIndexColumn" onEditCommit="#changeUvIndex" prefWidth="109.0" text="UvIndex" />
+                                <TableColumn fx:id="weatherDescColumn" onEditCommit="#changeWeatherDesc" prefWidth="112.0" text="Weather Description" />
+                            </columns>
+                        </TableView>
+                        <Button fx:id="deleteButton" layoutY="301.0" mnemonicParsing="false" onAction="#Delete" prefHeight="25.0" prefWidth="104.0" text="Delete" />
+                        <Button fx:id="exportToPdfButton" layoutX="104.0" layoutY="301.0" mnemonicParsing="false" onAction="#onSaveToPdf" prefHeight="25.0" prefWidth="104.0" text="Export" />
+                    </children>
+                </Pane>
             </children>
             <VBox.margin>
                 <Insets />

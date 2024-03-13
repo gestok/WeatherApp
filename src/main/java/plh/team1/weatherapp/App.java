@@ -9,7 +9,7 @@ import javafx.stage.Stage;
 import javafx.scene.image.Image;
 import javafx.scene.text.Font;
 
-// IO Imports
+// Java
 import java.io.IOException;
 
 /**

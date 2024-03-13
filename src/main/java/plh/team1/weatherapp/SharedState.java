@@ -18,7 +18,8 @@ public class SharedState {
     private CityModel cityModel;
     private Repo repo;
     private WeatherDataModel weatherDataModel;
-     private SharedState() {
+
+    private SharedState() {
     }
 
     /**
@@ -41,14 +42,11 @@ public class SharedState {
     public synchronized void setData(WeatherData data) {
         this.data = data;
         this.cityModel = new CityModel(data);
-        this.weatherDataModel = new WeatherDataModel(data);        
+        this.weatherDataModel = new WeatherDataModel(data);
     }
-
 
     /**
      * WeatherData
-     *
-     *
      */
     public synchronized WeatherData getData() {
         return this.data;
@@ -69,7 +67,6 @@ public class SharedState {
 
     /**
      * CityModel
-     *
      */
     public synchronized CityModel getCityModel() {
         return cityModel;
@@ -94,23 +91,14 @@ public class SharedState {
 
     /**
      * Database
-     *
      */
     public synchronized Repo getRepo() {
         return repo;
     }
-    
-    
-    
+
     public synchronized void setRepo() {
         this.repo = new Repo();
-        
+
     }
-
-
-
-   
-
-   
 
 }

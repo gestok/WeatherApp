@@ -1,6 +1,9 @@
 package plh.team1.weatherapp.serialization;
 
+// Java
 import java.util.ArrayList;
+
+// Gson
 import com.google.gson.annotations.SerializedName;
 
 public class CurrentCondition {
@@ -79,8 +82,6 @@ public class CurrentCondition {
     public String getWindspeed() {
         return windspeed;
     }
-
-
 
     public String getTempC() {
         return tempC;

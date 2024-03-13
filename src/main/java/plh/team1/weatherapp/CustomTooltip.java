@@ -2,8 +2,6 @@ package plh.team1.weatherapp;
 
 // JavaFX
 import javafx.scene.control.Tooltip;
-import javafx.scene.layout.Region;
-import javafx.scene.paint.Color;
 import javafx.util.Duration;
 
 /**
@@ -34,5 +32,4 @@ public class CustomTooltip extends Tooltip {
         setHideDelay(Duration.millis(100));
         setAutoHide(true);
     }
-
 }

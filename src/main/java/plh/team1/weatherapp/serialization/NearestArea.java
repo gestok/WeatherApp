@@ -1,5 +1,6 @@
 package plh.team1.weatherapp.serialization;
 
+// Java
 import java.util.List;
 
 public class NearestArea {
@@ -42,5 +43,5 @@ public class NearestArea {
     public Region getRegion() {
         return region.get(0);
     }
-  
+
 }
