@@ -221,7 +221,7 @@ public class StatsController {
                 return;
             }
             this.state.setCityModel(newValue);
-            this.populateTableview(this.state.getCityModel());
+            this.populateTableview(newValue);
             this.populateSearchWindow(newValue);
         });
     }
@@ -246,7 +246,7 @@ public class StatsController {
     }
 
     /**
-     * Method that loads cities JSON file and populates a list variable with the
+     * Method that loads cities JSON and populates a list variable with the
      * names of the cities.
      */
     private void populateCityListView() {
@@ -370,29 +370,33 @@ public class StatsController {
     }
 
     /**
-     * method that deletes the data from the city sitting on the search tab
+     * method that deletes all data from the city sitting on the search tab
      *
      * @param actionEvent
      */
     public void Delete(ActionEvent actionEvent) {
-        if (this.state.getCityModel() == null) {
+        CityModel cityToBeRemoved = this.state.getCityModel();
+        if (cityToBeRemoved == null) {
             return;
         }
-        Alert alert = confirmationDialog("Are you sure you want to delete " + this.state.getCityModel().getCityName()
-                + ", " + this.state.getCityModel().getCountryName()
+        Alert alert = confirmationDialog("Are you sure you want to delete " + cityToBeRemoved.getCityName()
+                + ", " + cityToBeRemoved.getCountryName()
                 + " from your database?", "");
         Optional<ButtonType> result = alert.showAndWait();
         if (result.isPresent() && result.get() == ButtonType.OK) {
-            System.out.println(filteredCities.get(0).toString());
-            weatherDataObservableList.clear();
-            this.state.getRepo().deleteCityData(this.state.getCityModel().getId());
+            this.state.getRepo().deleteCityData(cityToBeRemoved.getId());
+            this.clearTableView();
+            this.clearSearch();
+            this.setCityDetailsVisibility(false);
+            this.populateCityListView();
+
         } else {
             return;
         }
 
     }
 
-    public void changeTemperature(TableColumn.CellEditEvent editedCell) {        //
+    public void changeTemperature(TableColumn.CellEditEvent editedCell) {
 
         WeatherDataModel dataSelected = weatherTableView.getSelectionModel().getSelectedItem();
         try {
