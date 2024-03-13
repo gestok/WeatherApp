@@ -46,11 +46,11 @@ public final class Api {
     }
 
     /**
-     * 
-     * 
-     * Bellow code is used for testing  
-     * 
-     * 
+     *
+     *
+     * Bellow code is used for testing
+     *
+     *
      */
     public WeatherData fetchWeatherData() {
         String jsonResponse = null;
@@ -68,9 +68,9 @@ public final class Api {
         setUrl(cityName, countryName);
         return fetchWeatherData();
     }
-    
-     public void setUrl(String cityName, String countryName) {
-        this.urlToCall=  "https://wttr.in/" + cityName + "+" + countryName + "?format=j1";        
+
+    public void setUrl(String cityName, String countryName) {
+        this.urlToCall = "https://wttr.in/" + cityName + "+" + countryName + "?format=j1";
     }
 
     private String getJSONString() throws IOException {
