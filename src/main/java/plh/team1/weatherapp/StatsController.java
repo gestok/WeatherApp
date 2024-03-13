@@ -320,14 +320,14 @@ public class StatsController {
     }
 
     /**
-     * Clears weather Table View
+     * Clears weather TableView
      */
     private void clearTableView() {
         weatherDataObservableList.clear();
     }
 
     /**
-     * Populates tableview
+     * Populates weather TableView
      */
     private void populateTableview() {
 
@@ -391,43 +391,71 @@ public class StatsController {
         return alert;
     }
 
-    public void changeTemperature(TableColumn.CellEditEvent edittedCell) {        //
+    public void changeTemperature(TableColumn.CellEditEvent editedCell) {        //
 
         WeatherDataModel dataSelected = weatherTableView.getSelectionModel().getSelectedItem();
-        String valueInserted = edittedCell.getNewValue().toString();
-        dataSelected.setTemperature(valueInserted);
-        state.getRepo().updateTemperature(dataSelected.getWeatherDataId(), valueInserted);
+        try {
+            int valueInserted = Integer.parseInt(editedCell.getNewValue().toString());
+            dataSelected.setTemperature(Integer.toString(valueInserted));
+            state.getRepo().updateTemperature(dataSelected.getWeatherDataId(), Integer.toString(valueInserted));
+
+        } catch (NumberFormatException e) {
+            populateTableview();
+            // Handle the case where the input is not a valid integer
+            Alert alert = confirmationDialog("Invalid Input", "Please enter an integer valued Temperature.");
+            alert.showAndWait();
+        }
 
     }
-    
-    
-    public void changeHumidity(TableColumn.CellEditEvent edittedCell) {        //
+
+    public void changeHumidity(TableColumn.CellEditEvent editedCell) {        //
 
         WeatherDataModel dataSelected = weatherTableView.getSelectionModel().getSelectedItem();
-        String valueInserted = edittedCell.getNewValue().toString();
-        dataSelected.setTemperature(valueInserted);
-        state.getRepo().updateHumidity(dataSelected.getWeatherDataId(), valueInserted);
+        try {
+            int valueInserted = Integer.parseInt(editedCell.getNewValue().toString());
+            dataSelected.setHumidity(Integer.toString(valueInserted));
+            state.getRepo().updateHumidity(dataSelected.getWeatherDataId(), Integer.toString(valueInserted));
+
+        } catch (NumberFormatException e) {
+            this.populateTableview();
+            Alert alert = confirmationDialog("Invalid Input", "Please enter an integer valued Humidity.");
+            alert.showAndWait();
+        }
 
     }
-    
-    public void changeWindSpeed(TableColumn.CellEditEvent edittedCell) {        //
+
+    public void changeWindSpeed(TableColumn.CellEditEvent editedCell) {
 
         WeatherDataModel dataSelected = weatherTableView.getSelectionModel().getSelectedItem();
-        String valueInserted = edittedCell.getNewValue().toString();
-        dataSelected.setWindspeed(valueInserted);
-        state.getRepo().updateWindSpeed(dataSelected.getWeatherDataId(), valueInserted);
+        try {
+            int valueInserted = Integer.parseInt(editedCell.getNewValue().toString());
+            dataSelected.setWindspeed(Integer.toString(valueInserted));
+            state.getRepo().updateWindSpeed(dataSelected.getWeatherDataId(), Integer.toString(valueInserted));
+
+        } catch (NumberFormatException e) {
+            this.populateTableview();
+            Alert alert = confirmationDialog("Invalid Input", "Please enter an integer valued Windspeed.");
+            alert.showAndWait();
+        }
 
     }
-    
-    public void changeUvIndex(TableColumn.CellEditEvent edittedCell) {        //
+
+    public void changeUvIndex(TableColumn.CellEditEvent editedCell) {
 
         WeatherDataModel dataSelected = weatherTableView.getSelectionModel().getSelectedItem();
-        String valueInserted = edittedCell.getNewValue().toString();
-        dataSelected.setUvIndex(valueInserted);
-        state.getRepo().updateUvIndex(dataSelected.getWeatherDataId(), valueInserted);
+        try {
+            int valueInserted = Integer.parseInt(editedCell.getNewValue().toString());
+            dataSelected.setWindspeed(Integer.toString(valueInserted));
+            state.getRepo().updateWindSpeed(dataSelected.getWeatherDataId(), Integer.toString(valueInserted));
+
+        } catch (NumberFormatException e) {
+            this.populateTableview();
+            Alert alert = confirmationDialog("Invalid Input", "Please enter an integer valued UvIndex.");
+            alert.showAndWait();
+        }
 
     }
-    
+
     public void changeWeatherDesc(TableColumn.CellEditEvent edittedCell) {        //
 
         WeatherDataModel dataSelected = weatherTableView.getSelectionModel().getSelectedItem();
@@ -436,8 +464,7 @@ public class StatsController {
         state.getRepo().updateWeatherDesc(dataSelected.getWeatherDataId(), valueInserted);
 
     }
-    
-    
+
     @FXML
     private void onSaveToPdf(ActionEvent event) {
 
