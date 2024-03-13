@@ -27,7 +27,7 @@ public class Repo implements AutoCloseable {
     }
 
     /**
-     * Helper method that Uses Name and Country to prevent dublicates
+     * Helper method used to prevent dublicates
      *
      * @param cityModel
      * @return null or list
@@ -48,7 +48,7 @@ public class Repo implements AutoCloseable {
     }
 
     /**
-     * adds a city to the database If we intend to use the pojo later in our
+     * adds a city to the database If we intend to use the POJO later in our
      * code the correct practice of using the method is: citydummy =
      * addCity(citydummy);
      *
@@ -154,7 +154,7 @@ public class Repo implements AutoCloseable {
 
     /**
      * Deletes all WeatherData associated with provided cityId
-     *
+     * along with the city
      * @param id
      */
     public void deleteCityData(Long id) {
@@ -163,8 +163,9 @@ public class Repo implements AutoCloseable {
         Query query = entityManager.createQuery(
                 "DELETE FROM WeatherDataModel w "
                 + "WHERE w.cityModel.id = :id");
-        query.setParameter("id", id);
-        int result = query.executeUpdate();
+        query.setParameter("id", id).executeUpdate();        
+        //deletes city
+        entityManager.remove(city);
         entityManager.getTransaction().commit();
     }
 
@@ -292,7 +293,7 @@ public class Repo implements AutoCloseable {
     }
 
     /**
-     * Lists all cities that have been searched at list once
+     * Returns all cities that have been searched at list once
      *
      * @return
      */
