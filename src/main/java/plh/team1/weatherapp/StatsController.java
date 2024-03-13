@@ -394,6 +394,9 @@ public class StatsController {
         if (cityToBeRemoved == null) {
             return;
         }
+        if (this.filteredCities.isEmpty()) {
+            return;
+        }
         Alert alert = confirmationDialog("Are you sure you want to delete " + cityToBeRemoved.getCityName()
                 + ", " + cityToBeRemoved.getCountryName()
                 + " from your database?", "");
