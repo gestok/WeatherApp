@@ -61,19 +61,11 @@ public class Repo implements AutoCloseable {
             cityToBeAdded.setTimesSearched(1);
         } else { // city exists in the database
             cityToBeAdded = findCity(cityToBeAdded).get(0); //ensures id stays the same 
-
+            cityToBeAdded.incrementTimesSearched();
         }
         entityManager.persist(cityToBeAdded);
         entityManager.getTransaction().commit();
-
         return cityToBeAdded;
-    }
-
-    public void incrementSearched(CityModel citySearched) {
-        entityManager.getTransaction().begin();
-        citySearched.incrementTimesSearched();
-        entityManager.persist(citySearched);
-        entityManager.getTransaction().commit();
     }
 
     /**
@@ -153,8 +145,9 @@ public class Repo implements AutoCloseable {
     }
 
     /**
-     * Deletes all WeatherData associated with provided cityId
-     * along with the city
+     * Deletes all WeatherData associated with provided cityId along with the
+     * city
+     *
      * @param id
      */
     public void deleteCityData(Long id) {
@@ -163,7 +156,7 @@ public class Repo implements AutoCloseable {
         Query query = entityManager.createQuery(
                 "DELETE FROM WeatherDataModel w "
                 + "WHERE w.cityModel.id = :id");
-        query.setParameter("id", id).executeUpdate();        
+        query.setParameter("id", id).executeUpdate();
         //deletes city
         entityManager.remove(city);
         entityManager.getTransaction().commit();

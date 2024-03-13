@@ -36,7 +36,7 @@ public class OverviewController {
     private Utilities utilities = new Utilities();
     @FXML
     private Button menuItemOverview;
-    private final Tooltip overviewTooltip = new CustomTooltip("Search");   
+    private final Tooltip overviewTooltip = new CustomTooltip("Search");
     @FXML
     private Label uvindex_v;
     @FXML
@@ -121,13 +121,12 @@ public class OverviewController {
     }
 
     /**
-     * adds city searched to db 
+     * adds city searched to db
      */
     private void addToDb() {
         try {
             var cityToBeAdded = state.getRepo().addCity(state.getCityModel());
             state.setCityModel(cityToBeAdded);
-            state.getRepo().incrementSearched(cityToBeAdded);
         } catch (Exception e) {
             e.printStackTrace();
         };
