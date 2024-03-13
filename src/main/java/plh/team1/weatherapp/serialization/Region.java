@@ -1,6 +1,6 @@
-
 package plh.team1.weatherapp.serialization;
 
+// Gson
 import com.google.gson.annotations.SerializedName;
 
 public class Region {
@@ -11,5 +11,4 @@ public class Region {
     public String getAdminName() {
         return adminName;
     }
-
 }

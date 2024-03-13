@@ -1,6 +1,5 @@
 package plh.team1.weatherapp.model;
 
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -13,39 +12,38 @@ import java.util.HashSet;
 import java.util.Set;
 import plh.team1.weatherapp.serialization.WeatherData;
 
-
-/*Entity model class used for JPA that acts like a
-parser of the needed serialized data
+/**
+ * Entity model class used for JPA that acts like a parser of the needed
+ * serialized data.
  */
 @Entity
 @Table(name = "CITY")
-public class CityModel   {
-    
-    
+public class CityModel {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
-    
-    @Column(name = "cityname")    
+
+    @Column(name = "cityname")
     private String cityName;
-    
+
     @Column(name = "countryName")
     private String countryName;
-    
+
     @Column(name = "latitude")
     private String latitude;
-    
+
     @Column(name = "longitude")
     private String longitude;
-    
+
     @Column(name = "population")
     private String population;
-    
+
     private String admin_name;
-    
+
     @Column(name = "favourite")
     private Boolean favourite;
-    
+
     @Column(name = "times_searched")
     private int timesSearched;
 
@@ -143,20 +141,16 @@ public class CityModel   {
     }
 
     public void setAdmin_name(String admin_name) {
-        this.admin_name = admin_name;    }
-    
-    
+        this.admin_name = admin_name;
+    }
 
     public void incrementTimesSearched() {
         this.timesSearched++;
     }
-    //create custom JSON field names with the @JSONField annotation 
-    //very nice
-   
+
     @Override
     public String toString() {
-        return  cityName + ", " + countryName +", " +  admin_name;
+        return cityName + ", " + countryName + ", " + admin_name;
     }
 
 }
-

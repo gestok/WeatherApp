@@ -34,13 +34,13 @@
                         <String fx:value="report" />
                         <String fx:value="active" />
                     </styleClass>
-               <graphic>
+                    <graphic>
                         <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
                             <image>
                                 <Image url="@../../../icons/search.png" />
                             </image>
                         </ImageView>
-               </graphic>
+                    </graphic>
                 </Button>
                 <Button fx:id="menuItemStats" onAction="#switchToStats" prefHeight="54.0" prefWidth="54.0" stylesheets="@styles.css">
                     <graphic>
@@ -67,31 +67,31 @@
                 <Point3D />
             </rotationAxis>
         </HBox>
-      <HBox prefHeight="40.0" prefWidth="200.0" spacing="10.0" VBox.vgrow="NEVER">
-         <children>
-            <TextField fx:id="searchBar" maxWidth="938.0" onAction="#onSearch" prefHeight="42.0" promptText="Type city or country name to search..." styleClass="searchbar" stylesheets="@styles.css" HBox.hgrow="ALWAYS" />
-            <Button fx:id="SaveButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#onSaveButtonClick" prefHeight="35.0" prefWidth="35.0" stylesheets="@styles.css">
-               <styleClass>
-                  <String fx:value="bold" />
-                  <String fx:value="search-btn" />
-                  <String fx:value="cursor-pointer" />
-               </styleClass>
-               <graphic>
-                  <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../../../icons/save.png" />
-                     </image>
-                  </ImageView>
-               </graphic>
-               <HBox.margin>
-                  <Insets top="1.0" />
-               </HBox.margin>
-            </Button>
-         </children>
-         <VBox.margin>
-            <Insets left="20.0" right="20.0" />
-         </VBox.margin>
-      </HBox>
+        <HBox prefHeight="40.0" prefWidth="200.0" spacing="10.0" VBox.vgrow="NEVER">
+            <children>
+                <TextField fx:id="searchBar" maxWidth="938.0" onAction="#onSearch" prefHeight="42.0" promptText="Type city or country name to search..." styleClass="searchbar" stylesheets="@styles.css" HBox.hgrow="ALWAYS" />
+                <Button fx:id="SaveButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#onSaveButtonClick" prefHeight="35.0" prefWidth="35.0" stylesheets="@styles.css">
+                    <styleClass>
+                        <String fx:value="bold" />
+                        <String fx:value="search-btn" />
+                        <String fx:value="cursor-pointer" />
+                    </styleClass>
+                    <graphic>
+                        <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
+                            <image>
+                                <Image url="@../../../icons/save.png" />
+                            </image>
+                        </ImageView>
+                    </graphic>
+                    <HBox.margin>
+                        <Insets top="1.0" />
+                    </HBox.margin>
+                </Button>
+            </children>
+            <VBox.margin>
+                <Insets left="20.0" right="20.0" />
+            </VBox.margin>
+        </HBox>
         <HBox alignment="TOP_CENTER" fillHeight="false" styleClass="cloud-overlay" stylesheets="@styles.css" VBox.vgrow="NEVER">
             <children>
                 <AnchorPane prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
@@ -225,16 +225,16 @@
                 <Insets left="20.0" right="20.0" />
             </VBox.margin>
         </HBox>
-      <VBox fx:id="mapViewWrapper" prefHeight="320.0" prefWidth="1024.0" styleClass="city-info-wrapper" stylesheets="@styles.css" visible="false">
-         <children>
-            <WebView fx:id="mapView" layoutX="379.0" layoutY="2.0" minHeight="-1.0" minWidth="-1.0" prefHeight="320.0" prefWidth="-1.0" />
-         </children>
-         <VBox.margin>
-            <Insets left="20.0" right="20.0" />
-         </VBox.margin>
-         <padding>
-            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-         </padding>
-      </VBox>
+        <VBox fx:id="mapViewWrapper" prefHeight="320.0" prefWidth="1024.0" styleClass="city-info-wrapper" stylesheets="@styles.css" visible="false">
+            <children>
+                <WebView fx:id="mapView" layoutX="379.0" layoutY="2.0" minHeight="-1.0" minWidth="-1.0" prefHeight="320.0" prefWidth="-1.0" />
+            </children>
+            <VBox.margin>
+                <Insets left="20.0" right="20.0" />
+            </VBox.margin>
+            <padding>
+                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+            </padding>
+        </VBox>
     </children>
 </VBox>

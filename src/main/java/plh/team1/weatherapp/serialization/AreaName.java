@@ -1,6 +1,6 @@
 package plh.team1.weatherapp.serialization;
 
-
+// Gson
 import com.google.gson.annotations.SerializedName;
 
 public class AreaName {
@@ -11,7 +11,4 @@ public class AreaName {
     public String getCityName() {
         return cityName;
     }
-
-
 }
-

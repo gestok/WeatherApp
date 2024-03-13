@@ -1,6 +1,9 @@
 package plh.team1.weatherapp.model;
 
+// Java
+import java.util.Date;
 
+// Jakarta
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -9,8 +12,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.NamedQuery;
 import jakarta.persistence.Table;
+
 import plh.team1.weatherapp.serialization.WeatherData;
-import java.util.Date;
 
 @Entity
 @Table(name = "WEATHERDATA")
@@ -55,12 +58,13 @@ public class WeatherDataModel {
         this.uvIndex = weatherData.getCurrentCondition().getUvIndex();
         this.weatherDesc = weatherData.getCurrentCondition().getWeatherDesc();
         this.date = weatherData.getWeather(0).getDate();
-        this.highTemp = weatherData.getWeather(0).getMaxTempC(); //when the model class is created the index for accessing dates is set to 0 
+        this.highTemp = weatherData.getWeather(0).getMaxTempC(); // when the model class is created the index for
+                                                                 // accessing dates is set to 0
         this.lowTemp = weatherData.getWeather(0).getMinTempC();
         this.feelIsLike = weatherData.getCurrentCondition().getFeelIsLike();
         this.humidity = weatherData.getCurrentCondition().getHumidity();
         this.visibility = weatherData.getCurrentCondition().getVisibility();
-        this.dateTime = new Date(); //date time in order to query for last saved results
+        this.dateTime = new Date(); // date time in order to query for last saved results
     }
 
     public Date getDateTime() {
@@ -169,7 +173,9 @@ public class WeatherDataModel {
 
     @Override
     public String toString() {
-        return "WeatherDataModel{" + "temperature=" + temperature + ", windspeed=" + windspeed + ", uvIndex=" + uvIndex + ", weatherDesc=" + weatherDesc + ", date=" + date + ", highTemp=" + highTemp + ", lowTemp=" + lowTemp + ", feelIsLike=" + feelIsLike + ", weatherDataId=" + weatherDataId + ", cityModel=" + cityModel + '}';
+        return "WeatherDataModel{" + "temperature=" + temperature + ", windspeed=" + windspeed + ", uvIndex=" + uvIndex
+                + ", weatherDesc=" + weatherDesc + ", date=" + date + ", highTemp=" + highTemp + ", lowTemp=" + lowTemp
+                + ", feelIsLike=" + feelIsLike + ", weatherDataId=" + weatherDataId + ", cityModel=" + cityModel + '}';
     }
 
 }

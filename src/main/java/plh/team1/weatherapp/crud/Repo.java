@@ -1,7 +1,6 @@
 package plh.team1.weatherapp.crud;
 
 import plh.team1.weatherapp.model.CityModel;
-import plh.team1.weatherapp.serialization.WeatherData;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
@@ -35,9 +34,8 @@ public class Repo implements AutoCloseable {
     public List<CityModel> findCity(CityModel cityModel) {
         Query query = entityManager.createQuery(
                 "SELECT c FROM CityModel c "
-                + "WHERE c.cityName = :name "
-                + "and c.countryName = :country"
-        );
+                        + "WHERE c.cityName = :name "
+                        + "and c.countryName = :country");
         query.setParameter("name", cityModel.getCityName());
         query.setParameter("country", cityModel.getCountryName());
         List<CityModel> resultList = query.getResultList();
@@ -60,7 +58,7 @@ public class Repo implements AutoCloseable {
         if (findCity(cityToBeAdded) == null) { // city doesn't exist in the database
             cityToBeAdded.setTimesSearched(1);
         } else { // city exists in the database
-            cityToBeAdded = findCity(cityToBeAdded).get(0); //ensures id stays the same 
+            cityToBeAdded = findCity(cityToBeAdded).get(0); // ensures id stays the same
             cityToBeAdded.incrementTimesSearched();
         }
         entityManager.persist(cityToBeAdded);
@@ -155,9 +153,9 @@ public class Repo implements AutoCloseable {
         CityModel city = findCity(id);
         Query query = entityManager.createQuery(
                 "DELETE FROM WeatherDataModel w "
-                + "WHERE w.cityModel.id = :id");
+                        + "WHERE w.cityModel.id = :id");
         query.setParameter("id", id).executeUpdate();
-        //deletes city
+        // deletes city
         entityManager.remove(city);
         entityManager.getTransaction().commit();
     }
@@ -173,9 +171,8 @@ public class Repo implements AutoCloseable {
         CityModel city = findCity(id);
         Query query = entityManager.createQuery(
                 "SELECT a FROM WeatherDataModel a"
-                + " JOIN a.cityModel b "
-                + "where b.id = :id"
-        );
+                        + " JOIN a.cityModel b "
+                        + "where b.id = :id");
         query.setParameter("id", id);
 
         entityManager.persist(city);
@@ -241,7 +238,8 @@ public class Repo implements AutoCloseable {
      */
     public WeatherDataModel updateWeatherDesc(Long id, String weatherDesc) {
         entityManager.getTransaction().begin();
-        Query query = entityManager.createQuery("Update WeatherDataModel set weatherDesc = :weatherDesc where id = :id");
+        Query query = entityManager
+                .createQuery("Update WeatherDataModel set weatherDesc = :weatherDesc where id = :id");
         query.setParameter("id", id);
         query.setParameter("weatherDesc", weatherDesc);
         query.executeUpdate();
