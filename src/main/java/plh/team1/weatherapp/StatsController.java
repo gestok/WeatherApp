@@ -120,15 +120,7 @@ public class StatsController {
         this.applySearchBarChangeListener();
         this.onCityListViewClicked();
         this.initializeTableView();
-
-        try {
-            this.mostRecentPdfFile = findMostRecentPdfFile(exportsDirectoryPath);
-            if (this.mostRecentPdfFile != null) {
-                this.viewExportedReportBtn.setDisable(false);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        this.initializeViewLastExportButton();
     }
 
     /**
@@ -538,11 +530,7 @@ public class StatsController {
                 File pdfFile = mostRecentPdfFile.get();
                 if (Desktop.isDesktopSupported()) {
                     Desktop.getDesktop().open(pdfFile);
-                } else {
-                    System.out.println("AWT Desktop is not supported!");
                 }
-            } else {
-                System.out.println("No PDF files found in the directory!");
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -559,6 +547,17 @@ public class StatsController {
         } catch (IOException e) {
             e.printStackTrace();
             throw e;
+        }
+    }
+
+    private void initializeViewLastExportButton() {
+        try {
+            this.mostRecentPdfFile = findMostRecentPdfFile(exportsDirectoryPath);
+            if (this.mostRecentPdfFile.isPresent() && this.mostRecentPdfFile != null) {
+                this.viewExportedReportBtn.setDisable(false);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
