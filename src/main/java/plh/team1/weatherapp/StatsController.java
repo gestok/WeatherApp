@@ -104,6 +104,8 @@ public class StatsController {
     private void initialize() {
         if (this.state.getCityModel() != null) {
             this.populateSearchWindow(this.state.getCityModel());
+            this.updateCityDetails(this.state.getCityModel());
+            this.populateTableview(this.state.getCityModel());
         }
         this.populateCityListView();
         this.detectRootClick();
@@ -121,12 +123,12 @@ public class StatsController {
     private void initializeTableView() {
 
         this.weatherTableView.setPlaceholder(new Label("No saved data!"));
-        weatherTableView.setEditable(true);
-        temperatureColumn.setCellFactory(TextFieldTableCell.forTableColumn());
-        humidityColumn.setCellFactory(TextFieldTableCell.forTableColumn());
-        windSpeedColumn.setCellFactory(TextFieldTableCell.forTableColumn());
-        uvIndexColumn.setCellFactory(TextFieldTableCell.forTableColumn());
-        weatherDescColumn.setCellFactory(TextFieldTableCell.forTableColumn());
+        this.weatherTableView.setEditable(true);
+        this.temperatureColumn.setCellFactory(TextFieldTableCell.forTableColumn());
+        this.humidityColumn.setCellFactory(TextFieldTableCell.forTableColumn());
+        this.windSpeedColumn.setCellFactory(TextFieldTableCell.forTableColumn());
+        this.uvIndexColumn.setCellFactory(TextFieldTableCell.forTableColumn());
+        this.weatherDescColumn.setCellFactory(TextFieldTableCell.forTableColumn());
     }
 
     /**
@@ -219,7 +221,7 @@ public class StatsController {
                 return;
             }
             this.state.setCityModel(newValue);
-            this.populateTableview();
+            this.populateTableview(this.state.getCityModel());
             this.populateSearchWindow(newValue);
         });
     }
@@ -256,15 +258,11 @@ public class StatsController {
 
         // Populate ListView
         this.filteredCities.setAll(this.allCities.stream().collect(Collectors.toList()));
-
         this.cityListView.setItems(this.filteredCities);
-
     }
 
     /**
      * Method to add to favourites with a click
-     *
-     *
      */
     @FXML
     private void onAddToFavouritesClick() {
@@ -330,18 +328,16 @@ public class StatsController {
      * Clears weather TableView
      */
     private void clearTableView() {
-        weatherDataObservableList.clear();
+        this.weatherDataObservableList.clear();
     }
 
     /**
      * Populates weather TableView
      */
-    private void populateTableview() {
-
-        //clear pre existing items in the observable list
-        clearTableView();
+    private void populateTableview(CityModel city) {
+        this.clearTableView();
         var repo = this.state.getRepo();
-        ArrayList<WeatherDataModel> data = (ArrayList) repo.findByCity(state.getCityModel().getId());
+        ArrayList<WeatherDataModel> data = (ArrayList) repo.findByCity(city.getId());
         for (WeatherDataModel wd : data) {
             weatherDataObservableList.add(wd);
         }
@@ -373,30 +369,27 @@ public class StatsController {
 
     }
 
+    /**
+     * method that deletes the data from the city sitting on the search tab
+     *
+     * @param actionEvent
+     */
     public void Delete(ActionEvent actionEvent) {
-        if (state.getCityModel() == null) {
+        if (this.state.getCityModel() == null) {
             return;
         }
-        Alert alert = confirmationDialog("Are you sure you want to delete " + state.getCityModel().getCityName()
-                + ", " + state.getCityModel().getCountryName()
+        Alert alert = confirmationDialog("Are you sure you want to delete " + this.state.getCityModel().getCityName()
+                + ", " + this.state.getCityModel().getCountryName()
                 + " from your database?", "");
         Optional<ButtonType> result = alert.showAndWait();
         if (result.isPresent() && result.get() == ButtonType.OK) {
             System.out.println(filteredCities.get(0).toString());
             weatherDataObservableList.clear();
-            state.getRepo().deleteCityData(state.getCityModel().getId());
+            this.state.getRepo().deleteCityData(this.state.getCityModel().getId());
         } else {
             return;
         }
 
-    }
-
-    private Alert confirmationDialog(String confirmation, String additionalText) {
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Confirm");
-        alert.setHeaderText(confirmation);
-        alert.setContentText(additionalText);
-        return alert;
     }
 
     public void changeTemperature(TableColumn.CellEditEvent editedCell) {        //
@@ -405,10 +398,10 @@ public class StatsController {
         try {
             int valueInserted = Integer.parseInt(editedCell.getNewValue().toString());
             dataSelected.setTemperature(Integer.toString(valueInserted));
-            state.getRepo().updateTemperature(dataSelected.getWeatherDataId(), Integer.toString(valueInserted));
+            this.state.getRepo().updateTemperature(dataSelected.getWeatherDataId(), Integer.toString(valueInserted));
 
         } catch (NumberFormatException e) {
-            populateTableview();
+            this.populateTableview(this.state.getCityModel());
             // Handle the case where the input is not a valid integer
             Alert alert = confirmationDialog("Invalid Input", "Please enter an integer valued Temperature.");
             alert.showAndWait();
@@ -422,10 +415,10 @@ public class StatsController {
         try {
             int valueInserted = Integer.parseInt(editedCell.getNewValue().toString());
             dataSelected.setHumidity(Integer.toString(valueInserted));
-            state.getRepo().updateHumidity(dataSelected.getWeatherDataId(), Integer.toString(valueInserted));
+            this.state.getRepo().updateHumidity(dataSelected.getWeatherDataId(), Integer.toString(valueInserted));
 
         } catch (NumberFormatException e) {
-            this.populateTableview();
+            this.populateTableview(this.state.getCityModel());
             Alert alert = confirmationDialog("Invalid Input", "Please enter an integer valued Humidity.");
             alert.showAndWait();
         }
@@ -441,7 +434,7 @@ public class StatsController {
             state.getRepo().updateWindSpeed(dataSelected.getWeatherDataId(), Integer.toString(valueInserted));
 
         } catch (NumberFormatException e) {
-            this.populateTableview();
+            this.populateTableview(this.state.getCityModel());
             Alert alert = confirmationDialog("Invalid Input", "Please enter an integer valued Windspeed.");
             alert.showAndWait();
         }
@@ -454,10 +447,10 @@ public class StatsController {
         try {
             int valueInserted = Integer.parseInt(editedCell.getNewValue().toString());
             dataSelected.setWindspeed(Integer.toString(valueInserted));
-            state.getRepo().updateWindSpeed(dataSelected.getWeatherDataId(), Integer.toString(valueInserted));
+            this.state.getRepo().updateWindSpeed(dataSelected.getWeatherDataId(), Integer.toString(valueInserted));
 
         } catch (NumberFormatException e) {
-            this.populateTableview();
+            this.populateTableview(this.state.getCityModel());
             Alert alert = confirmationDialog("Invalid Input", "Please enter an integer valued UvIndex.");
             alert.showAndWait();
         }
@@ -469,7 +462,7 @@ public class StatsController {
         WeatherDataModel dataSelected = weatherTableView.getSelectionModel().getSelectedItem();
         String valueInserted = edittedCell.getNewValue().toString();
         dataSelected.setWeatherDesc(valueInserted);
-        state.getRepo().updateWeatherDesc(dataSelected.getWeatherDataId(), valueInserted);
+        this.state.getRepo().updateWeatherDesc(dataSelected.getWeatherDataId(), valueInserted);
 
     }
 
@@ -486,5 +479,20 @@ public class StatsController {
             return;
         }
         ExportPdfStats.exportPdfStats(citiesToPrint);
+    }
+
+    /**
+     * Alert helper method
+     *
+     * @param confirmation
+     * @param additionalText
+     * @return
+     */
+    private Alert confirmationDialog(String confirmation, String additionalText) {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirm");
+        alert.setHeaderText(confirmation);
+        alert.setContentText(additionalText);
+        return alert;
     }
 }
