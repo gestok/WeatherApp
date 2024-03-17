@@ -2,7 +2,7 @@
 
 ## Overview
 
-This GitHub project is a JavaFX-based weather application enabling users to check current weather conditions, search for weather data on specific cities, and analyze statistical information. The project is structured into three main tabs: **Search**, **Cities**, and **Stats**.
+This GitHub project is a JavaFX-based weather application enabling users to check current weather conditions, search for weather data on specific cities, and analyze statistical information. The project is structured into two main tabs: **Search** and **Cities/Stats**.
 
 ### Search Tab
 
@@ -15,12 +15,12 @@ The *Cities/Stats* tab offers statistical weather data, providing insights into 
 
 ## Usage Instructions
 
-To run the application in standalone mode, download the uberjar and follow these steps:
+To run the application in standalone mode in Windows, [download the uberjar](https://github.com/gestok/WeatherApp/releases/download/v1.0.0/WeatherApp-win.jar) and follow these steps:
 
 ### Standalone
 Open a terminal and run:
 ```bash
-java -jar WeatherApp.jar
+java -jar WeatherApp-win.jar
 ```
 
 To run the application in you IDE, follow these steps:
